@@ -1,20 +1,24 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { openRouterWriter } from '../src/writer.js';
+import { claudeWriter } from '../src/writer.js';
 
-test('writer posts one user message and returns the trimmed text', async () => {
+const opts = (fetchImpl) => ({ apiKey: 'k', model: 'claude-test', baseUrl: 'https://llm.test', fetchImpl });
+
+test('writer posts one user message to Claude and returns the trimmed text', async () => {
   let seen;
   const fetchImpl = async (url, init) => {
-    seen = { url, auth: init.headers.Authorization, body: JSON.parse(init.body) };
-    return { ok: true, json: async () => ({ choices: [{ message: { content: '  A short brief.\n' } }] }) };
+    seen = { url, key: init.headers['x-api-key'], version: init.headers['anthropic-version'], body: JSON.parse(init.body) };
+    // Thinking blocks come first on current models; only the text is the draft.
+    return { ok: true, json: async () => ({ stop_reason: 'end_turn', content: [{ type: 'thinking', thinking: '' }, { type: 'text', text: '  A short brief.\n' }] }) };
   };
-  const write = openRouterWriter({ apiKey: 'k', model: 'some/model', baseUrl: 'https://llm.test/v1', fetchImpl });
-  assert.equal(await write('Write a brief.'), 'A short brief.');
-  assert.deepEqual(seen, { url: 'https://llm.test/v1/chat/completions', auth: 'Bearer k',
-    body: { model: 'some/model', messages: [{ role: 'user', content: 'Write a brief.' }] } });
+  assert.equal(await claudeWriter(opts(fetchImpl))('Write a brief.'), 'A short brief.');
+  assert.deepEqual(seen, { url: 'https://llm.test/v1/messages', key: 'k', version: '2023-06-01',
+    body: { model: 'claude-test', max_tokens: 16000, messages: [{ role: 'user', content: 'Write a brief.' }] } });
 });
 
-test('writer surfaces a failed call instead of returning an empty draft', async () => {
-  const fetchImpl = async () => ({ ok: false, status: 402, text: async () => 'out of credits' });
-  await assert.rejects(openRouterWriter({ apiKey: 'k', model: 'm', baseUrl: 'https://llm.test/v1', fetchImpl })('x'), /Writer 402: out of credits/);
+test('writer surfaces a failed call or a refusal instead of returning an empty draft', async () => {
+  const failed = async () => ({ ok: false, status: 402, text: async () => 'out of credits' });
+  await assert.rejects(claudeWriter(opts(failed))('x'), /Writer 402: out of credits/);
+  const refused = async () => ({ ok: true, json: async () => ({ stop_reason: 'refusal', content: [] }) });
+  await assert.rejects(claudeWriter(opts(refused))('x'), /Writer refused/);
 });

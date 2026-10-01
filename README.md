@@ -165,7 +165,7 @@ A scheduled run picks up any new CSV in `data/`. If there is no new export, it f
 
 ## Running any other playbook on your own records
 
-1. Copy `.env.example` to `.env` and add `TYPESAFE_API_KEY`. For drafts, also add `OPENROUTER_API_KEY`; Claude writes them.
+1. Copy `.env.example` to `.env` and add `TYPESAFE_API_KEY`. For drafts, also add `ANTHROPIC_API_KEY`; Claude writes them.
 2. Load hard data, if you have any: `node src/cli.js facts facts.json`. The file maps `domain:acme.test` or `email:ada@acme.test` to fields such as `customer`, `open_opportunity`, `competitor`, `target_account`, `employees` and `suppressed`.
 3. Put records in a JSON array, each `{ "key", "state", "email"?, "domain"? }`, with `state` shaped like the playbook's cases. [examples/inbound.records.json](examples/inbound.records.json) and [examples/facts.example.json](examples/facts.example.json) show both formats with fictional data.
 4. `npm run playbook -- 04 records.json`

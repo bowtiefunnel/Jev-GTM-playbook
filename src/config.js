@@ -14,10 +14,10 @@ export function loadEnv() {
   return {
     jevKey: process.env.TYPESAFE_API_KEY || '',
     jevModel: process.env.JEV_MODEL || 'jev-latest',
-    writerKey: process.env.OPENROUTER_API_KEY || '',
-    // Claude writes the drafts unless WRITER_MODEL names another OpenRouter model.
-    writerModel: process.env.WRITER_MODEL || 'anthropic/claude-sonnet-5.5',
-    writerBaseUrl: process.env.OPENROUTER_BASE_URL || 'https://openrouter.ai/api/v1',
+    writerKey: process.env.ANTHROPIC_API_KEY || '',
+    // Claude writes the drafts. CLAUDE_MODEL picks which Claude.
+    writerModel: process.env.CLAUDE_MODEL || 'claude-sonnet-5',
+    writerBaseUrl: process.env.ANTHROPIC_BASE_URL || 'https://api.anthropic.com',
     port: Number(process.env.PORT) || 4173,
     // No key, or JEV_MOCK=1: the network commands use made-up answers so the demo runs anywhere.
     mock: process.env.JEV_MOCK === '1' || !process.env.TYPESAFE_API_KEY,

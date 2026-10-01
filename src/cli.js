@@ -9,7 +9,7 @@ import { startServer } from './server.js';
 import { openStore } from './store.js';
 import { caseRecords, replayJev, symbolicCases } from './load.js';
 import { askJev } from './jev.js';
-import { openRouterWriter } from './writer.js';
+import { claudeWriter } from './writer.js';
 import { approve, runAll, runRecord } from './spine.js';
 import { PLAYBOOKS, findPlaybook } from './playbooks/index.js';
 
@@ -90,8 +90,8 @@ if (command === 'replay' && a) {
   if (!existsSync(b)) { console.log(`No such file: ${b}`); process.exit(1); }
   const playbook = findPlaybook(a);
   const writer = env.writerKey
-    ? openRouterWriter({ apiKey: env.writerKey, model: env.writerModel, baseUrl: env.writerBaseUrl }) : null;
-  if (playbook.write && !writer) console.log('No OPENROUTER_API_KEY: records that need a draft go to a person.');
+    ? claudeWriter({ apiKey: env.writerKey, model: env.writerModel, baseUrl: env.writerBaseUrl }) : null;
+  if (playbook.write && !writer) console.log('No ANTHROPIC_API_KEY: records that need a draft go to a person.');
   const stats = { judged: 0, reused: 0, input_tokens: 0 };
   const jev = (req) => askJev({ apiKey: env.jevKey, model: env.jevModel, ...req });
   print(await runAll(playbook, JSON.parse(readFileSync(b, 'utf8')), { store: openStore(DB_PATH), jev, model: env.jevModel, writer, stats }));

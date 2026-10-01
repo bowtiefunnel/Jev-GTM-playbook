@@ -90,5 +90,5 @@ One set of 50 records supports a statement about that set. It does not support a
 
 1. **The records.** Can real form fills be used with names and emails removed, or should the set be fictional?
 2. **Who labels them.** It should be someone who would make the call in real life, and it must happen before anything is run.
-3. **The model for arm B**, and the OpenRouter key in `.env`.
+3. **The model for arm B**, and the Anthropic key in `.env`.
 4. **Whether to start with 04 only**, as recommended, or all three.

@@ -7,16 +7,18 @@ import { openStore } from './store.js';
 import { askJev } from './jev.js';
 import { runRecord } from './spine.js';
 import { findPlaybook } from './playbooks/index.js';
-import { openRouterWriter } from './writer.js';
+import { claudeWriter } from './writer.js';
 import { armA, armB, norm, score } from './before-after.js';
 
 const RUNS = 3;
 const JEV_PER_MILLION = 0.042; // input tokens only
+// Dollars per million tokens, [input, output]. Anthropic has no price endpoint, so add a row when you use another model.
+const CLAUDE_PER_MILLION = { 'claude-sonnet-5': [2, 10], 'claude-opus-5': [5, 25], 'claude-haiku-4-5': [1, 5] };
 const read = (name) => JSON.parse(readFileSync(path.join(ROOT, 'examples/before-after', name), 'utf8'));
 
 const env = loadEnv();
 if (!env.jevKey || !env.writerKey) {
-  console.error('Needs TYPESAFE_API_KEY and OPENROUTER_API_KEY in .env.');
+  console.error('Needs TYPESAFE_API_KEY and ANTHROPIC_API_KEY in .env.');
   process.exit(1);
 }
 const records = read('inbound.labelled.json');
@@ -37,11 +39,11 @@ const counting = async (url, init) => {
   const res = await fetch(url, init);
   if (res.ok) {
     const u = (await res.clone().json()).usage ?? {};
-    used.prompt += u.prompt_tokens ?? 0; used.completion += u.completion_tokens ?? 0;
+    used.prompt += u.input_tokens ?? 0; used.completion += u.output_tokens ?? 0;
   }
   return res;
 };
-const llm = openRouterWriter({ apiKey: env.writerKey, model: env.writerModel, baseUrl: env.writerBaseUrl, fetchImpl: counting });
+const llm = claudeWriter({ apiKey: env.writerKey, model: env.writerModel, baseUrl: env.writerBaseUrl, fetchImpl: counting });
 const jevStats = { judged: 0, reused: 0, input_tokens: 0 };
 const jev = (req) => askJev({ apiKey: env.jevKey, model: env.jevModel, ...req });
 
@@ -76,12 +78,11 @@ for (const [name, arm] of Object.entries(arms)) {
   }
 }
 
-// OpenRouter publishes prices per token on a public endpoint.
-const listed = (await (await fetch(`${env.writerBaseUrl}/models`)).json()).data?.find((m) => m.id === env.writerModel)?.pricing;
+const listed = CLAUDE_PER_MILLION[env.writerModel];
 const calls = RUNS * records.length;
 const cost = {
   code_only: 0,
-  llm_only: listed ? used.prompt * listed.prompt + used.completion * listed.completion : null,
+  llm_only: listed ? (used.prompt * listed[0] + used.completion * listed[1]) / 1e6 : null,
   sandwich: jevStats.input_tokens / 1e6 * JEV_PER_MILLION,
 };
 
