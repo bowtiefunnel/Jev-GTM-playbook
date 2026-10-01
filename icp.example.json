@@ -1,0 +1,16 @@
+{
+  "ideal_customer": {
+    "what_we_sell": "An outbound lead generation service for B2B companies that want more sales meetings.",
+    "target_roles": "Founders, CEOs, heads of sales, VPs of sales, revenue operations leaders, heads of growth and marketing leaders who own pipeline.",
+    "target_companies": "B2B software and services companies with roughly 10 to 500 employees that sell to other businesses.",
+    "not_a_fit": "Students, job seekers, recruiters, consumer brands, government, and people at very large enterprises with in-house teams."
+  },
+  "personas": {
+    "founder_or_ceo": "Founder, co-founder, owner or chief executive of a company",
+    "sales_leader": "Runs a sales team: head of sales, VP sales, CRO, sales director",
+    "marketing_or_growth_leader": "Runs marketing, growth or demand generation",
+    "revenue_operations": "Revenue operations, sales operations or GTM systems",
+    "individual_seller": "Account executive, SDR, BDR or other individual sales role",
+    "other": "None of the above"
+  }
+}

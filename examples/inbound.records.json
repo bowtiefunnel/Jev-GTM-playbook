@@ -1,0 +1,54 @@
+[
+  {
+    "key": "lead-1",
+    "email": "vp@brightloop.test",
+    "domain": "brightloop.test",
+    "state": {
+      "routing_policy": "We sell outbound lead generation to B2B companies with 10-500 employees.",
+      "lead": {
+        "role": "VP Sales",
+        "company_size": "120",
+        "message": "Our SDR team missed pipeline two quarters running. Need a partner live by next month."
+      }
+    }
+  },
+  {
+    "key": "lead-2",
+    "email": "founder@agency.test",
+    "domain": "agency.test",
+    "state": {
+      "routing_policy": "We sell outbound lead generation to B2B companies with 10-500 employees.",
+      "lead": {
+        "role": "Founder",
+        "company_size": "8",
+        "message": "We help agencies like yours scale with white-label SEO. Open to a quick call?"
+      }
+    }
+  },
+  {
+    "key": "lead-3",
+    "email": "coordinator@fernwood.test",
+    "domain": "fernwood.test",
+    "state": {
+      "routing_policy": "We sell outbound lead generation to B2B companies with 10-500 employees.",
+      "lead": {
+        "role": "Marketing Coordinator",
+        "company_size": "40",
+        "message": "Just looking at options for next year."
+      }
+    }
+  },
+  {
+    "key": "lead-4",
+    "email": "asdf@nowhere.test",
+    "domain": "nowhere.test",
+    "state": {
+      "routing_policy": "We sell outbound lead generation to B2B companies with 10-500 employees.",
+      "lead": {
+        "role": "asdf",
+        "company_size": "1",
+        "message": "test test"
+      }
+    }
+  }
+]

@@ -1,0 +1,279 @@
+{
+  "Buyer hiding in an invite": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "potential_buyer",
+            "confidence": 0.94,
+            "probabilities": {
+              "potential_buyer": 0.96,
+              "pitching_us": 0.02,
+              "recruiting_or_job": 0,
+              "peer_or_community": 0.02,
+              "unclear": 0
+            }
+          },
+          "worth_a_reply": {
+            "type": "noul",
+            "noul": 0.56
+          }
+        },
+        "usage": {
+          "input_tokens": 532,
+          "output_tokens": 86
+        },
+        "ms": 332,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "potential_buyer",
+      "action": "reply",
+      "values": {
+        "rank": 0.56
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "reply"
+    }
+  },
+  "Pitch": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "pitching_us",
+            "confidence": 0.95,
+            "probabilities": {
+              "pitching_us": 0.97,
+              "recruiting_or_job": 0,
+              "potential_buyer": 0.01,
+              "peer_or_community": 0.02,
+              "unclear": 0
+            }
+          },
+          "worth_a_reply": {
+            "type": "noul",
+            "noul": 0.09
+          }
+        },
+        "usage": {
+          "input_tokens": 529,
+          "output_tokens": 86
+        },
+        "ms": 337,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intent_pitching_us",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  },
+  "Peer from an event": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "peer_or_community",
+            "confidence": 0.55,
+            "probabilities": {
+              "recruiting_or_job": 0,
+              "potential_buyer": 0.01,
+              "unclear": 0.21,
+              "pitching_us": 0.14,
+              "peer_or_community": 0.64
+            }
+          },
+          "worth_a_reply": {
+            "type": "noul",
+            "noul": 0.52
+          }
+        },
+        "usage": {
+          "input_tokens": 522,
+          "output_tokens": 87
+        },
+        "ms": 156,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intent_peer_or_community",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  },
+  "No real content": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "unclear",
+            "confidence": 0.47,
+            "probabilities": {
+              "recruiting_or_job": 0,
+              "peer_or_community": 0.4,
+              "pitching_us": 0.02,
+              "unclear": 0.58,
+              "potential_buyer": 0
+            }
+          },
+          "worth_a_reply": {
+            "type": "noul",
+            "noul": 0.15
+          }
+        },
+        "usage": {
+          "input_tokens": 515,
+          "output_tokens": 85
+        },
+        "ms": 122,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intent_unclear",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  },
+  "From a target account": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {
+        "target_account": true
+      },
+      "fired": "target_account",
+      "action": "reply"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "pitching_us",
+            "confidence": 0.95,
+            "probabilities": {
+              "pitching_us": 0.97,
+              "recruiting_or_job": 0,
+              "potential_buyer": 0.01,
+              "peer_or_community": 0.02,
+              "unclear": 0
+            }
+          },
+          "worth_a_reply": {
+            "type": "noul",
+            "noul": 0.09
+          }
+        },
+        "usage": {
+          "input_tokens": 529,
+          "output_tokens": 86
+        },
+        "ms": 337,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "reply"
+    }
+  },
+  "An invitation we sent": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {},
+      "fired": "not_incoming",
+      "action": "skip"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "potential_buyer",
+            "confidence": 0.94,
+            "probabilities": {
+              "potential_buyer": 0.96,
+              "pitching_us": 0.02,
+              "recruiting_or_job": 0,
+              "peer_or_community": 0.02,
+              "unclear": 0
+            }
+          },
+          "worth_a_reply": {
+            "type": "noul",
+            "noul": 0.56
+          }
+        },
+        "usage": {
+          "input_tokens": 532,
+          "output_tokens": 86
+        },
+        "ms": 332,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "skip"
+    }
+  }
+}

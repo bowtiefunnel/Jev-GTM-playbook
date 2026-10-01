@@ -1,0 +1,178 @@
+{
+  "Accurate": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "supported": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.99,
+            "probabilities": {
+              "contradicted": 0,
+              "supported": 1,
+              "unsupported": 0
+            }
+          },
+          "sounds_creepy": {
+            "type": "noul",
+            "noul": 0.01
+          }
+        },
+        "usage": {
+          "input_tokens": 509,
+          "output_tokens": 60
+        },
+        "ms": 395,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "supported",
+      "action": "send",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "send"
+    }
+  },
+  "Invented detail": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "supported": {
+            "type": "choice",
+            "choice": "unsupported",
+            "confidence": 1,
+            "probabilities": {
+              "contradicted": 0,
+              "unsupported": 1,
+              "supported": 0
+            }
+          },
+          "sounds_creepy": {
+            "type": "noul",
+            "noul": 0.02
+          }
+        },
+        "usage": {
+          "input_tokens": 510,
+          "output_tokens": 60
+        },
+        "ms": 213,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "unsupported_or_unsure",
+      "action": "human_review",
+      "outcome": "unsure: a person decides"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "needs_person",
+      "action": "human_review"
+    }
+  },
+  "Contradicted": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "supported": {
+            "type": "choice",
+            "choice": "contradicted",
+            "confidence": 0.77,
+            "probabilities": {
+              "supported": 0,
+              "unsupported": 0.15,
+              "contradicted": 0.85
+            }
+          },
+          "sounds_creepy": {
+            "type": "noul",
+            "noul": 0.02
+          }
+        },
+        "usage": {
+          "input_tokens": 508,
+          "output_tokens": 63
+        },
+        "ms": 306,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "wrong_fact",
+      "action": "rewrite",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "rewrite"
+    }
+  },
+  "True but personal": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "supported": {
+            "type": "choice",
+            "choice": "supported",
+            "confidence": 0.8,
+            "probabilities": {
+              "unsupported": 0.13,
+              "supported": 0.87,
+              "contradicted": 0
+            }
+          },
+          "sounds_creepy": {
+            "type": "noul",
+            "noul": 0.98
+          }
+        },
+        "usage": {
+          "input_tokens": 515,
+          "output_tokens": 60
+        },
+        "ms": 109,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "too_personal",
+      "action": "rewrite",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "rewrite"
+    }
+  }
+}

@@ -1,0 +1,174 @@
+{
+  "playbook": "03-reply-classification",
+  "title": "Cold-email reply classification",
+  "about": "Every outbound team triages replies: book the interested ones, snooze the not-nows, follow the referrals, and never email the opt-outs again. The costly mistake is treating a polite \"please take me off your list\" as a plain \"no thanks\". Removal is asked as its own question so no intent can override it.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Reply contains \"unsubscribe\", \"remove me\" or \"opt out\": suppress without asking Jev."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "intent": {
+        "type": "choice",
+        "instructions": "What is the sender of `reply` telling us, in response to the cold email in `our_email`?",
+        "criteria": {
+          "interested": "Wants to talk, asks for a meeting, times or more information",
+          "not_now": "Open to it but explicitly later, or asks to be contacted again at a future time",
+          "referral": "Points us to a different person who handles this",
+          "objection": "Engages but pushes back on price, fit, timing or an existing vendor",
+          "not_interested": "Declines without asking to be removed",
+          "out_of_office": "An automatic away or out-of-office message",
+          "unsubscribe": "Asks to stop receiving emails or to be removed"
+        }
+      },
+      "wants_removal": {
+        "type": "noul",
+        "instructions": "Does `reply` ask, in any wording, to stop being contacted or to be removed from the list?",
+        "criteria": {
+          "true": "Any request to stop, remove, unsubscribe or not be contacted again",
+          "false": "No request to stop contact"
+        }
+      },
+      "names_another_person": {
+        "type": "noul",
+        "instructions": "Does `reply` name or point to a different person we should contact instead?"
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "customer",
+      "suppressed"
+    ],
+    "cutoffs": {
+      "wants_removal": 0.5,
+      "intent_confidence": 0.7,
+      "names_another_person": 0.8,
+      "snooze_days": 90
+    },
+    "rules": [
+      "wants_removal at or above the cutoff suppresses, whatever the intent.",
+      "A customer asking for removal goes to the account owner instead of silently onto the list.",
+      "Referral: a regex copies the address from the reply; Jev only decides that a referral exists.",
+      "Otherwise act on intent: interested books, not_now snoozes, out_of_office retries, the rest close."
+    ],
+    "unsure": [
+      "intent confidence below the cutoff.",
+      "An objection.",
+      "A referral with no address in the reply.",
+      "A customer asking to be removed."
+    ]
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "suppress": "Write suppressed = true to the facts for that email. Every playbook reads it in step 0.",
+      "book_meeting": "Book.",
+      "snooze": "Snooze for snooze_days.",
+      "extract_contact": "Push the referred contact to the SDR queue.",
+      "retry_later": "Retry after the out-of-office.",
+      "close": "Close the thread."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Interested, asks for times",
+      "expect": "interested",
+      "state": {
+        "our_email": "Quick question about how you book sales meetings today.",
+        "reply": "Timing is actually good, we just lost our SDR. Can you send over a couple of times next week?"
+      }
+    },
+    {
+      "label": "Polite no that is really an opt-out",
+      "expect": "unsubscribe, wants_removal high",
+      "state": {
+        "our_email": "Quick question about how you book sales meetings today.",
+        "reply": "Thanks but we're all set. Please take me off whatever list this is."
+      }
+    },
+    {
+      "label": "Referral",
+      "expect": "referral, names_another_person high",
+      "state": {
+        "our_email": "Quick question about how you book sales meetings today.",
+        "reply": "Not me, but Dana runs our pipeline. dana@example.com"
+      }
+    },
+    {
+      "label": "Out of office that mentions a return date",
+      "expect": "out_of_office",
+      "state": {
+        "our_email": "Quick question about how you book sales meetings today.",
+        "reply": "I'm out of the office until Monday 14th with limited access to email. For urgent matters contact support@example.com."
+      }
+    },
+    {
+      "label": "Not now, circle back",
+      "expect": "not_now",
+      "state": {
+        "our_email": "Quick question about how you book sales meetings today.",
+        "reply": "Interesting, but we're mid-budget freeze. Ping me again in Q1."
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Blunt unsubscribe",
+      "expect": "suppress",
+      "state": {
+        "our_email": "Quick question about how you book sales meetings today.",
+        "reply": "UNSUBSCRIBE"
+      },
+      "record": {
+        "email": "blunt@example.com"
+      }
+    },
+    {
+      "label": "Customer asks to be removed",
+      "expect": "stop_and_alert_owner",
+      "state_from": "Polite no that is really an opt-out",
+      "record": {
+        "email": "vip@example.com"
+      },
+      "facts": {
+        "email:vip@example.com": {
+          "customer": true
+        }
+      }
+    },
+    {
+      "label": "Already on the suppression list",
+      "expect": "skip",
+      "state_from": "Interested, asks for times",
+      "record": {
+        "email": "gone@example.com"
+      },
+      "facts": {
+        "email:gone@example.com": {
+          "suppressed": true
+        }
+      }
+    }
+  ],
+  "lessons": [
+    "Removal and referral are separate Nouls because you act on them whatever the intent is.",
+    "Only use a secondary answer on the branch it belongs to. The out-of-office reply names another address at 69%, but it is a support inbox, not a referral; names_another_person is read only when the intent is referral.",
+    "Get the address with a regex, not the model. Jev decides whether a referral exists; code copies it."
+  ],
+  "limits": [
+    "Keep the removal cutoff low. Wrongly suppressing someone costs a reply; emailing an opt-out costs sender reputation and possibly a legal complaint.",
+    "Test on your own inbox, including replies in other languages. Jev is strongest in English.",
+    "Objections go to a person. Drafting a reply to one needs the raw reply text, which step 3 is not allowed to see."
+  ]
+}

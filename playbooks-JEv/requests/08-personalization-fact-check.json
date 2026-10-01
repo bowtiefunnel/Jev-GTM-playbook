@@ -1,0 +1,123 @@
+{
+  "playbook": "08-personalization-fact-check",
+  "title": "Personalization fact-check",
+  "about": "AI-written first lines are sometimes made up, and sometimes true but too personal. This playbook is the guard between the LLM that writes and the send button. The spine runs it on every sentence of every draft; it is also a playbook of its own so its cutoffs can be replayed and tuned.",
+  "shape": "guard on a draft",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "supported": {
+        "type": "choice",
+        "instructions": "Do the facts that `first_line` relies on appear in `source`? Ignore greetings and well-wishes; judge only the factual claim.",
+        "criteria": {
+          "supported": "The source states or clearly implies the claim",
+          "contradicted": "The source says something that conflicts with the claim",
+          "unsupported": "The source does not mention it; the claim may be invented"
+        }
+      },
+      "sounds_creepy": {
+        "type": "noul",
+        "instructions": "Does `first_line` bring up the recipient's private life?",
+        "criteria": {
+          "true": "Mentions health, illness, family members, children, relationships, religion or other personal matters, even if the person shared them publicly",
+          "false": "Refers only to their job, company, industry or professional achievements"
+        }
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [],
+    "cutoffs": {
+      "sounds_creepy": 0.5,
+      "supported_confidence": 0.8
+    },
+    "rules": [
+      "sounds_creepy at or above the cutoff: rewrite, too personal.",
+      "supported at or above its confidence cutoff: send.",
+      "contradicted: rewrite, wrong fact."
+    ],
+    "unsure": [
+      "unsupported, or supported below the confidence cutoff."
+    ]
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "send": "The line may be used.",
+      "rewrite": "Back to the writer with the problem named.",
+      "human_review": "A person decides."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Accurate",
+      "expect": "supported",
+      "state": {
+        "source": {
+          "title": "VP of Sales",
+          "company": "Brightloop",
+          "recent_post": "Excited to share we just opened our first office in Austin!"
+        },
+        "first_line": "Congrats on opening the new Austin office."
+      }
+    },
+    {
+      "label": "Invented detail",
+      "expect": "unsupported",
+      "state": {
+        "source": {
+          "title": "VP of Sales",
+          "company": "Brightloop",
+          "recent_post": "Excited to share we just opened our first office in Austin!"
+        },
+        "first_line": "Congrats on closing your Series B last month."
+      }
+    },
+    {
+      "label": "Contradicted",
+      "expect": "contradicted",
+      "state": {
+        "source": {
+          "title": "VP of Sales",
+          "company": "Brightloop",
+          "recent_post": "Excited to share we just opened our first office in Austin!"
+        },
+        "first_line": "Congrats on the new Denver office."
+      }
+    },
+    {
+      "label": "True but personal",
+      "expect": "supported, sounds_creepy high",
+      "state": {
+        "source": {
+          "title": "VP of Sales",
+          "company": "Brightloop",
+          "recent_post": "Taking two weeks off after my daughter's surgery. Grateful for this team."
+        },
+        "first_line": "Hope your daughter's recovery from surgery is going well."
+      }
+    }
+  ],
+  "symbolic_cases": [],
+  "lessons": [
+    "The first draft asked whether the line \"would feel intrusive\" and scored the surgery line at only 26%. It also called the line unsupported, because \"hope it's going well\" is not in the source.",
+    "Two fixes: tell the fact check to ignore greetings and well-wishes and judge only the factual claim, and give the privacy question concrete criteria (health, family, children, relationships, even if shared publicly). The 26% became 98%.",
+    "Vague criteria give vague probabilities."
+  ],
+  "limits": [
+    "It can only check against the source it is given.",
+    "\"Contradicted\" came back at 0.77, lower than the others. Keep a person in the loop until the cutoff is checked on your own sends.",
+    "It was tested on single lines. Checking each sentence of a longer draft has not been measured live."
+  ]
+}

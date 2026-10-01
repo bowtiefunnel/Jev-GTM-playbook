@@ -1,0 +1,131 @@
+{
+  "playbook": "05-connection-request-intent",
+  "title": "Connection-request intent",
+  "about": "LinkedIn's data export includes every pending connection request with its message. Most incoming messages are pitches, but a few are buyers describing their problem in the first line. This playbook finds those.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Only incoming invitations.",
+      "Only invitations with a message.",
+      "A target account goes to the top without asking Jev."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "intent": {
+        "type": "choice",
+        "instructions": "What does the sender of `invitation_message` want from us?",
+        "criteria": {
+          "pitching_us": "Wants to sell us a product or service",
+          "potential_buyer": "Describes a problem that `what_we_sell` solves, or asks about our services",
+          "peer_or_community": "Same industry, shared group or event, wants to connect as a peer",
+          "recruiting_or_job": "Hiring, or looking for a job",
+          "unclear": "Too short or generic to tell"
+        }
+      },
+      "worth_a_reply": {
+        "type": "noul",
+        "instructions": "Given `what_we_sell`, is `invitation_message` worth a personal reply?",
+        "criteria": {
+          "true": "A potential buyer, a warm intro or a relevant peer",
+          "false": "A pitch, spam, or nothing to respond to"
+        }
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "target_account"
+    ],
+    "cutoffs": {
+      "intent_confidence": 0.7
+    },
+    "rules": [
+      "potential_buyer at or above the confidence cutoff: reply, ranked by worth_a_reply.",
+      "Everything else: ignore."
+    ],
+    "unsure": []
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "reply": "Top of the inbox.",
+      "ignore": "Nothing.",
+      "skip": "Nothing."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Buyer hiding in an invite",
+      "expect": "potential_buyer",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "invitation_message": "Saw your post on cold email deliverability. We're struggling to book meetings with enterprise IT buyers, would love to connect."
+      }
+    },
+    {
+      "label": "Pitch",
+      "expect": "pitching_us",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "invitation_message": "Hi! We help founders 10x their LinkedIn presence with done-for-you content. Let's connect!"
+      }
+    },
+    {
+      "label": "Peer from an event",
+      "expect": "peer_or_community",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "invitation_message": "Great meeting you at the RevOps meetup last night, let's stay in touch."
+      }
+    },
+    {
+      "label": "No real content",
+      "expect": "unclear",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "invitation_message": "Hi, I'd like to join your network."
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "From a target account",
+      "expect": "reply",
+      "state_from": "Pitch",
+      "record": {
+        "domain": "target.test"
+      },
+      "facts": {
+        "domain:target.test": {
+          "target_account": true
+        }
+      }
+    },
+    {
+      "label": "An invitation we sent",
+      "expect": "skip",
+      "state_from": "Buyer hiding in an invite",
+      "record": {
+        "direction": "OUTGOING"
+      }
+    }
+  ],
+  "lessons": [
+    "The unclear option matters. Without a no-match option the model has to force a short \"let's connect\" into a real category.",
+    "Code first paid off on one real account: only 125 of 5,650 invitation rows had an incoming message, about half a cent in total.",
+    "When someone accepts, they appear in the next Connections.csv and playbook 01 scores them."
+  ],
+  "limits": [
+    "The export has no title or company for invitations. Only the message can be judged.",
+    "Pitches are often written to sound like buyers. Review before replying."
+  ]
+}

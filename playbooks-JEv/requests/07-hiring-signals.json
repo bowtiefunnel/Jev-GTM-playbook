@@ -1,0 +1,140 @@
+{
+  "playbook": "07-hiring-signals",
+  "title": "Hiring signals",
+  "about": "A company posting a job for its first SDR, or a head of sales development, is about to invest in outbound. Keywords misread these posts: \"Account Manager\" contains \"account\". Jev is asked what the role actually does.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Account scored below min_account_fit by playbook 06: skip. Unscored accounts pass.",
+      "The same post text is never judged twice (the answer store)."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "building_outbound": {
+        "type": "noul",
+        "instructions": "Does `job_post` show the company is building or rebuilding a team whose job is to contact prospective customers directly?",
+        "criteria": {
+          "true": "Hiring SDRs, BDRs, outbound AEs, or a leader to build that team",
+          "false": "Any other kind of hire, including account management for existing customers"
+        }
+      },
+      "first_hire_in_function": {
+        "type": "noul",
+        "instructions": "Does `job_post` suggest this is one of the first hires in this function at the company?"
+      },
+      "seniority_of_hire": {
+        "type": "choice",
+        "instructions": "What level is the role in `job_post`?",
+        "criteria": {
+          "individual_contributor": null,
+          "manager": null,
+          "director_or_vp": null,
+          "executive": null
+        }
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "account_fit"
+    ],
+    "cutoffs": {
+      "min_account_fit": 60,
+      "building_outbound": 0.8,
+      "first_hire_in_function": 0.8
+    },
+    "rules": [
+      "building_outbound below the cutoff: no signal.",
+      "Strong when first_hire_in_function clears its cutoff or the hire is not an individual contributor; otherwise normal.",
+      "\"First hire\" stays a hint: it is read from the wording of the post."
+    ],
+    "unsure": []
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "signal_strong": "Flag the account.",
+      "signal_normal": "Note on the account.",
+      "no_signal": "Nothing.",
+      "skip": "Nothing."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "First SDR hire",
+      "expect": "building_outbound, first hire",
+      "state": {
+        "job_post": {
+          "title": "Founding SDR",
+          "company": "Sundial Payments",
+          "text": "Be our first sales development rep. You will prospect into finance teams, book meetings for the founders and help write our outbound playbook."
+        }
+      }
+    },
+    {
+      "label": "Account manager (existing customers)",
+      "expect": "not outbound",
+      "state": {
+        "job_post": {
+          "title": "Account Manager",
+          "company": "Copperline",
+          "text": "Own relationships with our existing customers, run QBRs and drive renewals and upsell."
+        }
+      }
+    },
+    {
+      "label": "Head of Sales Development",
+      "expect": "building_outbound, director_or_vp",
+      "state": {
+        "job_post": {
+          "title": "Head of Sales Development",
+          "company": "Kestrel Cloud",
+          "text": "Build and lead a team of 8 SDRs from scratch. You will define our outbound motion, tooling and targets."
+        }
+      }
+    },
+    {
+      "label": "Engineer",
+      "expect": "not outbound",
+      "state": {
+        "job_post": {
+          "title": "Senior Backend Engineer",
+          "company": "Northpane",
+          "text": "Design and scale our data pipeline. Go, Postgres, Kafka."
+        }
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Post from an account that scored 20",
+      "expect": "skip",
+      "state_from": "First SDR hire",
+      "record": {
+        "domain": "unfit.test"
+      },
+      "facts": {
+        "domain:unfit.test": {
+          "account_fit": 20
+        }
+      }
+    }
+  ],
+  "lessons": [
+    "The Account Manager post is the one a keyword filter gets wrong. Jev put it at 2%.",
+    "A job post costs about 470 input tokens, so 100,000 posts cost about $2. That makes it practical to watch every account in a market."
+  ],
+  "limits": [
+    "\"First hire\" is inferred from the wording of the post. Treat it as a hint, not a fact.",
+    "Recruiter reposts and evergreen listings look like new signals. Remove duplicates by company and title before building records."
+  ]
+}

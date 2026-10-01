@@ -1,0 +1,130 @@
+{
+  "playbook": "09-first-message-scoring",
+  "title": "First-message scoring",
+  "about": "Most outbound campaigns fail in the first message, not the list. This playbook scores a draft on the four things that decide whether someone replies. The spine runs it on every draft addressed to a prospect.",
+  "shape": "guard on a draft",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Unfilled {placeholder}: rewrite without asking Jev.",
+      "Longer than max_chars: rewrite without asking Jev."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "about_them": {
+        "type": "score",
+        "instructions": "How much is `message` about `prospect` and their situation, rather than about the sender?",
+        "criteria": [
+          "Entirely about the sender, their product or their company",
+          "Mostly about the sender, with a generic nod to the prospect's industry or role",
+          "Refers to something specific about the prospect, but most of the message is the pitch",
+          "Built around something specific to the prospect, with the offer secondary"
+        ]
+      },
+      "pitches_first_line": {
+        "type": "noul",
+        "instructions": "Does the first sentence of `message` pitch a product, service or meeting?"
+      },
+      "reads_as_template": {
+        "type": "noul",
+        "instructions": "Would `prospect` recognise `message` as a mass template sent to many people?",
+        "criteria": {
+          "true": "Generic flattery, merge-field phrasing, or lines that could be sent to anyone",
+          "false": "Could only have been written to this person"
+        }
+      },
+      "clear_ask": {
+        "type": "noul",
+        "instructions": "Does `message` end with one clear, low-effort question or request?"
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [],
+    "cutoffs": {
+      "about_them": 2,
+      "pitches_first_line": 0.5,
+      "reads_as_template": 0.7,
+      "clear_ask": 0.5,
+      "max_chars": 600
+    },
+    "rules": [
+      "about_them below the cutoff: make it about them.",
+      "pitches_first_line at or above the cutoff: do not pitch in line one.",
+      "reads_as_template at or above the cutoff: reads like a template.",
+      "clear_ask below the cutoff: end with one easy question.",
+      "No problems: send."
+    ],
+    "unsure": []
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "send": "The message may be sent.",
+      "rewrite": "Back to the writer with the list of problems."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Pitch-first template",
+      "expect": "low about_them, pitches, template",
+      "state": {
+        "prospect": {
+          "title": "VP of Sales",
+          "company": "Brightloop"
+        },
+        "message": "Hi {first_name}, we are the #1 outbound agency helping companies like yours 10x pipeline. We'd love to book 15 minutes to show you our platform. Are you free Thursday?"
+      }
+    },
+    {
+      "label": "Specific and short",
+      "expect": "high about_them, no pitch, not template",
+      "state": {
+        "prospect": {
+          "title": "VP of Sales",
+          "company": "Brightloop"
+        },
+        "message": "Saw Brightloop just opened in Austin and is hiring three AEs there. Are the new reps expected to build their own pipeline, or is marketing feeding them?"
+      }
+    },
+    {
+      "label": "Flattery then pitch",
+      "expect": "middling, template",
+      "state": {
+        "prospect": {
+          "title": "VP of Sales",
+          "company": "Brightloop"
+        },
+        "message": "Love what you're building at Brightloop! Really impressive growth. We help sales teams book more meetings with AI-powered outreach. Worth a chat?"
+      }
+    },
+    {
+      "label": "Specific but rambling, no ask",
+      "expect": "about_them high, clear_ask low",
+      "state": {
+        "prospect": {
+          "title": "VP of Sales",
+          "company": "Brightloop"
+        },
+        "message": "Congrats on the Austin office. We have been doing a lot of work with sales teams that are expanding into new cities and there are many things to think about, from territory design to hiring to tooling, and we have seen a lot of different approaches work and not work."
+      }
+    }
+  ],
+  "symbolic_cases": [],
+  "lessons": [
+    "These are four separate questions for a reason. The flattery-then-pitch draft opens with flattery, not a pitch (7%), so a single \"is this pitchy?\" check would pass it. reads_as_template catches it at 86%.",
+    "To choose between variants, score each one for each prospect and send the one with the fewest problems. Four variants for 1,000 prospects is 4,000 calls, about $0.10."
+  ],
+  "limits": [
+    "It judges the message, not the offer. A well-written message to the wrong person still fails.",
+    "\"Template\" is a matter of taste at the margins. Set the cutoff on your own messages."
+  ]
+}

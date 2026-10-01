@@ -1,0 +1,253 @@
+{
+  "First SDR hire": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "building_outbound": {
+            "type": "noul",
+            "noul": 0.97
+          },
+          "first_hire_in_function": {
+            "type": "noul",
+            "noul": 0.97
+          },
+          "seniority_of_hire": {
+            "type": "choice",
+            "choice": "individual_contributor",
+            "confidence": 1,
+            "probabilities": {
+              "director_or_vp": 0,
+              "individual_contributor": 1,
+              "manager": 0,
+              "executive": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 480,
+          "output_tokens": 101
+        },
+        "ms": 199,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "building_outbound",
+      "action": "signal_strong",
+      "values": {
+        "first_hire_is_a_hint": true
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "signal_strong"
+    }
+  },
+  "Account manager (existing customers)": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "building_outbound": {
+            "type": "noul",
+            "noul": 0.02
+          },
+          "first_hire_in_function": {
+            "type": "noul",
+            "noul": 0.22
+          },
+          "seniority_of_hire": {
+            "type": "choice",
+            "choice": "individual_contributor",
+            "confidence": 0.86,
+            "probabilities": {
+              "director_or_vp": 0,
+              "individual_contributor": 0.9,
+              "executive": 0,
+              "manager": 0.1
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 470,
+          "output_tokens": 101
+        },
+        "ms": 319,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "not_building_outbound",
+      "action": "no_signal",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "no_signal"
+    }
+  },
+  "Head of Sales Development": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "building_outbound": {
+            "type": "noul",
+            "noul": 0.98
+          },
+          "first_hire_in_function": {
+            "type": "noul",
+            "noul": 0.93
+          },
+          "seniority_of_hire": {
+            "type": "choice",
+            "choice": "director_or_vp",
+            "confidence": 0.62,
+            "probabilities": {
+              "executive": 0,
+              "individual_contributor": 0,
+              "manager": 0.28,
+              "director_or_vp": 0.72
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 478,
+          "output_tokens": 101
+        },
+        "ms": 147,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "building_outbound",
+      "action": "signal_strong",
+      "values": {
+        "first_hire_is_a_hint": true
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "signal_strong"
+    }
+  },
+  "Engineer": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "building_outbound": {
+            "type": "noul",
+            "noul": 0.01
+          },
+          "first_hire_in_function": {
+            "type": "noul",
+            "noul": 0.24
+          },
+          "seniority_of_hire": {
+            "type": "choice",
+            "choice": "individual_contributor",
+            "confidence": 1,
+            "probabilities": {
+              "director_or_vp": 0,
+              "individual_contributor": 1,
+              "executive": 0,
+              "manager": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 465,
+          "output_tokens": 101
+        },
+        "ms": 226,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "not_building_outbound",
+      "action": "no_signal",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "no_signal"
+    }
+  },
+  "Post from an account that scored 20": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {
+        "account_fit": 20
+      },
+      "fired": "account_not_a_fit",
+      "action": "skip"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "building_outbound": {
+            "type": "noul",
+            "noul": 0.97
+          },
+          "first_hire_in_function": {
+            "type": "noul",
+            "noul": 0.97
+          },
+          "seniority_of_hire": {
+            "type": "choice",
+            "choice": "individual_contributor",
+            "confidence": 1,
+            "probabilities": {
+              "director_or_vp": 0,
+              "individual_contributor": 1,
+              "manager": 0,
+              "executive": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 480,
+          "output_tokens": 101
+        },
+        "ms": 199,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "skip"
+    }
+  }
+}

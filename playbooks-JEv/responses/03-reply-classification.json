@@ -1,0 +1,391 @@
+{
+  "Interested, asks for times": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "interested",
+            "confidence": 0.99,
+            "probabilities": {
+              "out_of_office": 0,
+              "referral": 0,
+              "unsubscribe": 0,
+              "not_now": 0,
+              "not_interested": 0,
+              "interested": 1,
+              "objection": 0
+            }
+          },
+          "wants_removal": {
+            "type": "noul",
+            "noul": 0.01
+          },
+          "names_another_person": {
+            "type": "noul",
+            "noul": 0.07
+          }
+        },
+        "usage": {
+          "input_tokens": 600,
+          "output_tokens": 118
+        },
+        "ms": 298,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intent",
+      "action": "book_meeting",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "book_meeting"
+    }
+  },
+  "Polite no that is really an opt-out": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "unsubscribe",
+            "confidence": 1,
+            "probabilities": {
+              "referral": 0,
+              "objection": 0,
+              "out_of_office": 0,
+              "interested": 0,
+              "unsubscribe": 1,
+              "not_now": 0,
+              "not_interested": 0
+            }
+          },
+          "wants_removal": {
+            "type": "noul",
+            "noul": 0.99
+          },
+          "names_another_person": {
+            "type": "noul",
+            "noul": 0.02
+          }
+        },
+        "usage": {
+          "input_tokens": 594,
+          "output_tokens": 117
+        },
+        "ms": 174,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "wants_removal",
+      "action": "suppress",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "suppress"
+    }
+  },
+  "Referral": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "referral",
+            "confidence": 1,
+            "probabilities": {
+              "interested": 0,
+              "objection": 0,
+              "not_interested": 0,
+              "out_of_office": 0,
+              "referral": 1,
+              "not_now": 0,
+              "unsubscribe": 0
+            }
+          },
+          "wants_removal": {
+            "type": "noul",
+            "noul": 0.02
+          },
+          "names_another_person": {
+            "type": "noul",
+            "noul": 0.98
+          }
+        },
+        "usage": {
+          "input_tokens": 590,
+          "output_tokens": 119
+        },
+        "ms": 141,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intent",
+      "action": "extract_contact",
+      "values": {
+        "contact": "dana@example.com"
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "extract_contact"
+    }
+  },
+  "Out of office that mentions a return date": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "out_of_office",
+            "confidence": 1,
+            "probabilities": {
+              "unsubscribe": 0,
+              "not_now": 0,
+              "interested": 0,
+              "objection": 0,
+              "out_of_office": 1,
+              "not_interested": 0,
+              "referral": 0
+            }
+          },
+          "wants_removal": {
+            "type": "noul",
+            "noul": 0.02
+          },
+          "names_another_person": {
+            "type": "noul",
+            "noul": 0.69
+          }
+        },
+        "usage": {
+          "input_tokens": 604,
+          "output_tokens": 120
+        },
+        "ms": 144,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intent",
+      "action": "retry_later",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "retry_later"
+    }
+  },
+  "Not now, circle back": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "not_now",
+            "confidence": 0.99,
+            "probabilities": {
+              "interested": 0,
+              "not_now": 0.99,
+              "objection": 0.01,
+              "not_interested": 0,
+              "referral": 0,
+              "out_of_office": 0,
+              "unsubscribe": 0
+            }
+          },
+          "wants_removal": {
+            "type": "noul",
+            "noul": 0.06
+          },
+          "names_another_person": {
+            "type": "noul",
+            "noul": 0.04
+          }
+        },
+        "usage": {
+          "input_tokens": 594,
+          "output_tokens": 118
+        },
+        "ms": 132,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intent",
+      "action": "snooze",
+      "values": {
+        "days": 90
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "snooze"
+    }
+  },
+  "Blunt unsubscribe": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {},
+      "fired": "regex_unsubscribe",
+      "action": "suppress"
+    },
+    "1_judge": {
+      "called": false
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "suppress"
+    }
+  },
+  "Customer asks to be removed": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "unsubscribe",
+            "confidence": 1,
+            "probabilities": {
+              "referral": 0,
+              "objection": 0,
+              "out_of_office": 0,
+              "interested": 0,
+              "unsubscribe": 1,
+              "not_now": 0,
+              "not_interested": 0
+            }
+          },
+          "wants_removal": {
+            "type": "noul",
+            "noul": 0.99
+          },
+          "names_another_person": {
+            "type": "noul",
+            "noul": 0.02
+          }
+        },
+        "usage": {
+          "input_tokens": 594,
+          "output_tokens": 117
+        },
+        "ms": 174,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {
+        "customer": true
+      },
+      "fired": "customer_asked_removal",
+      "action": "stop_and_alert_owner",
+      "outcome": "unsure: a person decides"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "needs_person",
+      "action": "stop_and_alert_owner"
+    }
+  },
+  "Already on the suppression list": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {
+        "suppressed": true
+      },
+      "fired": "suppressed",
+      "action": "skip"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "intent": {
+            "type": "choice",
+            "choice": "interested",
+            "confidence": 0.99,
+            "probabilities": {
+              "out_of_office": 0,
+              "referral": 0,
+              "unsubscribe": 0,
+              "not_now": 0,
+              "not_interested": 0,
+              "interested": 1,
+              "objection": 0
+            }
+          },
+          "wants_removal": {
+            "type": "noul",
+            "noul": 0.01
+          },
+          "names_another_person": {
+            "type": "noul",
+            "noul": 0.07
+          }
+        },
+        "usage": {
+          "input_tokens": 600,
+          "output_tokens": 118
+        },
+        "ms": 298,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "skip"
+    }
+  }
+}

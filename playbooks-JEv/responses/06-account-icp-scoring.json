@@ -1,0 +1,493 @@
+{
+  "Vertical SaaS selling to clinics": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "sells_b2b": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "Sells only to consumers, or the description says nothing about customers",
+              "1": "Mostly consumers, with some business customers",
+              "2": "Sells to both businesses and consumers",
+              "3": "Sells mainly or only to businesses"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "needs_outbound": {
+            "type": "score",
+            "score": 2.66,
+            "confidence": 0.66,
+            "legend": {
+              "0": "Customers find and buy on their own, such as self-serve apps or retail",
+              "1": "Mostly inbound or partner-led, with a small sales team",
+              "2": "A sales team closes deals, but most leads come in by themselves",
+              "3": "Growth depends on salespeople contacting buyers who did not ask first"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.01,
+              "2": 0.33,
+              "3": 0.66
+            }
+          },
+          "size_fit": {
+            "type": "choice",
+            "choice": "in_range",
+            "confidence": 1,
+            "probabilities": {
+              "too_large": 0,
+              "too_small": 0,
+              "unknown": 0,
+              "in_range": 1
+            }
+          },
+          "excluded": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 645,
+          "output_tokens": 103
+        },
+        "ms": 320,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "weighted_fit",
+      "action": "scored",
+      "values": {
+        "fit": 93
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "Consumer app": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "sells_b2b": {
+            "type": "score",
+            "score": 0,
+            "confidence": 1,
+            "legend": {
+              "0": "Sells only to consumers, or the description says nothing about customers",
+              "1": "Mostly consumers, with some business customers",
+              "2": "Sells to both businesses and consumers",
+              "3": "Sells mainly or only to businesses"
+            },
+            "probabilities": {
+              "0": 1,
+              "1": 0,
+              "2": 0,
+              "3": 0
+            }
+          },
+          "needs_outbound": {
+            "type": "score",
+            "score": 0,
+            "confidence": 1,
+            "legend": {
+              "0": "Customers find and buy on their own, such as self-serve apps or retail",
+              "1": "Mostly inbound or partner-led, with a small sales team",
+              "2": "A sales team closes deals, but most leads come in by themselves",
+              "3": "Growth depends on salespeople contacting buyers who did not ask first"
+            },
+            "probabilities": {
+              "0": 1,
+              "1": 0,
+              "2": 0,
+              "3": 0
+            }
+          },
+          "size_fit": {
+            "type": "choice",
+            "choice": "in_range",
+            "confidence": 0.95,
+            "probabilities": {
+              "too_small": 0.03,
+              "unknown": 0,
+              "in_range": 0.97,
+              "too_large": 0
+            }
+          },
+          "excluded": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 642,
+          "output_tokens": 103
+        },
+        "ms": 242,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "weighted_fit",
+      "action": "scored",
+      "values": {
+        "fit": 0
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "A competitor": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "sells_b2b": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "Sells only to consumers, or the description says nothing about customers",
+              "1": "Mostly consumers, with some business customers",
+              "2": "Sells to both businesses and consumers",
+              "3": "Sells mainly or only to businesses"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "needs_outbound": {
+            "type": "score",
+            "score": 2.98,
+            "confidence": 0.98,
+            "legend": {
+              "0": "Customers find and buy on their own, such as self-serve apps or retail",
+              "1": "Mostly inbound or partner-led, with a small sales team",
+              "2": "A sales team closes deals, but most leads come in by themselves",
+              "3": "Growth depends on salespeople contacting buyers who did not ask first"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.01,
+              "3": 0.99
+            }
+          },
+          "size_fit": {
+            "type": "choice",
+            "choice": "in_range",
+            "confidence": 0.94,
+            "probabilities": {
+              "too_small": 0.04,
+              "unknown": 0,
+              "in_range": 0.96,
+              "too_large": 0
+            }
+          },
+          "excluded": {
+            "type": "noul",
+            "noul": 0.72
+          }
+        },
+        "usage": {
+          "input_tokens": 638,
+          "output_tokens": 103
+        },
+        "ms": 141,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "excluded",
+      "action": "scored",
+      "values": {
+        "fit": 0
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "Enterprise, too large": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "sells_b2b": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "Sells only to consumers, or the description says nothing about customers",
+              "1": "Mostly consumers, with some business customers",
+              "2": "Sells to both businesses and consumers",
+              "3": "Sells mainly or only to businesses"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "needs_outbound": {
+            "type": "score",
+            "score": 2.91,
+            "confidence": 0.91,
+            "legend": {
+              "0": "Customers find and buy on their own, such as self-serve apps or retail",
+              "1": "Mostly inbound or partner-led, with a small sales team",
+              "2": "A sales team closes deals, but most leads come in by themselves",
+              "3": "Growth depends on salespeople contacting buyers who did not ask first"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.09,
+              "3": 0.91
+            }
+          },
+          "size_fit": {
+            "type": "choice",
+            "choice": "too_large",
+            "confidence": 1,
+            "probabilities": {
+              "unknown": 0,
+              "in_range": 0,
+              "too_large": 1,
+              "too_small": 0
+            }
+          },
+          "excluded": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 642,
+          "output_tokens": 103
+        },
+        "ms": 113,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "headcount_out_of_range",
+      "action": "scored",
+      "values": {
+        "fit": 0
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "Enrichment says 4,000 people": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "sells_b2b": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "Sells only to consumers, or the description says nothing about customers",
+              "1": "Mostly consumers, with some business customers",
+              "2": "Sells to both businesses and consumers",
+              "3": "Sells mainly or only to businesses"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "needs_outbound": {
+            "type": "score",
+            "score": 2.66,
+            "confidence": 0.66,
+            "legend": {
+              "0": "Customers find and buy on their own, such as self-serve apps or retail",
+              "1": "Mostly inbound or partner-led, with a small sales team",
+              "2": "A sales team closes deals, but most leads come in by themselves",
+              "3": "Growth depends on salespeople contacting buyers who did not ask first"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.01,
+              "2": 0.33,
+              "3": 0.66
+            }
+          },
+          "size_fit": {
+            "type": "choice",
+            "choice": "in_range",
+            "confidence": 1,
+            "probabilities": {
+              "too_large": 0,
+              "too_small": 0,
+              "unknown": 0,
+              "in_range": 1
+            }
+          },
+          "excluded": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 645,
+          "output_tokens": 103
+        },
+        "ms": 320,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {
+        "employees": 4000
+      },
+      "fired": "headcount_out_of_range",
+      "action": "scored",
+      "values": {
+        "fit": 0
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "On the competitor list": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {
+        "competitor": true
+      },
+      "fired": "exclusion_list",
+      "action": "excluded"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "sells_b2b": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "Sells only to consumers, or the description says nothing about customers",
+              "1": "Mostly consumers, with some business customers",
+              "2": "Sells to both businesses and consumers",
+              "3": "Sells mainly or only to businesses"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "needs_outbound": {
+            "type": "score",
+            "score": 2.66,
+            "confidence": 0.66,
+            "legend": {
+              "0": "Customers find and buy on their own, such as self-serve apps or retail",
+              "1": "Mostly inbound or partner-led, with a small sales team",
+              "2": "A sales team closes deals, but most leads come in by themselves",
+              "3": "Growth depends on salespeople contacting buyers who did not ask first"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.01,
+              "2": 0.33,
+              "3": 0.66
+            }
+          },
+          "size_fit": {
+            "type": "choice",
+            "choice": "in_range",
+            "confidence": 1,
+            "probabilities": {
+              "too_large": 0,
+              "too_small": 0,
+              "unknown": 0,
+              "in_range": 1
+            }
+          },
+          "excluded": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 645,
+          "output_tokens": 103
+        },
+        "ms": 320,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "excluded"
+    }
+  }
+}

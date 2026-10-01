@@ -1,0 +1,258 @@
+{
+  "Opener A (got a reply)": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "about_them": {
+            "type": "score",
+            "score": 2.99,
+            "confidence": 0.99,
+            "legend": {
+              "0": "Entirely about the sender, their product or their company",
+              "1": "Mostly about the sender, with a generic nod to the recipient's industry or role",
+              "2": "Refers to something specific about the recipient, but most of the message is the pitch",
+              "3": "Built around something specific to the recipient, with the offer secondary"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.01,
+              "3": 0.99
+            }
+          },
+          "pitches_first_line": {
+            "type": "noul",
+            "noul": 0.03
+          },
+          "asks_a_question": {
+            "type": "noul",
+            "noul": 0.87
+          },
+          "references_a_trigger": {
+            "type": "noul",
+            "noul": 0.98
+          }
+        },
+        "usage": {
+          "input_tokens": 478,
+          "output_tokens": 74
+        },
+        "ms": 292,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "described",
+      "action": "described",
+      "values": {
+        "pitches_first_line": 0.03,
+        "asks_a_question": 0.87,
+        "references_a_trigger": 0.98
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "described"
+    }
+  },
+  "Opener B (no reply)": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "about_them": {
+            "type": "score",
+            "score": 0.56,
+            "confidence": 0.56,
+            "legend": {
+              "0": "Entirely about the sender, their product or their company",
+              "1": "Mostly about the sender, with a generic nod to the recipient's industry or role",
+              "2": "Refers to something specific about the recipient, but most of the message is the pitch",
+              "3": "Built around something specific to the recipient, with the offer secondary"
+            },
+            "probabilities": {
+              "0": 0.44,
+              "1": 0.56,
+              "2": 0,
+              "3": 0
+            }
+          },
+          "pitches_first_line": {
+            "type": "noul",
+            "noul": 0.95
+          },
+          "asks_a_question": {
+            "type": "noul",
+            "noul": 0.07
+          },
+          "references_a_trigger": {
+            "type": "noul",
+            "noul": 0.01
+          }
+        },
+        "usage": {
+          "input_tokens": 483,
+          "output_tokens": 74
+        },
+        "ms": 305,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "described",
+      "action": "described",
+      "values": {
+        "pitches_first_line": 0.95,
+        "asks_a_question": 0.07,
+        "references_a_trigger": 0.01
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "described"
+    }
+  },
+  "Opener C (got a reply)": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "about_them": {
+            "type": "score",
+            "score": 2.99,
+            "confidence": 0.99,
+            "legend": {
+              "0": "Entirely about the sender, their product or their company",
+              "1": "Mostly about the sender, with a generic nod to the recipient's industry or role",
+              "2": "Refers to something specific about the recipient, but most of the message is the pitch",
+              "3": "Built around something specific to the recipient, with the offer secondary"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.01,
+              "3": 0.99
+            }
+          },
+          "pitches_first_line": {
+            "type": "noul",
+            "noul": 0.06
+          },
+          "asks_a_question": {
+            "type": "noul",
+            "noul": 0.85
+          },
+          "references_a_trigger": {
+            "type": "noul",
+            "noul": 0.96
+          }
+        },
+        "usage": {
+          "input_tokens": 483,
+          "output_tokens": 74
+        },
+        "ms": 106,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "described",
+      "action": "described",
+      "values": {
+        "pitches_first_line": 0.06,
+        "asks_a_question": 0.85,
+        "references_a_trigger": 0.96
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "described"
+    }
+  },
+  "Opener D (no reply)": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "about_them": {
+            "type": "score",
+            "score": 1.46,
+            "confidence": 0.47,
+            "legend": {
+              "0": "Entirely about the sender, their product or their company",
+              "1": "Mostly about the sender, with a generic nod to the recipient's industry or role",
+              "2": "Refers to something specific about the recipient, but most of the message is the pitch",
+              "3": "Built around something specific to the recipient, with the offer secondary"
+            },
+            "probabilities": {
+              "0": 0.03,
+              "1": 0.66,
+              "2": 0.12,
+              "3": 0.19
+            }
+          },
+          "pitches_first_line": {
+            "type": "noul",
+            "noul": 0.04
+          },
+          "asks_a_question": {
+            "type": "noul",
+            "noul": 0.29
+          },
+          "references_a_trigger": {
+            "type": "noul",
+            "noul": 0.01
+          }
+        },
+        "usage": {
+          "input_tokens": 482,
+          "output_tokens": 74
+        },
+        "ms": 98,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "described",
+      "action": "described",
+      "values": {
+        "pitches_first_line": 0.04,
+        "asks_a_question": 0.29,
+        "references_a_trigger": 0.01
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "described"
+    }
+  }
+}

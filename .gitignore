@@ -1,0 +1,7 @@
+# Keys, facts about real people and the ledger never belong in git.
+.env
+icp.json
+data/*
+!data/.gitkeep
+node_modules/
+.DS_Store

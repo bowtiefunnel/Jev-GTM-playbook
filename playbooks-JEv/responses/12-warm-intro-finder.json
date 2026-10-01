@@ -1,0 +1,317 @@
+{
+  "Connection is the CRO": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "path_to_buyer": {
+            "type": "choice",
+            "choice": "is_the_buyer",
+            "confidence": 0.98,
+            "probabilities": {
+              "leads_the_buyer": 0.01,
+              "other_team": 0,
+              "is_the_buyer": 0.98,
+              "unclear": 0,
+              "same_team": 0.01
+            }
+          },
+          "intro_strength": {
+            "type": "score",
+            "score": 2.94,
+            "confidence": 0.94,
+            "legend": {
+              "0": "Works in an unrelated part of the company and likely does not know the buyer",
+              "1": "Works nearby and may know the buyer by name",
+              "2": "Works with the buyer regularly and could make a warm introduction",
+              "3": "Is the buyer, or directly manages them, so no introduction is needed"
+            },
+            "probabilities": {
+              "0": 0.01,
+              "1": 0.01,
+              "2": 0.02,
+              "3": 0.96
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 592,
+          "output_tokens": 83
+        },
+        "ms": 350,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intro_strength",
+      "action": "intro_path",
+      "values": {
+        "path": "is_the_buyer",
+        "strength": 2.94
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "intro_path"
+    }
+  },
+  "Connection is an AE on the buyer's team": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "path_to_buyer": {
+            "type": "choice",
+            "choice": "same_team",
+            "confidence": 0.96,
+            "probabilities": {
+              "unclear": 0.01,
+              "other_team": 0.02,
+              "leads_the_buyer": 0,
+              "is_the_buyer": 0,
+              "same_team": 0.97
+            }
+          },
+          "intro_strength": {
+            "type": "score",
+            "score": 1.87,
+            "confidence": 0.72,
+            "legend": {
+              "0": "Works in an unrelated part of the company and likely does not know the buyer",
+              "1": "Works nearby and may know the buyer by name",
+              "2": "Works with the buyer regularly and could make a warm introduction",
+              "3": "Is the buyer, or directly manages them, so no introduction is needed"
+            },
+            "probabilities": {
+              "0": 0.02,
+              "1": 0.17,
+              "2": 0.74,
+              "3": 0.07
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 592,
+          "output_tokens": 81
+        },
+        "ms": 168,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intro_strength",
+      "action": "intro_path",
+      "values": {
+        "path": "same_team",
+        "strength": 1.87
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "intro_path"
+    }
+  },
+  "Connection is the founder": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "path_to_buyer": {
+            "type": "choice",
+            "choice": "leads_the_buyer",
+            "confidence": 0.85,
+            "probabilities": {
+              "leads_the_buyer": 0.88,
+              "is_the_buyer": 0.01,
+              "unclear": 0.01,
+              "other_team": 0.1,
+              "same_team": 0
+            }
+          },
+          "intro_strength": {
+            "type": "score",
+            "score": 2.38,
+            "confidence": 0.38,
+            "legend": {
+              "0": "Works in an unrelated part of the company and likely does not know the buyer",
+              "1": "Works nearby and may know the buyer by name",
+              "2": "Works with the buyer regularly and could make a warm introduction",
+              "3": "Is the buyer, or directly manages them, so no introduction is needed"
+            },
+            "probabilities": {
+              "0": 0.02,
+              "1": 0.07,
+              "2": 0.42,
+              "3": 0.49
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 595,
+          "output_tokens": 84
+        },
+        "ms": 255,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intro_strength",
+      "action": "intro_path",
+      "values": {
+        "path": "leads_the_buyer",
+        "strength": 2.38
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "intro_path"
+    }
+  },
+  "Connection is a data engineer": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "path_to_buyer": {
+            "type": "choice",
+            "choice": "other_team",
+            "confidence": 1,
+            "probabilities": {
+              "is_the_buyer": 0,
+              "other_team": 1,
+              "leads_the_buyer": 0,
+              "same_team": 0,
+              "unclear": 0
+            }
+          },
+          "intro_strength": {
+            "type": "score",
+            "score": 0.67,
+            "confidence": 0.56,
+            "legend": {
+              "0": "Works in an unrelated part of the company and likely does not know the buyer",
+              "1": "Works nearby and may know the buyer by name",
+              "2": "Works with the buyer regularly and could make a warm introduction",
+              "3": "Is the buyer, or directly manages them, so no introduction is needed"
+            },
+            "probabilities": {
+              "0": 0.38,
+              "1": 0.56,
+              "2": 0.05,
+              "3": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 592,
+          "output_tokens": 81
+        },
+        "ms": 106,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "intro_strength",
+      "action": "intro_path",
+      "values": {
+        "path": "other_team",
+        "strength": 0.67
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "intro_path"
+    }
+  },
+  "The CRO, but you never messaged them": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "path_to_buyer": {
+            "type": "choice",
+            "choice": "is_the_buyer",
+            "confidence": 0.98,
+            "probabilities": {
+              "leads_the_buyer": 0.01,
+              "other_team": 0,
+              "is_the_buyer": 0.98,
+              "unclear": 0,
+              "same_team": 0.01
+            }
+          },
+          "intro_strength": {
+            "type": "score",
+            "score": 2.94,
+            "confidence": 0.94,
+            "legend": {
+              "0": "Works in an unrelated part of the company and likely does not know the buyer",
+              "1": "Works nearby and may know the buyer by name",
+              "2": "Works with the buyer regularly and could make a warm introduction",
+              "3": "Is the buyer, or directly manages them, so no introduction is needed"
+            },
+            "probabilities": {
+              "0": 0.01,
+              "1": 0.01,
+              "2": 0.02,
+              "3": 0.96
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 592,
+          "output_tokens": 83
+        },
+        "ms": 350,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "never_messaged",
+      "action": "intro_path",
+      "values": {
+        "path": "is_the_buyer",
+        "strength": 1
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "intro_path"
+    }
+  }
+}

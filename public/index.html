@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>jev-gtm-playbook</title>
+<style>
+  :root {
+    --bg: #f7f6f2; --card: #ffffff; --ink: #1c1b18; --muted: #6d6a62; --line: #e3e0d8;
+    --go: #17694a; --go-bg: #e2f3ea; --look: #8a5a00; --look-bg: #fbefd2; --skip: #6d6a62; --skip-bg: #ecebe6;
+    --accent: #2b3fd6; --warn-bg: #fde8e4; --warn: #9b2c1a;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151513; --card: #1f1e1b; --ink: #f0eee8; --muted: #a09c92; --line: #33312c;
+      --go: #6fd3a5; --go-bg: #173327; --look: #f0c060; --look-bg: #3a2e12; --skip: #a09c92; --skip-bg: #2a2925;
+      --accent: #8d9bff; --warn-bg: #3d1d17; --warn: #ffa594;
+    }
+  }
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--ink); font: 15px/1.5 ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif; }
+  main { max-width: 1080px; margin: 0 auto; padding: 24px 16px 64px; }
+  header { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 16px; margin-bottom: 16px; }
+  h1 { font-size: 22px; margin: 0; letter-spacing: -0.01em; }
+  header p { margin: 0; color: var(--muted); }
+  .banner { background: var(--warn-bg); color: var(--warn); padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 20px; }
+  .stat { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px; }
+  .stat b { display: block; font-size: 22px; font-variant-numeric: tabular-nums; }
+  .stat span { color: var(--muted); font-size: 13px; }
+  nav { display: flex; gap: 4px; border-bottom: 1px solid var(--line); margin-bottom: 16px; overflow-x: auto; }
+  nav button { background: none; border: 0; border-bottom: 2px solid transparent; padding: 8px 12px; color: var(--muted); font: inherit; cursor: pointer; white-space: nowrap; }
+  nav button[aria-selected="true"] { color: var(--ink); border-bottom-color: var(--accent); font-weight: 600; }
+  .card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .row { display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; justify-content: space-between; }
+  .tag { font-size: 12px; font-weight: 600; padding: 2px 8px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .reach_out { background: var(--go-bg); color: var(--go); } .review { background: var(--look-bg); color: var(--look); }
+  .ignore, .pending { background: var(--skip-bg); color: var(--skip); }
+  .move { margin: 6px 0 2px; } .move s { color: var(--muted); text-decoration: none; }
+  .muted { color: var(--muted); font-size: 13px; }
+  a { color: var(--accent); }
+  button.act, .btn { background: var(--card); color: var(--ink); border: 1px solid var(--line); border-radius: 8px; padding: 6px 12px; font: inherit; cursor: pointer; }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn.primary { color: #10101a; } }
+  .btn:disabled { opacity: 0.5; cursor: default; }
+  .scroll { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+  th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+  td.num { font-variant-numeric: tabular-nums; font-weight: 600; }
+  .bar { display: inline-block; height: 6px; border-radius: 3px; background: var(--accent); vertical-align: middle; }
+  input, select { font: inherit; padding: 6px 8px; border: 1px solid var(--line); border-radius: 8px; background: var(--card); color: var(--ink); }
+  label { display: inline-flex; gap: 8px; align-items: center; margin-right: 12px; }
+  h2 { font-size: 16px; margin: 20px 0 8px; }
+  [hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <h1>jev-gtm-playbook</h1>
+    <p>Who in your network fits your ICP, and who just changed jobs.</p>
+  </header>
+  <div id="banner" class="banner" hidden></div>
+  <section class="stats" id="stats"></section>
+
+  <nav role="tablist">
+    <button role="tab" data-tab="signals" aria-selected="true">Signals</button>
+    <button role="tab" data-tab="people" aria-selected="false">Connections</button>
+    <button role="tab" data-tab="runs" aria-selected="false">Runs &amp; cost</button>
+    <button role="tab" data-tab="setup" aria-selected="false">Import &amp; schedule</button>
+  </nav>
+
+  <section id="signals">
+    <label><input type="checkbox" id="showIgnored"> Show ignored and handled</label>
+    <div id="signalList" style="margin-top:12px"></div>
+  </section>
+
+  <section id="people" hidden>
+    <div class="row" style="margin-bottom:10px">
+      <input id="search" placeholder="Search name, title or company" style="flex:1; min-width:200px">
+      <select id="persona"><option value="">All groups</option></select>
+    </div>
+    <div class="scroll"><table><thead><tr><th>Fit</th><th>Name</th><th>Role</th><th>Group</th><th>Role fit</th><th>Seniority</th><th>Buyer</th><th>Company</th></tr></thead><tbody id="peopleRows"></tbody></table></div>
+    <p class="muted" id="peopleNote"></p>
+  </section>
+
+  <section id="runs" hidden>
+    <div class="scroll"><table><thead><tr><th>When</th><th>Mode</th><th>Imported</th><th>Changes</th><th>Jev calls</th><th>Reused</th><th>Skipped free</th><th>Tokens</th><th>Cost</th><th>Errors</th></tr></thead><tbody id="runRows"></tbody></table></div>
+    <p class="muted">"Reused" means the record's fingerprint already had a saved answer, so no call was made. Jev bills input tokens only.</p>
+  </section>
+
+  <section id="setup" hidden>
+    <h2>1. Import a LinkedIn export</h2>
+    <p class="muted">LinkedIn &rarr; Me &rarr; Settings &amp; Privacy &rarr; Data privacy &rarr; Get a copy of your data &rarr; tick <b>Connections</b> &rarr; Request archive. LinkedIn emails you a ZIP with <code>Connections.csv</code> inside (step-by-step guide: <code>docs/export-your-connections.md</code>). Upload it here, or drop it into the <code>data/</code> folder. Import a fresh export whenever you want job changes detected.</p>
+    <input type="file" id="file" accept=".csv">
+    <button class="btn" id="upload">Upload</button>
+    <span class="muted" id="uploadMsg"></span>
+
+    <h2>2. Run</h2>
+    <button class="btn primary" id="run">Run now</button>
+    <span class="muted" id="runMsg"></span>
+
+    <h2>3. Download your scored list</h2>
+    <a class="btn" href="/scored-connections.csv" download>Download scored CSV</a>
+    <span class="muted">One row per connection with fit score, group and each dimension. Stays on your machine.</span>
+
+    <h2>4. Daily schedule</h2>
+    <label><input type="checkbox" id="schedOn"> Run every day at</label>
+    <input type="time" id="schedTime" value="07:30">
+    <button class="btn" id="schedSave">Save</button>
+    <p class="muted">The schedule only fires while this dashboard's server is running. For a machine that is not always on, use your system's cron with <code>node src/cli.js run</code> (see the README).</p>
+  </section>
+</main>
+
+<script>
+const $ = (id) => document.getElementById(id);
+const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const api = async (path, options) => {
+  const res = await fetch(path, options);
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || res.statusText);
+  return data;
+};
+const post = (path, body) => api(path, { method: 'POST', body: typeof body === 'string' ? body : JSON.stringify(body ?? {}) });
+const pct = (n) => n == null ? '' : Math.round(n * 100) + '%';
+const role = (r) => [r.position, r.company].filter(Boolean).map(esc).join(' @ ') || '<span class="muted">not listed</span>';
+const LABEL = { reach_out: 'Reach out', review: 'Review', ignore: 'Ignore', pending: 'Not judged yet' };
+let people = [], changes = [];
+
+async function refresh() {
+  const [s, p, c, runs] = await Promise.all([api('/api/summary'), api('/api/people'), api('/api/changes'), api('/api/runs')]);
+  people = p; changes = c;
+
+  const banner = $('banner');
+  banner.hidden = s.mode !== 'mock';
+  banner.textContent = 'Mock mode: no TYPESAFE_API_KEY in .env, so every answer below is made up by keyword matching. Add a key and run again for real judgments.';
+
+  $('stats').innerHTML = [
+    [s.people, 'connections'], [s.reach_out, 'to reach out to'], [s.review, 'to review'],
+    [s.jev_calls, s.mode === 'mock' ? 'mock calls' : 'Jev calls so far'], ['$' + s.cost_usd.toFixed(4), s.mode === 'mock' ? 'estimated spend' : 'total spend'],
+  ].map(([n, label]) => `<div class="stat"><b>${esc(n)}</b><span>${esc(label)}</span></div>`).join('');
+
+  $('schedOn').checked = s.schedule.enabled;
+  $('schedTime').value = s.schedule.time;
+  $('run').disabled = s.running;
+  if (s.running) $('runMsg').textContent = 'Running...';
+
+  const groups = [...new Set(people.map((x) => x.persona).filter(Boolean))].sort();
+  const keep = $('persona').value;
+  $('persona').innerHTML = '<option value="">All groups</option>' + groups.map((g) => `<option>${esc(g)}</option>`).join('');
+  $('persona').value = keep;
+
+  $('runRows').innerHTML = runs.map((r) => `<tr><td>${esc(new Date(r.started_at).toLocaleString())}</td><td>${esc(r.mode)}</td>
+    <td>${r.imported}</td><td>${r.changes}</td><td>${r.judged}</td><td>${r.reused}</td><td>${r.skipped}</td>
+    <td>${r.input_tokens.toLocaleString()}</td><td>$${(r.input_tokens / 1e6 * 0.042).toFixed(4)}</td>
+    <td class="muted">${esc(r.errors ? JSON.parse(r.errors).join(' | ') : '')}</td></tr>`).join('')
+    || '<tr><td colspan="10" class="muted">No runs yet.</td></tr>';
+
+  drawSignals(); drawPeople();
+}
+
+function drawSignals() {
+  const all = $('showIgnored').checked;
+  const list = changes.filter((c) => all || (c.action !== 'ignore' && c.status === 'new'));
+  $('signalList').innerHTML = list.map((c) => `
+    <div class="card">
+      <div class="row">
+        <div><strong>${c.url ? `<a href="${esc(c.url)}" target="_blank" rel="noreferrer">${esc(c.name)}</a>` : esc(c.name)}</strong>
+          <span class="muted"> &middot; ${esc(c.kind.replace('_', ' '))}${c.change_type ? ' &middot; ' + esc(c.change_type.replaceAll('_', ' ')) : ''}</span></div>
+        <span class="tag ${c.action}">${LABEL[c.action]}</span>
+      </div>
+      <div class="move">${c.kind === 'new_connection' ? role(c.to) : `<s>${role(c.from)}</s> &rarr; ${role(c.to)}`}</div>
+      <div class="row"><span class="muted">${esc(c.reason)}</span>
+        <span>${c.status === 'new'
+          ? `<button class="act" data-id="${c.id}" data-status="done">Done</button> <button class="act" data-id="${c.id}" data-status="dismissed">Dismiss</button>`
+          : `<span class="muted">${esc(c.status)}</span> <button class="act" data-id="${c.id}" data-status="new">Undo</button>`}</span></div>
+    </div>`).join('') || '<p class="muted">No signals yet. Signals appear after your second import, when there is something to compare against.</p>';
+}
+
+function drawPeople() {
+  const q = $('search').value.toLowerCase(), g = $('persona').value;
+  const list = people.filter((p) => (!g || p.persona === g) && (!q || `${p.name} ${p.position} ${p.company}`.toLowerCase().includes(q)));
+  const part = (v) => v == null ? '' : `<span class="bar" style="width:${Math.round(v * 40) + 2}px"></span> <span class="muted">${pct(v)}</span>`;
+  $('peopleRows').innerHTML = list.slice(0, 500).map((p) => `<tr>
+    <td class="num">${p.fit ?? '&ndash;'}</td>
+    <td>${p.url ? `<a href="${esc(p.url)}" target="_blank" rel="noreferrer">${esc(p.name)}</a>` : esc(p.name)}</td>
+    <td>${role(p)}${p.skipped ? `<div class="muted">Skipped for free: ${esc(p.skipped)}</div>` : ''}</td>
+    <td>${esc((p.persona || '').replaceAll('_', ' '))}</td>
+    <td>${part(p.parts?.role_fit)}</td><td>${part(p.parts?.seniority)}</td><td>${part(p.parts?.likely_buyer)}</td><td>${part(p.parts?.company_fit)}</td>
+  </tr>`).join('');
+  $('peopleNote').textContent = list.length > 500 ? `Showing the top 500 of ${list.length}. Search to narrow down.` : `${list.length} connections.`;
+}
+
+document.querySelectorAll('nav button').forEach((tab) => tab.addEventListener('click', () => {
+  document.querySelectorAll('nav button').forEach((t) => t.setAttribute('aria-selected', t === tab));
+  for (const id of ['signals', 'people', 'runs', 'setup']) $(id).hidden = id !== tab.dataset.tab;
+}));
+$('showIgnored').addEventListener('change', drawSignals);
+$('search').addEventListener('input', drawPeople);
+$('persona').addEventListener('change', drawPeople);
+$('signalList').addEventListener('click', async (e) => {
+  const b = e.target.closest('button.act'); if (!b) return;
+  await post('/api/change-status', { id: Number(b.dataset.id), status: b.dataset.status });
+  refresh();
+});
+$('upload').addEventListener('click', async () => {
+  const file = $('file').files[0]; if (!file) return;
+  try { const r = await post('/api/upload', await file.text()); $('uploadMsg').textContent = `Saved ${r.connections} connections. Now press "Run now".`; }
+  catch (err) { $('uploadMsg').textContent = err.message; }
+});
+$('run').addEventListener('click', async () => {
+  $('run').disabled = true; $('runMsg').textContent = 'Running...';
+  try { const r = await post('/api/run'); $('runMsg').textContent = `Done: ${r.judged} Jev calls, ${r.reused} reused, ${r.skipped} skipped, ${r.changes} changes.${r.errors.length ? ' Errors: ' + r.errors[0] : ''}`; }
+  catch (err) { $('runMsg').textContent = err.message; }
+  refresh();
+});
+$('schedSave').addEventListener('click', async () => {
+  await post('/api/schedule', { enabled: $('schedOn').checked, time: $('schedTime').value });
+  refresh();
+});
+refresh().catch((err) => { $('banner').hidden = false; $('banner').textContent = err.message; });
+</script>
+</body>
+</html>

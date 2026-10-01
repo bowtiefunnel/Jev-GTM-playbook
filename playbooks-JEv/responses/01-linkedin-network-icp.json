@@ -1,0 +1,831 @@
+{
+  "Head of sales at a software company": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "persona": {
+            "type": "choice",
+            "choice": "sales_leader",
+            "confidence": 1,
+            "probabilities": {
+              "founder_or_ceo": 0,
+              "sales_leader": 1,
+              "other": 0,
+              "individual_seller": 0,
+              "revenue_operations": 0,
+              "marketing_or_growth_leader": 0
+            }
+          },
+          "seniority": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "A student, intern, or someone not currently working in a professional role",
+              "1": "An individual contributor who does the work and does not manage people or a budget",
+              "2": "A manager or team lead who runs a team and influences what that team buys",
+              "3": "A director, head of department or vice president who owns the budget for their function",
+              "4": "A founder, owner, partner or C-level executive who makes final buying decisions"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1,
+              "4": 0
+            }
+          },
+          "role_fit": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "The role has nothing to do with the target roles or with the problem the product solves",
+              "1": "The role sits in a neighbouring function and would only hear about the problem second-hand",
+              "2": "The role works inside the target function and deals with the problem day to day",
+              "3": "The role is one of the target roles and would own the decision to solve the problem"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "company_fit": {
+            "type": "choice",
+            "choice": "cannot_tell",
+            "confidence": 0.25,
+            "probabilities": {
+              "fits": 0.49,
+              "does_not_fit": 0.01,
+              "cannot_tell": 0.5
+            }
+          },
+          "likely_buyer": {
+            "type": "noul",
+            "noul": 0.95
+          }
+        },
+        "usage": {
+          "input_tokens": 1067,
+          "output_tokens": 166
+        },
+        "ms": 288,
+        "date": "2026-10-01"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "weighted_fit",
+      "action": "scored",
+      "values": {
+        "fit": 86,
+        "persona": "sales_leader",
+        "persona_confidence": 1,
+        "parts": {
+          "role_fit": 1,
+          "seniority": 0.75,
+          "likely_buyer": 0.95,
+          "company_fit": 0.49
+        }
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "Engineer": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "persona": {
+            "type": "choice",
+            "choice": "other",
+            "confidence": 1,
+            "probabilities": {
+              "revenue_operations": 0,
+              "sales_leader": 0,
+              "marketing_or_growth_leader": 0,
+              "founder_or_ceo": 0,
+              "other": 1,
+              "individual_seller": 0
+            }
+          },
+          "seniority": {
+            "type": "score",
+            "score": 1,
+            "confidence": 1,
+            "legend": {
+              "0": "A student, intern, or someone not currently working in a professional role",
+              "1": "An individual contributor who does the work and does not manage people or a budget",
+              "2": "A manager or team lead who runs a team and influences what that team buys",
+              "3": "A director, head of department or vice president who owns the budget for their function",
+              "4": "A founder, owner, partner or C-level executive who makes final buying decisions"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 1,
+              "2": 0,
+              "3": 0,
+              "4": 0
+            }
+          },
+          "role_fit": {
+            "type": "score",
+            "score": 0.32,
+            "confidence": 0.68,
+            "legend": {
+              "0": "The role has nothing to do with the target roles or with the problem the product solves",
+              "1": "The role sits in a neighbouring function and would only hear about the problem second-hand",
+              "2": "The role works inside the target function and deals with the problem day to day",
+              "3": "The role is one of the target roles and would own the decision to solve the problem"
+            },
+            "probabilities": {
+              "0": 0.68,
+              "1": 0.32,
+              "2": 0,
+              "3": 0
+            }
+          },
+          "company_fit": {
+            "type": "choice",
+            "choice": "cannot_tell",
+            "confidence": 0.53,
+            "probabilities": {
+              "does_not_fit": 0.04,
+              "cannot_tell": 0.69,
+              "fits": 0.27
+            }
+          },
+          "likely_buyer": {
+            "type": "noul",
+            "noul": 0.14
+          }
+        },
+        "usage": {
+          "input_tokens": 1066,
+          "output_tokens": 164
+        },
+        "ms": 267,
+        "date": "2026-10-01"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "weighted_fit",
+      "action": "scored",
+      "values": {
+        "fit": 17,
+        "persona": "other",
+        "persona_confidence": 1,
+        "parts": {
+          "role_fit": 0.10666666666666667,
+          "seniority": 0.25,
+          "likely_buyer": 0.14,
+          "company_fit": 0.27
+        }
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "Senior, but not a buyer": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "persona": {
+            "type": "choice",
+            "choice": "other",
+            "confidence": 0.4,
+            "probabilities": {
+              "sales_leader": 0,
+              "other": 0.5,
+              "revenue_operations": 0,
+              "individual_seller": 0,
+              "founder_or_ceo": 0.5,
+              "marketing_or_growth_leader": 0
+            }
+          },
+          "seniority": {
+            "type": "score",
+            "score": 4,
+            "confidence": 1,
+            "legend": {
+              "0": "A student, intern, or someone not currently working in a professional role",
+              "1": "An individual contributor who does the work and does not manage people or a budget",
+              "2": "A manager or team lead who runs a team and influences what that team buys",
+              "3": "A director, head of department or vice president who owns the budget for their function",
+              "4": "A founder, owner, partner or C-level executive who makes final buying decisions"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 1
+            }
+          },
+          "role_fit": {
+            "type": "score",
+            "score": 0.51,
+            "confidence": 0.49,
+            "legend": {
+              "0": "The role has nothing to do with the target roles or with the problem the product solves",
+              "1": "The role sits in a neighbouring function and would only hear about the problem second-hand",
+              "2": "The role works inside the target function and deals with the problem day to day",
+              "3": "The role is one of the target roles and would own the decision to solve the problem"
+            },
+            "probabilities": {
+              "0": 0.56,
+              "1": 0.4,
+              "2": 0.01,
+              "3": 0.03
+            }
+          },
+          "company_fit": {
+            "type": "choice",
+            "choice": "does_not_fit",
+            "confidence": 0.55,
+            "probabilities": {
+              "does_not_fit": 0.7,
+              "cannot_tell": 0.29,
+              "fits": 0.01
+            }
+          },
+          "likely_buyer": {
+            "type": "noul",
+            "noul": 0.28
+          }
+        },
+        "usage": {
+          "input_tokens": 1065,
+          "output_tokens": 164
+        },
+        "ms": 151,
+        "date": "2026-10-01"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "weighted_fit",
+      "action": "scored",
+      "values": {
+        "fit": 34,
+        "persona": "other",
+        "persona_confidence": 0.4,
+        "parts": {
+          "role_fit": 0.17,
+          "seniority": 1,
+          "likely_buyer": 0.28,
+          "company_fit": 0.01
+        }
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "Founder at a company whose name says nothing": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "persona": {
+            "type": "choice",
+            "choice": "founder_or_ceo",
+            "confidence": 1,
+            "probabilities": {
+              "revenue_operations": 0,
+              "other": 0,
+              "founder_or_ceo": 1,
+              "sales_leader": 0,
+              "individual_seller": 0,
+              "marketing_or_growth_leader": 0
+            }
+          },
+          "seniority": {
+            "type": "score",
+            "score": 4,
+            "confidence": 1,
+            "legend": {
+              "0": "A student, intern, or someone not currently working in a professional role",
+              "1": "An individual contributor who does the work and does not manage people or a budget",
+              "2": "A manager or team lead who runs a team and influences what that team buys",
+              "3": "A director, head of department or vice president who owns the budget for their function",
+              "4": "A founder, owner, partner or C-level executive who makes final buying decisions"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 1
+            }
+          },
+          "role_fit": {
+            "type": "score",
+            "score": 2.99,
+            "confidence": 0.99,
+            "legend": {
+              "0": "The role has nothing to do with the target roles or with the problem the product solves",
+              "1": "The role sits in a neighbouring function and would only hear about the problem second-hand",
+              "2": "The role works inside the target function and deals with the problem day to day",
+              "3": "The role is one of the target roles and would own the decision to solve the problem"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "company_fit": {
+            "type": "choice",
+            "choice": "cannot_tell",
+            "confidence": 0.95,
+            "probabilities": {
+              "cannot_tell": 0.96,
+              "fits": 0.03,
+              "does_not_fit": 0.01
+            }
+          },
+          "likely_buyer": {
+            "type": "noul",
+            "noul": 0.92
+          }
+        },
+        "usage": {
+          "input_tokens": 1067,
+          "output_tokens": 169
+        },
+        "ms": 143,
+        "date": "2026-10-01"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "weighted_fit",
+      "action": "scored",
+      "values": {
+        "fit": 83,
+        "persona": "founder_or_ceo",
+        "persona_confidence": 1,
+        "parts": {
+          "role_fit": 0.9966666666666667,
+          "seniority": 1,
+          "likely_buyer": 0.92,
+          "company_fit": 0.03
+        }
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "The same founder, with an enriched description": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "persona": {
+            "type": "choice",
+            "choice": "founder_or_ceo",
+            "confidence": 1,
+            "probabilities": {
+              "revenue_operations": 0,
+              "marketing_or_growth_leader": 0,
+              "sales_leader": 0,
+              "individual_seller": 0,
+              "other": 0,
+              "founder_or_ceo": 1
+            }
+          },
+          "seniority": {
+            "type": "score",
+            "score": 4,
+            "confidence": 1,
+            "legend": {
+              "0": "A student, intern, or someone not currently working in a professional role",
+              "1": "An individual contributor who does the work and does not manage people or a budget",
+              "2": "A manager or team lead who runs a team and influences what that team buys",
+              "3": "A director, head of department or vice president who owns the budget for their function",
+              "4": "A founder, owner, partner or C-level executive who makes final buying decisions"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 1
+            }
+          },
+          "role_fit": {
+            "type": "score",
+            "score": 2.99,
+            "confidence": 0.99,
+            "legend": {
+              "0": "The role has nothing to do with the target roles or with the problem the product solves",
+              "1": "The role sits in a neighbouring function and would only hear about the problem second-hand",
+              "2": "The role works inside the target function and deals with the problem day to day",
+              "3": "The role is one of the target roles and would own the decision to solve the problem"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.01,
+              "3": 0.99
+            }
+          },
+          "company_fit": {
+            "type": "choice",
+            "choice": "fits",
+            "confidence": 0.99,
+            "probabilities": {
+              "cannot_tell": 0,
+              "does_not_fit": 0,
+              "fits": 1
+            }
+          },
+          "likely_buyer": {
+            "type": "noul",
+            "noul": 0.91
+          }
+        },
+        "usage": {
+          "input_tokens": 1101,
+          "output_tokens": 167
+        },
+        "ms": 235,
+        "date": "2026-10-01"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "weighted_fit",
+      "action": "scored",
+      "values": {
+        "fit": 98,
+        "persona": "founder_or_ceo",
+        "persona_confidence": 1,
+        "parts": {
+          "role_fit": 0.9966666666666667,
+          "seniority": 1,
+          "likely_buyer": 0.91,
+          "company_fit": 1
+        }
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  },
+  "Job seeker": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {},
+      "fired": "title contains \"open to work\"",
+      "action": "skip"
+    },
+    "1_judge": {
+      "called": false
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "skip"
+    }
+  },
+  "Already a customer": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {
+        "customer": true
+      },
+      "fired": "existing_customer",
+      "action": "excluded"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "persona": {
+            "type": "choice",
+            "choice": "sales_leader",
+            "confidence": 1,
+            "probabilities": {
+              "founder_or_ceo": 0,
+              "sales_leader": 1,
+              "other": 0,
+              "individual_seller": 0,
+              "revenue_operations": 0,
+              "marketing_or_growth_leader": 0
+            }
+          },
+          "seniority": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "A student, intern, or someone not currently working in a professional role",
+              "1": "An individual contributor who does the work and does not manage people or a budget",
+              "2": "A manager or team lead who runs a team and influences what that team buys",
+              "3": "A director, head of department or vice president who owns the budget for their function",
+              "4": "A founder, owner, partner or C-level executive who makes final buying decisions"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1,
+              "4": 0
+            }
+          },
+          "role_fit": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "The role has nothing to do with the target roles or with the problem the product solves",
+              "1": "The role sits in a neighbouring function and would only hear about the problem second-hand",
+              "2": "The role works inside the target function and deals with the problem day to day",
+              "3": "The role is one of the target roles and would own the decision to solve the problem"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "company_fit": {
+            "type": "choice",
+            "choice": "cannot_tell",
+            "confidence": 0.25,
+            "probabilities": {
+              "fits": 0.49,
+              "does_not_fit": 0.01,
+              "cannot_tell": 0.5
+            }
+          },
+          "likely_buyer": {
+            "type": "noul",
+            "noul": 0.95
+          }
+        },
+        "usage": {
+          "input_tokens": 1067,
+          "output_tokens": 166
+        },
+        "ms": 288,
+        "date": "2026-10-01"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "excluded"
+    }
+  },
+  "Works at a competitor": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {
+        "competitor": true
+      },
+      "fired": "competitor",
+      "action": "excluded"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "persona": {
+            "type": "choice",
+            "choice": "sales_leader",
+            "confidence": 1,
+            "probabilities": {
+              "founder_or_ceo": 0,
+              "sales_leader": 1,
+              "other": 0,
+              "individual_seller": 0,
+              "revenue_operations": 0,
+              "marketing_or_growth_leader": 0
+            }
+          },
+          "seniority": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "A student, intern, or someone not currently working in a professional role",
+              "1": "An individual contributor who does the work and does not manage people or a budget",
+              "2": "A manager or team lead who runs a team and influences what that team buys",
+              "3": "A director, head of department or vice president who owns the budget for their function",
+              "4": "A founder, owner, partner or C-level executive who makes final buying decisions"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1,
+              "4": 0
+            }
+          },
+          "role_fit": {
+            "type": "score",
+            "score": 3,
+            "confidence": 1,
+            "legend": {
+              "0": "The role has nothing to do with the target roles or with the problem the product solves",
+              "1": "The role sits in a neighbouring function and would only hear about the problem second-hand",
+              "2": "The role works inside the target function and deals with the problem day to day",
+              "3": "The role is one of the target roles and would own the decision to solve the problem"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "company_fit": {
+            "type": "choice",
+            "choice": "cannot_tell",
+            "confidence": 0.25,
+            "probabilities": {
+              "fits": 0.49,
+              "does_not_fit": 0.01,
+              "cannot_tell": 0.5
+            }
+          },
+          "likely_buyer": {
+            "type": "noul",
+            "noul": 0.95
+          }
+        },
+        "usage": {
+          "input_tokens": 1067,
+          "output_tokens": 166
+        },
+        "ms": 288,
+        "date": "2026-10-01"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "excluded"
+    }
+  },
+  "Enrichment says 12,000 people": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "persona": {
+            "type": "choice",
+            "choice": "founder_or_ceo",
+            "confidence": 1,
+            "probabilities": {
+              "revenue_operations": 0,
+              "marketing_or_growth_leader": 0,
+              "sales_leader": 0,
+              "individual_seller": 0,
+              "other": 0,
+              "founder_or_ceo": 1
+            }
+          },
+          "seniority": {
+            "type": "score",
+            "score": 4,
+            "confidence": 1,
+            "legend": {
+              "0": "A student, intern, or someone not currently working in a professional role",
+              "1": "An individual contributor who does the work and does not manage people or a budget",
+              "2": "A manager or team lead who runs a team and influences what that team buys",
+              "3": "A director, head of department or vice president who owns the budget for their function",
+              "4": "A founder, owner, partner or C-level executive who makes final buying decisions"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 0,
+              "4": 1
+            }
+          },
+          "role_fit": {
+            "type": "score",
+            "score": 2.99,
+            "confidence": 0.99,
+            "legend": {
+              "0": "The role has nothing to do with the target roles or with the problem the product solves",
+              "1": "The role sits in a neighbouring function and would only hear about the problem second-hand",
+              "2": "The role works inside the target function and deals with the problem day to day",
+              "3": "The role is one of the target roles and would own the decision to solve the problem"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.01,
+              "3": 0.99
+            }
+          },
+          "company_fit": {
+            "type": "choice",
+            "choice": "fits",
+            "confidence": 0.99,
+            "probabilities": {
+              "cannot_tell": 0,
+              "does_not_fit": 0,
+              "fits": 1
+            }
+          },
+          "likely_buyer": {
+            "type": "noul",
+            "noul": 0.91
+          }
+        },
+        "usage": {
+          "input_tokens": 1101,
+          "output_tokens": 167
+        },
+        "ms": 235,
+        "date": "2026-10-01"
+      }
+    },
+    "2_check": {
+      "facts": {
+        "employees": 12000
+      },
+      "fired": "weighted_fit_with_headcount",
+      "action": "scored",
+      "values": {
+        "fit": 83,
+        "persona": "founder_or_ceo",
+        "persona_confidence": 1,
+        "parts": {
+          "role_fit": 0.9966666666666667,
+          "seniority": 1,
+          "likely_buyer": 0.91,
+          "company_fit": 0
+        }
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "scored"
+    }
+  }
+}

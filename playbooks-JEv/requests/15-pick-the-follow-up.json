@@ -1,0 +1,177 @@
+{
+  "playbook": "15-pick-the-follow-up",
+  "title": "Pick the follow-up",
+  "about": "Sequences send the same follow-up to everyone whatever they said. This playbook reads the thread and picks which of your own templates fits next, or says stop. Jev chooses and you wrote every word, so nothing is generated.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Playbook 03 runs first, so suppressed contacts never arrive.",
+      "Code counts touches and days; Jev is never asked to."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "next_step": {
+        "type": "choice",
+        "instructions": "Given `thread`, which of our follow-ups in `templates` should we send next, or should we stop?",
+        "criteria": {
+          "bump": "They have not replied yet and it has been a few days; a short nudge fits",
+          "case_study": "They showed mild interest or asked how it works; proof would help",
+          "breakup": "Several follow-ups got no reply; a final polite close fits",
+          "answer_manually": "They asked a specific question that a template cannot answer",
+          "stop": "They declined, asked to stop, or the conversation is over"
+        }
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "suppressed"
+    ],
+    "cutoffs": {
+      "max_touches": 4,
+      "next_step_confidence": 0.6
+    },
+    "rules": [
+      "stop is always honoured, however sure.",
+      "At max_touches or more, stop, whatever Jev picked.",
+      "Otherwise send the chosen template, unchanged."
+    ],
+    "unsure": [
+      "answer_manually.",
+      "next_step confidence below the cutoff."
+    ]
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "send:<template>": "Send your own template.",
+      "stop": "Stop the sequence.",
+      "human": "A person decides."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "No reply after the first email",
+      "expect": "bump",
+      "state": {
+        "templates": "bump, case_study, breakup",
+        "thread": [
+          {
+            "from": "me",
+            "days_ago": 4,
+            "text": "Saw you're hiring SDRs. Are they sourcing their own lists?"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Asked how it works",
+      "expect": "case_study",
+      "state": {
+        "templates": "bump, case_study, breakup",
+        "thread": [
+          {
+            "from": "me",
+            "days_ago": 6,
+            "text": "Saw you're hiring SDRs. Are they sourcing their own lists?"
+          },
+          {
+            "from": "them",
+            "days_ago": 2,
+            "text": "Kind of. How do you usually help with that?"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Specific question",
+      "expect": "answer_manually",
+      "state": {
+        "templates": "bump, case_study, breakup",
+        "thread": [
+          {
+            "from": "me",
+            "days_ago": 5,
+            "text": "Saw you're hiring SDRs. Are they sourcing their own lists?"
+          },
+          {
+            "from": "them",
+            "days_ago": 1,
+            "text": "Do you work with companies selling into the public sector, and do you handle GDPR for EU contacts?"
+          }
+        ]
+      }
+    },
+    {
+      "label": "Three unanswered follow-ups",
+      "expect": "breakup",
+      "state": {
+        "templates": "bump, case_study, breakup",
+        "thread": [
+          {
+            "from": "me",
+            "days_ago": 21,
+            "text": "Saw you're hiring SDRs..."
+          },
+          {
+            "from": "me",
+            "days_ago": 14,
+            "text": "Bumping this up."
+          },
+          {
+            "from": "me",
+            "days_ago": 7,
+            "text": "Here's how a similar team doubled meetings."
+          }
+        ]
+      }
+    },
+    {
+      "label": "Declined",
+      "expect": "stop",
+      "state": {
+        "templates": "bump, case_study, breakup",
+        "thread": [
+          {
+            "from": "me",
+            "days_ago": 3,
+            "text": "Saw you're hiring SDRs..."
+          },
+          {
+            "from": "them",
+            "days_ago": 1,
+            "text": "We handle this in-house, not a fit."
+          }
+        ]
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Fifth touch",
+      "expect": "stop",
+      "state_from": "No reply after the first email",
+      "record": {
+        "touches": 4
+      }
+    }
+  ],
+  "lessons": [
+    "This is select instead of generate: Jev picks one of your own templates, so nothing is written by a model.",
+    "All five saved cases were right. Two came back with low confidence, and those are the threads where the next move is a judgment call."
+  ],
+  "limits": [
+    "Run playbook 03 first so opt-outs are suppressed before this playbook sees the thread.",
+    "Put `days_ago` in the state and `touches` on the record. Jev cannot count or compare dates.",
+    "On live Jev, \"Three unanswered follow-ups\" moved from 0.58 to above the 0.6 cutoff. That cutoff sits on top of a real case; tune it on your own threads."
+  ]
+}

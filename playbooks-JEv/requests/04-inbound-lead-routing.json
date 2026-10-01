@@ -1,0 +1,185 @@
+{
+  "playbook": "04-inbound-lead-routing",
+  "title": "Inbound lead routing",
+  "about": "Form fills arrive mixed together: real buyers, students, agencies pitching you, and \"test test\". Sending all of them to an AE wastes the AE's time; sending a real buyer to nurture loses the deal. This is the lead followed through the architecture diagram.",
+  "shape": "decision, then a draft",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Message is only a test string (\"test\", \"asdf\", \"qwerty\"): discard.",
+      "Existing customer: route to their CSM, not sales."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "route": {
+        "type": "choice",
+        "instructions": "Given the form submission in `lead` and the routing rules in `routing_policy`, where should this lead go?",
+        "criteria": {
+          "account_executive": "A qualified buyer with a real, near-term need",
+          "sdr_qualify": "Possibly a buyer, but the need, authority or timing is unclear",
+          "nurture": "Early research or a small company that is not ready to buy",
+          "partner_or_vendor": "Someone trying to sell to us, partner with us, or recruit",
+          "junk": "Spam, a test, a student, or nonsense"
+        }
+      },
+      "urgency": {
+        "type": "score",
+        "instructions": "How soon does the person in `lead` need a solution, based on what they wrote?",
+        "criteria": [
+          "No need stated, or just browsing",
+          "Exploring options with no timeline",
+          "Planning to act this quarter",
+          "Needs something now, with a deadline or a pain happening today"
+        ]
+      },
+      "is_vendor_pitch": {
+        "type": "noul",
+        "instructions": "Is the person in `lead` trying to sell something to us rather than buy from us?"
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "customer",
+      "employees"
+    ],
+    "cutoffs": {
+      "min_employees": 10,
+      "is_vendor_pitch": 0.85,
+      "junk_confidence": 0.9,
+      "route_confidence": 0.7,
+      "urgency": 2
+    },
+    "rules": [
+      "Enrichment headcount below min_employees overrules an account_executive route.",
+      "is_vendor_pitch at or above the cutoff goes to the partner inbox, whatever route says.",
+      "junk at or above junk_confidence is discarded.",
+      "account_executive with urgency at or above the cutoff is \"AE now\".",
+      "Otherwise follow route."
+    ],
+    "unsure": [
+      "route confidence below the cutoff.",
+      "Headcount contradicts the route."
+    ]
+  },
+  "3_write": {
+    "who": "llm",
+    "when": "ae_now",
+    "ask": "Write a two-sentence brief for the account executive taking this lead: who they are, and how soon they need help.",
+    "from": [
+      "role",
+      "employees",
+      "urgency"
+    ],
+    "to_a_prospect": false,
+    "guard": [
+      "08 fact-check, per sentence"
+    ],
+    "max_drafts": 2
+  },
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "ae_now": "Brief waits for approval, then the lead is assigned to an AE.",
+      "partner_inbox": "Move to the partner inbox.",
+      "sdr_review": "A person decides.",
+      "route_to_csm": "Hand to the CSM.",
+      "discard": "Drop.",
+      "nurture": "Enrol in nurture.",
+      "sdr_qualify": "SDR queue."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Qualified and urgent",
+      "expect": "account_executive",
+      "state": {
+        "routing_policy": "We sell outbound lead generation to B2B companies with 10-500 employees.",
+        "lead": {
+          "role": "VP Sales",
+          "company_size": "120",
+          "message": "Our SDR team missed pipeline two quarters running. Need a partner live by next month."
+        }
+      }
+    },
+    {
+      "label": "Agency pitching us",
+      "expect": "partner_or_vendor",
+      "state": {
+        "routing_policy": "We sell outbound lead generation to B2B companies with 10-500 employees.",
+        "lead": {
+          "role": "Founder",
+          "company_size": "8",
+          "message": "We help agencies like yours scale with white-label SEO. Open to a quick call?"
+        }
+      }
+    },
+    {
+      "label": "Vague early research",
+      "expect": "nurture or sdr_qualify",
+      "state": {
+        "routing_policy": "We sell outbound lead generation to B2B companies with 10-500 employees.",
+        "lead": {
+          "role": "Marketing Coordinator",
+          "company_size": "40",
+          "message": "Just looking at options for next year."
+        }
+      }
+    },
+    {
+      "label": "Junk",
+      "expect": "junk",
+      "state": {
+        "routing_policy": "We sell outbound lead generation to B2B companies with 10-500 employees.",
+        "lead": {
+          "role": "asdf",
+          "company_size": "1",
+          "message": "test test"
+        }
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Enrichment says 6 people",
+      "expect": "sdr_review",
+      "state_from": "Qualified and urgent",
+      "record": {
+        "domain": "tiny.test"
+      },
+      "facts": {
+        "domain:tiny.test": {
+          "employees": 6
+        }
+      }
+    },
+    {
+      "label": "Existing customer fills in the form",
+      "expect": "route_to_csm",
+      "state_from": "Qualified and urgent",
+      "record": {
+        "domain": "client.test"
+      },
+      "facts": {
+        "domain:client.test": {
+          "customer": true
+        }
+      }
+    }
+  ],
+  "lessons": [
+    "The two low-confidence answers are the interesting ones. The vague lead split between nurture and SDR, which is a real judgment call, so a person makes it.",
+    "The agency pitch was only 0.63 confident on route, but the separate is_vendor_pitch question was 93% sure. Two questions that agree are a stronger signal than one."
+  ],
+  "limits": [
+    "The routing policy is the product. Write it the way you would brief a new SDR, and re-test when it changes.",
+    "Company size and role come from the form. The headcount veto only works when enrichment has loaded a number into facts."
+  ]
+}

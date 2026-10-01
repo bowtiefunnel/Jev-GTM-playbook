@@ -1,0 +1,16 @@
+{
+  "domain:brightloop.test": {
+    "employees": 120,
+    "target_account": true
+  },
+  "domain:fernwood.test": {
+    "customer": true,
+    "owner": "csm@yourcompany.test"
+  },
+  "domain:rival.test": {
+    "competitor": true
+  },
+  "email:optout@example.com": {
+    "suppressed": true
+  }
+}

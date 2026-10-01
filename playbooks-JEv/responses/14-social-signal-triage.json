@@ -1,0 +1,240 @@
+{
+  "Founder asking for help": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "engage",
+            "confidence": 1,
+            "probabilities": {
+              "engage": 1,
+              "monitor": 0,
+              "ignore": 0
+            }
+          },
+          "author_is_buyer": {
+            "type": "noul",
+            "noul": 0.83
+          },
+          "self_promotion": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 525,
+          "output_tokens": 79
+        },
+        "ms": 320,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "buyer_with_a_problem",
+      "action": "engage",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "engage"
+    }
+  },
+  "A vendor's listicle": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "ignore",
+            "confidence": 0.94,
+            "probabilities": {
+              "monitor": 0.02,
+              "engage": 0.02,
+              "ignore": 0.96
+            }
+          },
+          "author_is_buyer": {
+            "type": "noul",
+            "noul": 0.12
+          },
+          "self_promotion": {
+            "type": "noul",
+            "noul": 0.97
+          }
+        },
+        "usage": {
+          "input_tokens": 505,
+          "output_tokens": 78
+        },
+        "ms": 321,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "self_promotion",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  },
+  "Industry discussion": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "engage",
+            "confidence": 0.36,
+            "probabilities": {
+              "engage": 0.58,
+              "monitor": 0.42,
+              "ignore": 0
+            }
+          },
+          "author_is_buyer": {
+            "type": "noul",
+            "noul": 0.5
+          },
+          "self_promotion": {
+            "type": "noul",
+            "noul": 0.06
+          }
+        },
+        "usage": {
+          "input_tokens": 508,
+          "output_tokens": 79
+        },
+        "ms": 126,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "low_confidence",
+      "action": "review",
+      "outcome": "unsure: a person decides"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "needs_person",
+      "action": "review"
+    }
+  },
+  "Job posting": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {},
+      "fired": "job_ad",
+      "action": "ignore"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "ignore",
+            "confidence": 1,
+            "probabilities": {
+              "monitor": 0,
+              "ignore": 1,
+              "engage": 0
+            }
+          },
+          "author_is_buyer": {
+            "type": "noul",
+            "noul": 0.22
+          },
+          "self_promotion": {
+            "type": "noul",
+            "noul": 0.2
+          }
+        },
+        "usage": {
+          "input_tokens": 496,
+          "output_tokens": 78
+        },
+        "ms": 122,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "ignore"
+    }
+  },
+  "Posted by a competitor": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {
+        "competitor": true
+      },
+      "fired": "competitor",
+      "action": "ignore"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "action": {
+            "type": "choice",
+            "choice": "engage",
+            "confidence": 1,
+            "probabilities": {
+              "engage": 1,
+              "monitor": 0,
+              "ignore": 0
+            }
+          },
+          "author_is_buyer": {
+            "type": "noul",
+            "noul": 0.83
+          },
+          "self_promotion": {
+            "type": "noul",
+            "noul": 0.05
+          }
+        },
+        "usage": {
+          "input_tokens": 525,
+          "output_tokens": 79
+        },
+        "ms": 320,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "ignore"
+    }
+  }
+}

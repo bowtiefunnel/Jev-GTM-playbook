@@ -1,0 +1,207 @@
+{
+  "playbook": "02-job-change-interpretation",
+  "title": "Job-change interpretation",
+  "about": "A job change is the best reason to get back in touch, but most \"changes\" in an export are noise: a reworded title, or a promotion inside a function that never buys from you. Code notices that a title changed. Jev decides what the change means. Code decides what to do about it.",
+  "shape": "decision, then a draft",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Same title and company after normalising case and spacing: no change, ignore."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "change_type": {
+        "type": "choice",
+        "instructions": "Compare the role in `previous` with the role in `current`. What kind of change is this?",
+        "criteria": {
+          "moved_up": "A step up in seniority, scope or responsibility",
+          "moved_sideways": "A different job at a similar level of seniority",
+          "same_job_reworded": "The same job and employer written differently, such as an abbreviation being spelled out or a team name added",
+          "moved_down_or_unclear": "A step down, a gap in employment, or not enough information to say"
+        }
+      },
+      "new_budget_owner": {
+        "type": "noul",
+        "instructions": "Does the role in `current` own a budget for `what_we_sell` that the role in `previous` did not?",
+        "criteria": {
+          "true": "The new role runs the function that would buy this, and the old role did not",
+          "false": "Buying power for this is unchanged, lower, or was already there before"
+        }
+      },
+      "current_role_buys": {
+        "type": "noul",
+        "instructions": "Is the role in `current` one whose holder decides whether to buy `what_we_sell`?",
+        "criteria": {
+          "true": "They run sales, revenue, growth or the whole company, so they would own this decision",
+          "false": "Their function does not buy this, even if the role is senior"
+        }
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "customer",
+      "open_opportunity",
+      "fit"
+    ],
+    "cutoffs": {
+      "change_type_confidence": 0.6,
+      "current_role_buys": 0.6,
+      "new_budget_owner": 0.5,
+      "min_fit": 60
+    },
+    "rules": [
+      "Account is a customer or has an open opportunity: route to the account owner, not outreach.",
+      "change_type is same_job_reworded: ignore.",
+      "current_role_buys below the cutoff: ignore.",
+      "A fit score below min_fit, from playbook 01 or 06: ignore. A missing fit score does not filter.",
+      "Otherwise reach out; new_budget_owner at or above its cutoff marks \"just gained the budget\"."
+    ],
+    "unsure": [
+      "change_type confidence below the cutoff."
+    ]
+  },
+  "3_write": {
+    "who": "llm",
+    "when": "reach_out",
+    "ask": "Write a two-sentence LinkedIn message to this person about their new role. End with one easy question about the role.",
+    "from": [
+      "previous_role",
+      "new_role",
+      "company",
+      "change",
+      "just_gained_budget"
+    ],
+    "to_a_prospect": true,
+    "guard": [
+      "08 fact-check, per sentence",
+      "09 message score"
+    ],
+    "max_drafts": 2
+  },
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "reach_out": "Draft waits for approval; a person sends it.",
+      "route_to_owner": "Hand to the account owner.",
+      "ignore": "Nothing.",
+      "review": "A person decides."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Promoted into the buying seat",
+      "expect": "moved_up, reach out",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "previous": {
+          "position": "Sales Manager",
+          "company": "Brightloop"
+        },
+        "current": {
+          "position": "VP of Sales",
+          "company": "Brightloop"
+        }
+      }
+    },
+    {
+      "label": "Title reworded, same job",
+      "expect": "same_job_reworded, ignore",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "previous": {
+          "position": "Sr. AE",
+          "company": "Tallgrass Software"
+        },
+        "current": {
+          "position": "Senior Account Executive, Mid-Market",
+          "company": "Tallgrass Software"
+        }
+      }
+    },
+    {
+      "label": "Left to start a company",
+      "expect": "moved_up, reach out",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "previous": {
+          "position": "Account Executive",
+          "company": "Corvid Systems"
+        },
+        "current": {
+          "position": "Founder & CEO",
+          "company": "Halyard Outbound"
+        }
+      }
+    },
+    {
+      "label": "Senior, but into a non-buying function",
+      "expect": "moved_up, but not a buyer",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "previous": {
+          "position": "Engineering Manager",
+          "company": "Northpane"
+        },
+        "current": {
+          "position": "Director of Engineering",
+          "company": "Kestrel Cloud"
+        }
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Open opportunity on the account",
+      "expect": "route_to_owner",
+      "state_from": "Promoted into the buying seat",
+      "record": {
+        "domain": "brightloop.test"
+      },
+      "facts": {
+        "domain:brightloop.test": {
+          "open_opportunity": true
+        }
+      }
+    },
+    {
+      "label": "Same title after normalising",
+      "expect": "ignore",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "previous": {
+          "position": "Sales Manager",
+          "company": "Brightloop"
+        },
+        "current": {
+          "position": " sales  manager ",
+          "company": "Brightloop"
+        }
+      }
+    },
+    {
+      "label": "Promoted, but a poor fit",
+      "expect": "ignore",
+      "state_from": "Promoted into the buying seat",
+      "record": {
+        "fit": 30
+      }
+    }
+  ],
+  "lessons": [
+    "The first version asked one broad question, \"is this move a good reason to get in touch now?\". It could barely tell the cases apart: 73%, 42%, 64% and 44%. Replacing it with the narrow \"does the current role buy this?\" separated them: 77%, 34%, 73% and 14%. When a question gives mushy probabilities, split it.",
+    "The old and new roles go into the state together as named fields, so Jev judges the relationship between them.",
+    "Use new_budget_owner to order the reach-out list: someone who just gained the budget is a warmer conversation."
+  ],
+  "limits": [
+    "Titles are all there is to go on. \"Director\" can mean a team of 2 or 200.",
+    "Senior but in the wrong function is the case to watch. Check the cutoffs against people you know."
+  ]
+}

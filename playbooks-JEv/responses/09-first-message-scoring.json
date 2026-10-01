@@ -1,0 +1,236 @@
+{
+  "Pitch-first template": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {},
+      "fired": "unfilled placeholder",
+      "action": "rewrite"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "about_them": {
+            "type": "score",
+            "score": 0.68,
+            "confidence": 0.68,
+            "legend": {
+              "0": "Entirely about the sender, their product or their company",
+              "1": "Mostly about the sender, with a generic nod to the prospect's industry or role",
+              "2": "Refers to something specific about the prospect, but most of the message is the pitch",
+              "3": "Built around something specific to the prospect, with the offer secondary"
+            },
+            "probabilities": {
+              "0": 0.32,
+              "1": 0.68,
+              "2": 0,
+              "3": 0
+            }
+          },
+          "pitches_first_line": {
+            "type": "noul",
+            "noul": 0.87
+          },
+          "reads_as_template": {
+            "type": "noul",
+            "noul": 0.93
+          },
+          "clear_ask": {
+            "type": "noul",
+            "noul": 0.91
+          }
+        },
+        "usage": {
+          "input_tokens": 559,
+          "output_tokens": 74
+        },
+        "ms": 249,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "rewrite"
+    }
+  },
+  "Specific and short": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "about_them": {
+            "type": "score",
+            "score": 2.99,
+            "confidence": 0.99,
+            "legend": {
+              "0": "Entirely about the sender, their product or their company",
+              "1": "Mostly about the sender, with a generic nod to the prospect's industry or role",
+              "2": "Refers to something specific about the prospect, but most of the message is the pitch",
+              "3": "Built around something specific to the prospect, with the offer secondary"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0,
+              "3": 1
+            }
+          },
+          "pitches_first_line": {
+            "type": "noul",
+            "noul": 0.03
+          },
+          "reads_as_template": {
+            "type": "noul",
+            "noul": 0.36
+          },
+          "clear_ask": {
+            "type": "noul",
+            "noul": 0.82
+          }
+        },
+        "usage": {
+          "input_tokens": 550,
+          "output_tokens": 74
+        },
+        "ms": 335,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "no_problems",
+      "action": "send",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "send"
+    }
+  },
+  "Flattery then pitch": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "about_them": {
+            "type": "score",
+            "score": 1.53,
+            "confidence": 0.53,
+            "legend": {
+              "0": "Entirely about the sender, their product or their company",
+              "1": "Mostly about the sender, with a generic nod to the prospect's industry or role",
+              "2": "Refers to something specific about the prospect, but most of the message is the pitch",
+              "3": "Built around something specific to the prospect, with the offer secondary"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.46,
+              "2": 0.54,
+              "3": 0
+            }
+          },
+          "pitches_first_line": {
+            "type": "noul",
+            "noul": 0.07
+          },
+          "reads_as_template": {
+            "type": "noul",
+            "noul": 0.86
+          },
+          "clear_ask": {
+            "type": "noul",
+            "noul": 0.94
+          }
+        },
+        "usage": {
+          "input_tokens": 547,
+          "output_tokens": 74
+        },
+        "ms": 90,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "make it about them; reads like a template",
+      "action": "rewrite",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "rewrite"
+    }
+  },
+  "Specific but rambling, no ask": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "about_them": {
+            "type": "score",
+            "score": 2.46,
+            "confidence": 0.46,
+            "legend": {
+              "0": "Entirely about the sender, their product or their company",
+              "1": "Mostly about the sender, with a generic nod to the prospect's industry or role",
+              "2": "Refers to something specific about the prospect, but most of the message is the pitch",
+              "3": "Built around something specific to the prospect, with the offer secondary"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0.04,
+              "2": 0.46,
+              "3": 0.5
+            }
+          },
+          "pitches_first_line": {
+            "type": "noul",
+            "noul": 0.04
+          },
+          "reads_as_template": {
+            "type": "noul",
+            "noul": 0.75
+          },
+          "clear_ask": {
+            "type": "noul",
+            "noul": 0.03
+          }
+        },
+        "usage": {
+          "input_tokens": 573,
+          "output_tokens": 74
+        },
+        "ms": 272,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "reads like a template; end with one easy question",
+      "action": "rewrite",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "rewrite"
+    }
+  }
+}

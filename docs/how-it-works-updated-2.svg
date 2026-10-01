@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 806" width="1200" height="806" role="img" aria-labelledby="t d" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+<title id="t">How a Jev GTM workflow runs</title>
+<desc id="d">Code filters records and skips any already judged. Then the neurosymbolic sandwich: Jev judges, code checks the answers against hard data and cutoffs, and an LLM writes from the checked values, with the draft going back through the check. Only the check can release an action: either approved, or sent to a person when unsure. Below, the three stores the code uses, and one inbound lead followed through every step.</desc>
+<rect width="1200" height="806" rx="16" fill="#f7f6f2"/>
+<text x="32" y="52" font-size="26" font-weight="700" fill="#1c1b18">How a Jev GTM workflow runs</text>
+<text x="32" y="82" font-size="16" fill="#6d6a62">Code owns the facts and the final decision. Jev supplies the judgment. The LLM writes only from what code approved.</text>
+<rect x="934" y="34" width="78" height="26" rx="13" fill="#e7ecf7" stroke="#2b3fd6" stroke-width="1.5"/>
+<circle cx="950" cy="47" r="5" fill="#2b3fd6"/>
+<text x="963" y="52" font-size="13" font-weight="700" fill="#2b3fd6" letter-spacing="0.5">CODE</text>
+<rect x="1024" y="34" width="66" height="26" rx="13" fill="#e2f3ea" stroke="#17694a" stroke-width="1.5"/>
+<circle cx="1040" cy="47" r="5" fill="#17694a"/>
+<text x="1053" y="52" font-size="13" font-weight="700" fill="#17694a" letter-spacing="0.5">JEV</text>
+<rect x="1102" y="34" width="66" height="26" rx="13" fill="#fbefd2" stroke="#8a5a00" stroke-width="1.5"/>
+<circle cx="1118" cy="47" r="5" fill="#8a5a00"/>
+<text x="1131" y="52" font-size="13" font-weight="700" fill="#8a5a00" letter-spacing="0.5">LLM</text>
+
+<!-- sandwich container -->
+<rect x="260" y="100" width="680" height="284" rx="18" fill="#ece9e0" stroke="#c9c4b6" stroke-width="1.5"/>
+<text x="600" y="124" font-size="13" font-weight="700" fill="#1c1b18" letter-spacing="1" text-anchor="middle">THE NEUROSYMBOLIC SANDWICH</text>
+
+<!-- paths out of Check, drawn first so cards sit on top -->
+<path d="M630 370 V404 H1030 V378" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1025 383 l5 -5 l5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M570 370 V440 H1100 V378" fill="none" stroke="#9a968c" stroke-width="2" stroke-dasharray="6 5" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M1095 383 l5 -5 l5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="672" y="392" width="316" height="24" rx="12" fill="#f7f6f2" stroke="#9a968c" stroke-width="1.5"/>
+<text x="830" y="409" font-size="12" font-weight="700" fill="#44423c" letter-spacing="0.6" text-anchor="middle">APPROVED: A DECISION OR A CHECKED DRAFT</text>
+<rect x="720" y="428" width="220" height="24" rx="12" fill="#f7f6f2" stroke="#9a968c" stroke-width="1.5"/>
+<text x="830" y="445" font-size="12" font-weight="700" fill="#44423c" letter-spacing="0.6" text-anchor="middle">UNSURE: A PERSON DECIDES</text>
+
+<!-- 0 -->
+<rect x="32" y="136" width="208" height="234" rx="14" fill="#ffffff" stroke="#e3e0d8" stroke-width="1.5"/>
+<rect x="32" y="136" width="208" height="8" rx="4" fill="#2b3fd6"/>
+<circle cx="62" cy="180" r="16" fill="#e7ecf7" stroke="#2b3fd6" stroke-width="1.5"/>
+<text x="62" y="186" font-size="16" font-weight="700" fill="#2b3fd6" text-anchor="middle">0</text>
+<text x="86" y="186" font-size="12" font-weight="700" fill="#2b3fd6" letter-spacing="0.8">CODE · SYMBOLIC</text>
+<text x="48" y="230" font-size="19" font-weight="700" fill="#1c1b18">Filter and cache</text>
+<text x="48" y="260" font-size="14.5" fill="#44423c">Drop blanks, tests and</text>
+<text x="48" y="282" font-size="14.5" fill="#44423c">blocked records. Skip</text>
+<text x="48" y="304" font-size="14.5" fill="#44423c">anything already</text>
+<text x="48" y="326" font-size="14.5" fill="#44423c">judged.</text>
+<path d="M48 340 H224" stroke="#e3e0d8" stroke-width="1.5"/>
+<text x="48" y="359" font-size="11" font-weight="700" fill="#9a968c" letter-spacing="0.8">OUT</text>
+<text x="80" y="359" font-size="13" font-weight="700" fill="#1c1b18">new records only</text>
+<path d="M243 238 h10 m-5 -5 l5 5 l-5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- 1 -->
+<rect x="272" y="136" width="208" height="234" rx="14" fill="#ffffff" stroke="#e3e0d8" stroke-width="1.5"/>
+<rect x="272" y="136" width="208" height="8" rx="4" fill="#17694a"/>
+<circle cx="302" cy="180" r="16" fill="#e2f3ea" stroke="#17694a" stroke-width="1.5"/>
+<text x="302" y="186" font-size="16" font-weight="700" fill="#17694a" text-anchor="middle">1</text>
+<text x="326" y="186" font-size="12" font-weight="700" fill="#17694a" letter-spacing="0.8">JEV · NEURAL</text>
+<text x="288" y="230" font-size="19" font-weight="700" fill="#1c1b18">Judge</text>
+<text x="288" y="260" font-size="14.5" fill="#44423c">One request per record,</text>
+<text x="288" y="282" font-size="14.5" fill="#44423c">all typed questions</text>
+<text x="288" y="304" font-size="14.5" fill="#44423c">together. Answers are</text>
+<text x="288" y="326" font-size="14.5" fill="#44423c">stored.</text>
+<path d="M288 340 H464" stroke="#e3e0d8" stroke-width="1.5"/>
+<text x="288" y="359" font-size="11" font-weight="700" fill="#9a968c" letter-spacing="0.8">OUT</text>
+<text x="320" y="359" font-size="13" font-weight="700" fill="#1c1b18">typed answers</text>
+<path d="M483 238 h10 m-5 -5 l5 5 l-5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- 2 -->
+<rect x="496" y="136" width="208" height="234" rx="14" fill="#ffffff" stroke="#e3e0d8" stroke-width="1.5"/>
+<rect x="496" y="136" width="208" height="8" rx="4" fill="#2b3fd6"/>
+<circle cx="526" cy="180" r="16" fill="#e7ecf7" stroke="#2b3fd6" stroke-width="1.5"/>
+<text x="526" y="186" font-size="16" font-weight="700" fill="#2b3fd6" text-anchor="middle">2</text>
+<text x="550" y="186" font-size="12" font-weight="700" fill="#2b3fd6" letter-spacing="0.8">CODE · SYMBOLIC</text>
+<text x="512" y="230" font-size="19" font-weight="700" fill="#1c1b18">Check</text>
+<text x="512" y="260" font-size="14.5" fill="#44423c">Hard data overrules Jev.</text>
+<text x="512" y="282" font-size="14.5" fill="#44423c">A cutoff per question.</text>
+<text x="512" y="304" font-size="14.5" fill="#44423c">Drafts get checked too.</text>
+<text x="512" y="326" font-size="14.5" fill="#44423c">Everything is logged.</text>
+<path d="M512 340 H688" stroke="#e3e0d8" stroke-width="1.5"/>
+<text x="512" y="359" font-size="11" font-weight="700" fill="#9a968c" letter-spacing="0.8">OUT</text>
+<text x="544" y="359" font-size="13" font-weight="700" fill="#1c1b18">checked values</text>
+<path d="M707 222 h10 m-5 -5 l5 5 l-5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<path d="M717 262 h-10 m5 -5 l-5 5 l5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+
+<!-- 3 -->
+<rect x="720" y="136" width="208" height="234" rx="14" fill="#ffffff" stroke="#e3e0d8" stroke-width="1.5"/>
+<rect x="720" y="136" width="208" height="8" rx="4" fill="#8a5a00"/>
+<circle cx="750" cy="180" r="16" fill="#fbefd2" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="750" y="186" font-size="16" font-weight="700" fill="#8a5a00" text-anchor="middle">3</text>
+<text x="774" y="186" font-size="12" font-weight="700" fill="#8a5a00" letter-spacing="0.8">LLM · NEURAL</text>
+<text x="736" y="230" font-size="19" font-weight="700" fill="#1c1b18">Write</text>
+<text x="736" y="260" font-size="14.5" fill="#44423c">Drafts the email, memo</text>
+<text x="736" y="282" font-size="14.5" fill="#44423c">or reply from checked</text>
+<text x="736" y="304" font-size="14.5" fill="#44423c">values only, never raw</text>
+<text x="736" y="326" font-size="14.5" fill="#44423c">input.</text>
+<path d="M736 340 H912" stroke="#e3e0d8" stroke-width="1.5"/>
+<text x="736" y="359" font-size="11" font-weight="700" fill="#9a968c" letter-spacing="0.8">OUT</text>
+<text x="768" y="359" font-size="13" font-weight="700" fill="#1c1b18">draft, back to Check</text>
+
+<!-- 4 -->
+<rect x="960" y="136" width="208" height="234" rx="14" fill="#ffffff" stroke="#e3e0d8" stroke-width="1.5"/>
+<rect x="960" y="136" width="208" height="8" rx="4" fill="#2b3fd6"/>
+<circle cx="990" cy="180" r="16" fill="#e7ecf7" stroke="#2b3fd6" stroke-width="1.5"/>
+<text x="990" y="186" font-size="16" font-weight="700" fill="#2b3fd6" text-anchor="middle">4</text>
+<text x="1014" y="186" font-size="12" font-weight="700" fill="#2b3fd6" letter-spacing="0.8">CODE · SYMBOLIC</text>
+<text x="976" y="230" font-size="19" font-weight="700" fill="#1c1b18">Act</text>
+<text x="976" y="260" font-size="14.5" fill="#44423c">Route, update the CRM</text>
+<text x="976" y="282" font-size="14.5" fill="#44423c">or send. Hard-to-undo</text>
+<text x="976" y="304" font-size="14.5" fill="#44423c">actions need approval.</text>
+<path d="M976 340 H1152" stroke="#e3e0d8" stroke-width="1.5"/>
+<text x="976" y="359" font-size="11" font-weight="700" fill="#9a968c" letter-spacing="0.8">OUT</text>
+<text x="1008" y="359" font-size="13" font-weight="700" fill="#1c1b18">the action, logged</text>
+
+<!-- stores -->
+<text x="32" y="488" font-size="13" font-weight="700" fill="#6d6a62" letter-spacing="0.8">WHAT THE CODE READS AND WRITES</text>
+<rect x="32" y="502" width="368" height="84" rx="14" fill="#ffffff" stroke="#e3e0d8" stroke-width="1.5"/>
+<text x="50" y="529" font-size="15" font-weight="700" fill="#1c1b18">Answer store</text>
+<text x="382" y="529" font-size="12" font-weight="700" fill="#9a968c" letter-spacing="0.6" text-anchor="end">STEPS 0 AND 1</text>
+<text x="50" y="552" font-size="14" fill="#44423c">Jev's answers, keyed by fingerprint: judged</text>
+<text x="50" y="572" font-size="14" fill="#44423c">fields + policy version + question version.</text>
+<rect x="416" y="502" width="368" height="84" rx="14" fill="#ffffff" stroke="#e3e0d8" stroke-width="1.5"/>
+<text x="434" y="529" font-size="15" font-weight="700" fill="#1c1b18">Facts</text>
+<text x="766" y="529" font-size="12" font-weight="700" fill="#9a968c" letter-spacing="0.6" text-anchor="end">STEP 2</text>
+<text x="434" y="552" font-size="14" fill="#44423c">CRM status, enrichment and the suppression</text>
+<text x="434" y="572" font-size="14" fill="#44423c">list. The hard data that overrules Jev.</text>
+<rect x="800" y="502" width="368" height="84" rx="14" fill="#ffffff" stroke="#e3e0d8" stroke-width="1.5"/>
+<text x="818" y="529" font-size="15" font-weight="700" fill="#1c1b18">Ledger</text>
+<text x="1150" y="529" font-size="12" font-weight="700" fill="#9a968c" letter-spacing="0.6" text-anchor="end">STEPS 2 AND 4</text>
+<text x="818" y="552" font-size="14" fill="#44423c">Every input, answer, veto and action, plus</text>
+<text x="818" y="572" font-size="14" fill="#44423c">each time a person overrode the result.</text>
+
+<!-- worked example -->
+<text x="32" y="624" font-size="13" font-weight="700" fill="#6d6a62" letter-spacing="0.8">ONE INBOUND LEAD, START TO FINISH</text>
+<rect x="32" y="638" width="208" height="120" rx="14" fill="#e7ecf7" stroke="#2b3fd6" stroke-width="1.5"/>
+<text x="48" y="663" font-size="12" font-weight="700" fill="#2b3fd6" letter-spacing="0.8">0 · FILTER</text>
+<text x="48" y="687" font-size="13.5" fill="#2e2c27">VP Sales, 120 people:</text>
+<text x="48" y="706" font-size="13.5" fill="#2e2c27">“Need a partner live by</text>
+<text x="48" y="725" font-size="13.5" fill="#2e2c27">next month.” Not a test,</text>
+<text x="48" y="744" font-size="13.5" fill="#2e2c27">not seen before.</text>
+<path d="M243 698 h10 m-5 -5 l5 5 l-5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="272" y="638" width="208" height="120" rx="14" fill="#e2f3ea" stroke="#17694a" stroke-width="1.5"/>
+<text x="288" y="663" font-size="12" font-weight="700" fill="#17694a" letter-spacing="0.8">1 · JUDGE</text>
+<text x="288" y="687" font-size="13.5" fill="#2e2c27">route: AE (1.00)</text>
+<text x="288" y="706" font-size="13.5" fill="#2e2c27">urgency: 2.97 of 3</text>
+<text x="288" y="725" font-size="13.5" fill="#2e2c27">vendor pitch: 3%</text>
+<path d="M483 698 h10 m-5 -5 l5 5 l-5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="496" y="638" width="208" height="120" rx="14" fill="#e7ecf7" stroke="#2b3fd6" stroke-width="1.5"/>
+<text x="512" y="663" font-size="12" font-weight="700" fill="#2b3fd6" letter-spacing="0.8">2 · CHECK</text>
+<text x="512" y="687" font-size="13.5" fill="#2e2c27">Not a pitch: 3% &lt; 85%</text>
+<text x="512" y="706" font-size="13.5" fill="#2e2c27">Confident: 1.00 ≥ 0.70</text>
+<text x="512" y="725" font-size="13.5" fill="#2e2c27">AE and urgent, so the</text>
+<text x="512" y="744" font-size="13.5" fill="#2e2c27">route is “AE now”.</text>
+<path d="M707 698 h10 m-5 -5 l5 5 l-5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="720" y="638" width="208" height="120" rx="14" fill="#fbefd2" stroke="#8a5a00" stroke-width="1.5"/>
+<text x="736" y="663" font-size="12" font-weight="700" fill="#8a5a00" letter-spacing="0.8">3 · WRITE</text>
+<text x="736" y="687" font-size="13.5" fill="#2e2c27">A short brief for the AE:</text>
+<text x="736" y="706" font-size="13.5" fill="#2e2c27">role, company size and</text>
+<text x="736" y="725" font-size="13.5" fill="#2e2c27">the stated deadline.</text>
+<path d="M945 698 h10 m-5 -5 l5 5 l-5 5" fill="none" stroke="#9a968c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="960" y="638" width="208" height="120" rx="14" fill="#e7ecf7" stroke="#2b3fd6" stroke-width="1.5"/>
+<text x="976" y="663" font-size="12" font-weight="700" fill="#2b3fd6" letter-spacing="0.8">4 · ACT</text>
+<text x="976" y="687" font-size="13.5" fill="#2e2c27">Assigned to an AE now,</text>
+<text x="976" y="706" font-size="13.5" fill="#2e2c27">with the brief attached.</text>
+<text x="976" y="725" font-size="13.5" fill="#2e2c27">Written to the ledger.</text>
+<text x="32" y="784" font-size="12.5" fill="#6d6a62">Steps 1 and 2 use real Jev answers and cutoffs (jev-1.13.0, playbook 04). The brief and the assignment are illustrative.</text>
+</svg>

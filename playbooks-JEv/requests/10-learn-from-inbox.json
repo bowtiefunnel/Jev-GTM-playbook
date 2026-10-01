@@ -1,0 +1,103 @@
+{
+  "playbook": "10-learn-from-inbox",
+  "title": "Learn from your own inbox",
+  "about": "Your inbox knows which openers work for your prospects. Code labels each of your first messages replied or not. Jev describes each opener. Code then measures which traits go with a reply.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Code groups messages into threads, takes your opener and labels it replied or not. That label never comes from Jev."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "about_them": {
+        "type": "score",
+        "instructions": "How much is `opener` about the recipient and their situation, rather than about the sender?",
+        "criteria": [
+          "Entirely about the sender, their product or their company",
+          "Mostly about the sender, with a generic nod to the recipient's industry or role",
+          "Refers to something specific about the recipient, but most of the message is the pitch",
+          "Built around something specific to the recipient, with the offer secondary"
+        ]
+      },
+      "pitches_first_line": {
+        "type": "noul",
+        "instructions": "Does the first sentence of `opener` pitch a product, service or meeting?"
+      },
+      "asks_a_question": {
+        "type": "noul",
+        "instructions": "Does `opener` ask the recipient a genuine question about their situation?"
+      },
+      "references_a_trigger": {
+        "type": "noul",
+        "instructions": "Does `opener` mention a specific recent event about the recipient, such as a new role, a post, a hire or a launch?"
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [],
+    "cutoffs": {
+      "trait": 0.5,
+      "min_sample": 20
+    },
+    "rules": [
+      "Jev describes each opener; code computes the reply rate with and without each trait.",
+      "A group smaller than min_sample reports no rate."
+    ],
+    "unsure": []
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "described": "The traits are kept for the reply-rate report."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Opener A (got a reply)",
+      "expect": "replied",
+      "state": {
+        "opener": "Congrats on the move to Head of Growth. What's the first channel you're rebuilding?"
+      }
+    },
+    {
+      "label": "Opener B (no reply)",
+      "expect": "no reply",
+      "state": {
+        "opener": "Hi! We help B2B companies scale revenue with done-for-you outbound. Can I send over a quick deck?"
+      }
+    },
+    {
+      "label": "Opener C (got a reply)",
+      "expect": "replied",
+      "state": {
+        "opener": "Noticed you're hiring your first SDR. Are you planning to have them source their own lists, or buy data?"
+      }
+    },
+    {
+      "label": "Opener D (no reply)",
+      "expect": "no reply",
+      "state": {
+        "opener": "Hope you're having a great week! I'd love to connect and learn more about what you're working on."
+      }
+    }
+  ],
+  "symbolic_cases": [],
+  "lessons": [
+    "Only the opener goes to Jev. The reply or no-reply label comes from the data.",
+    "With a few hundred conversations you get your own version of \"openers that mention a trigger get replies at three times the rate\"."
+  ],
+  "limits": [
+    "Replies depend on who you messaged as well as what you wrote. Compare openers sent to similar people.",
+    "Send only your own opener to Jev. The other person's words stay local.",
+    "Feeding the rates back into playbook 09's cutoffs is not built."
+  ]
+}

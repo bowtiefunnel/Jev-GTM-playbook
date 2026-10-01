@@ -1,0 +1,22 @@
+{
+  "name": "jev-gtm-playbook",
+  "version": "0.1.0",
+  "private": true,
+  "description": "GTM playbooks on one spine: code filters, Jev judges, code checks, an LLM drafts, code acts.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13"
+  },
+  "scripts": {
+    "test": "node --test",
+    "replay": "node src/cli.js replay",
+    "playbook": "node src/cli.js run",
+    "demo": "node src/cli.js demo",
+    "score": "node src/cli.js score",
+    "network": "node src/cli.js network",
+    "enrich": "node src/cli.js enrich",
+    "status": "node src/cli.js status",
+    "start": "node src/cli.js serve"
+  }
+}

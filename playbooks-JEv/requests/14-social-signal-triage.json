@@ -1,0 +1,144 @@
+{
+  "playbook": "14-social-signal-triage",
+  "title": "Social signal triage",
+  "about": "People post their problems in public. Keyword alerts find those posts but bury them under vendors' listicles and job ads that use the same words. This playbook decides whether to engage, monitor or ignore.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Job ads: ignore.",
+      "Posts by a competitor: ignore.",
+      "Posts by a customer: route to the account owner."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "action": {
+        "type": "choice",
+        "instructions": "Given `what_we_sell`, what should we do about `post`?",
+        "criteria": {
+          "engage": "The author describes a specific problem of their own, happening now, that we solve",
+          "monitor": "About our market or a debate on the topic, but the author states no problem of their own",
+          "ignore": "Unrelated, a tutorial, a job post, or someone promoting their own product"
+        }
+      },
+      "author_is_buyer": {
+        "type": "noul",
+        "instructions": "Does `post` suggest its author would be the one to buy `what_we_sell`?"
+      },
+      "self_promotion": {
+        "type": "noul",
+        "instructions": "Is `post` mainly promoting the author's own product, service or content?"
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "competitor",
+      "customer"
+    ],
+    "cutoffs": {
+      "self_promotion": 0.8,
+      "action_confidence": 0.6,
+      "author_is_buyer": 0.6
+    },
+    "rules": [
+      "self_promotion at or above the cutoff: ignore.",
+      "engage with author_is_buyer at or above its cutoff: engage.",
+      "Otherwise ignore stays ignore and the rest is monitor."
+    ],
+    "unsure": [
+      "action confidence below the cutoff."
+    ]
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "engage": "A person replies. Nothing is auto-posted.",
+      "monitor": "Watch.",
+      "ignore": "Nothing.",
+      "review": "A person decides.",
+      "route_to_owner": "Hand to the account owner."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Founder asking for help",
+      "expect": "engage",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "post": {
+          "source": "reddit r/startups",
+          "title": "Our cold emails get 0 replies, what are we doing wrong?",
+          "body": "B2B SaaS, 6 people, I'm doing sales myself. Sent 400 emails last month, 2 replies. Considering hiring an agency."
+        }
+      }
+    },
+    {
+      "label": "A vendor's listicle",
+      "expect": "ignore, self_promotion",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "post": {
+          "source": "linkedin",
+          "title": "7 cold email templates that got us 40% reply rates",
+          "body": "Download our free template pack at our site. We're the leading outbound agency for SaaS."
+        }
+      }
+    },
+    {
+      "label": "Industry discussion",
+      "expect": "monitor",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "post": {
+          "source": "hacker news",
+          "title": "Is outbound dead in 2026?",
+          "body": "Curious how others see it. Our inbound is strong, but I wonder whether outbound still works at all."
+        }
+      }
+    },
+    {
+      "label": "Job posting",
+      "expect": "ignore",
+      "state": {
+        "what_we_sell": "Outbound lead generation for B2B software companies",
+        "post": {
+          "source": "linkedin",
+          "title": "We're hiring a Senior Frontend Engineer",
+          "body": "Remote, React, TypeScript. Apply via the link."
+        }
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Posted by a competitor",
+      "expect": "ignore",
+      "state_from": "Founder asking for help",
+      "record": {
+        "domain": "rival.test"
+      },
+      "facts": {
+        "domain:rival.test": {
+          "competitor": true
+        }
+      }
+    }
+  ],
+  "lessons": [
+    "The miss, and why the cutoff matters. \"Is outbound dead?\" was expected to be monitor. First run: engage at 0.66. After tightening engage to \"a specific problem of their own\": still engage, but at 0.36. The answer stayed wrong and the confidence dropped below the cutoff, so it goes to a person."
+  ],
+  "limits": [
+    "Collect posts through each platform's API or official exports, within its terms.",
+    "A person writes and posts every reply. Nothing is drafted or auto-posted.",
+    "One saved case is a known miss: \"Is outbound dead?\" came back as engage at 0.36. The confidence cutoff is what sends it to a person."
+  ]
+}

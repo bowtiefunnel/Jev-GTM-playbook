@@ -1,0 +1,345 @@
+{
+  "Promoted into the buying seat": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "change_type": {
+            "type": "choice",
+            "choice": "moved_up",
+            "confidence": 1,
+            "probabilities": {
+              "same_job_reworded": 0,
+              "moved_down_or_unclear": 0,
+              "moved_sideways": 0,
+              "moved_up": 1
+            }
+          },
+          "new_budget_owner": {
+            "type": "noul",
+            "noul": 0.64
+          },
+          "current_role_buys": {
+            "type": "noul",
+            "noul": 0.77
+          }
+        },
+        "usage": {
+          "input_tokens": 636,
+          "output_tokens": 101
+        },
+        "ms": 377,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "current_role_buys",
+      "action": "reach_out",
+      "values": {
+        "previous_role": "Sales Manager",
+        "new_role": "VP of Sales",
+        "company": "Brightloop",
+        "change": "moved_up",
+        "just_gained_budget": true
+      },
+      "outcome": "approved"
+    },
+    "3_write": {
+      "draft": null,
+      "note": "No draft saved. Drafts need a writer model and have not been run live."
+    },
+    "4_act": {
+      "status": "needs_person",
+      "action": "reach_out"
+    }
+  },
+  "Title reworded, same job": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "change_type": {
+            "type": "choice",
+            "choice": "same_job_reworded",
+            "confidence": 0.9,
+            "probabilities": {
+              "moved_up": 0.01,
+              "moved_down_or_unclear": 0.01,
+              "same_job_reworded": 0.92,
+              "moved_sideways": 0.06
+            }
+          },
+          "new_budget_owner": {
+            "type": "noul",
+            "noul": 0.19
+          },
+          "current_role_buys": {
+            "type": "noul",
+            "noul": 0.34
+          }
+        },
+        "usage": {
+          "input_tokens": 644,
+          "output_tokens": 103
+        },
+        "ms": 223,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "same_job_reworded",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  },
+  "Left to start a company": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "change_type": {
+            "type": "choice",
+            "choice": "moved_up",
+            "confidence": 1,
+            "probabilities": {
+              "moved_down_or_unclear": 0,
+              "moved_up": 1,
+              "moved_sideways": 0,
+              "same_job_reworded": 0
+            }
+          },
+          "new_budget_owner": {
+            "type": "noul",
+            "noul": 0.7
+          },
+          "current_role_buys": {
+            "type": "noul",
+            "noul": 0.73
+          }
+        },
+        "usage": {
+          "input_tokens": 639,
+          "output_tokens": 101
+        },
+        "ms": 302,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "current_role_buys",
+      "action": "reach_out",
+      "values": {
+        "previous_role": "Account Executive",
+        "new_role": "Founder & CEO",
+        "company": "Halyard Outbound",
+        "change": "moved_up",
+        "just_gained_budget": true
+      },
+      "outcome": "approved"
+    },
+    "3_write": {
+      "draft": null,
+      "note": "No draft saved. Drafts need a writer model and have not been run live."
+    },
+    "4_act": {
+      "status": "needs_person",
+      "action": "reach_out"
+    }
+  },
+  "Senior, but into a non-buying function": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "change_type": {
+            "type": "choice",
+            "choice": "moved_up",
+            "confidence": 1,
+            "probabilities": {
+              "same_job_reworded": 0,
+              "moved_sideways": 0,
+              "moved_down_or_unclear": 0,
+              "moved_up": 1
+            }
+          },
+          "new_budget_owner": {
+            "type": "noul",
+            "noul": 0.37
+          },
+          "current_role_buys": {
+            "type": "noul",
+            "noul": 0.14
+          }
+        },
+        "usage": {
+          "input_tokens": 637,
+          "output_tokens": 101
+        },
+        "ms": 139,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "role_does_not_buy",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  },
+  "Open opportunity on the account": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "change_type": {
+            "type": "choice",
+            "choice": "moved_up",
+            "confidence": 1,
+            "probabilities": {
+              "same_job_reworded": 0,
+              "moved_down_or_unclear": 0,
+              "moved_sideways": 0,
+              "moved_up": 1
+            }
+          },
+          "new_budget_owner": {
+            "type": "noul",
+            "noul": 0.64
+          },
+          "current_role_buys": {
+            "type": "noul",
+            "noul": 0.77
+          }
+        },
+        "usage": {
+          "input_tokens": 636,
+          "output_tokens": 101
+        },
+        "ms": 377,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {
+        "open_opportunity": true
+      },
+      "fired": "existing_account",
+      "action": "route_to_owner",
+      "outcome": "approved"
+    },
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "done",
+      "action": "route_to_owner"
+    }
+  },
+  "Same title after normalising": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {},
+      "fired": "no_change",
+      "action": "ignore"
+    },
+    "1_judge": {
+      "called": false
+    },
+    "2_check": null,
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "filtered",
+      "action": "ignore"
+    }
+  },
+  "Promoted, but a poor fit": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "change_type": {
+            "type": "choice",
+            "choice": "moved_up",
+            "confidence": 1,
+            "probabilities": {
+              "same_job_reworded": 0,
+              "moved_down_or_unclear": 0,
+              "moved_sideways": 0,
+              "moved_up": 1
+            }
+          },
+          "new_budget_owner": {
+            "type": "noul",
+            "noul": 0.64
+          },
+          "current_role_buys": {
+            "type": "noul",
+            "noul": 0.77
+          }
+        },
+        "usage": {
+          "input_tokens": 636,
+          "output_tokens": 101
+        },
+        "ms": 377,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "low_fit",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  }
+}

@@ -1,0 +1,254 @@
+{
+  "No reply after the first email": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_step": {
+            "type": "choice",
+            "choice": "bump",
+            "confidence": 0.72,
+            "probabilities": {
+              "case_study": 0.02,
+              "stop": 0,
+              "bump": 0.78,
+              "answer_manually": 0.2,
+              "breakup": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 486,
+          "output_tokens": 62
+        },
+        "ms": 306,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "next_step",
+      "action": "send:bump",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "send:bump"
+    }
+  },
+  "Asked how it works": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_step": {
+            "type": "choice",
+            "choice": "case_study",
+            "confidence": 0.46,
+            "probabilities": {
+              "answer_manually": 0.42,
+              "bump": 0.01,
+              "breakup": 0,
+              "stop": 0,
+              "case_study": 0.57
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 522,
+          "output_tokens": 63
+        },
+        "ms": 177,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "low_confidence",
+      "action": "human",
+      "outcome": "unsure: a person decides"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "needs_person",
+      "action": "human"
+    }
+  },
+  "Specific question": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_step": {
+            "type": "choice",
+            "choice": "answer_manually",
+            "confidence": 0.91,
+            "probabilities": {
+              "breakup": 0,
+              "stop": 0,
+              "case_study": 0.04,
+              "answer_manually": 0.93,
+              "bump": 0.03
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 531,
+          "output_tokens": 64
+        },
+        "ms": 170,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "answer_manually",
+      "action": "human",
+      "outcome": "unsure: a person decides"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "needs_person",
+      "action": "human"
+    }
+  },
+  "Three unanswered follow-ups": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_step": {
+            "type": "choice",
+            "choice": "breakup",
+            "confidence": 0.58,
+            "probabilities": {
+              "bump": 0.32,
+              "case_study": 0.01,
+              "stop": 0.01,
+              "answer_manually": 0,
+              "breakup": 0.66
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 546,
+          "output_tokens": 63
+        },
+        "ms": 180,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "low_confidence",
+      "action": "human",
+      "outcome": "unsure: a person decides"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "needs_person",
+      "action": "human"
+    }
+  },
+  "Declined": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_step": {
+            "type": "choice",
+            "choice": "stop",
+            "confidence": 0.97,
+            "probabilities": {
+              "breakup": 0,
+              "stop": 0.98,
+              "answer_manually": 0,
+              "bump": 0.02,
+              "case_study": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 514,
+          "output_tokens": 61
+        },
+        "ms": 109,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "stop",
+      "action": "stop",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "stop"
+    }
+  },
+  "Fifth touch": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "next_step": {
+            "type": "choice",
+            "choice": "bump",
+            "confidence": 0.72,
+            "probabilities": {
+              "case_study": 0.02,
+              "stop": 0,
+              "bump": 0.78,
+              "answer_manually": 0.2,
+              "breakup": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 486,
+          "output_tokens": 62
+        },
+        "ms": 306,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "max_touches",
+      "action": "stop",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "stop"
+    }
+  }
+}

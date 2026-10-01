@@ -1,0 +1,182 @@
+{
+  "playbook": "06-account-icp-scoring",
+  "title": "Account ICP scoring",
+  "about": "\"Is this company a good fit?\" is several questions in one: do they sell to businesses, do they depend on outbound, are they the right size, are they excluded? Each is asked separately and combined in code, so a competitor that scores perfectly on everything else is still caught.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Existing customer: skip.",
+      "Domain on the competitor or exclusion list: excluded."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "sells_b2b": {
+        "type": "score",
+        "instructions": "How clearly does `company.description` show that this company sells to other businesses?",
+        "criteria": [
+          "Sells only to consumers, or the description says nothing about customers",
+          "Mostly consumers, with some business customers",
+          "Sells to both businesses and consumers",
+          "Sells mainly or only to businesses"
+        ]
+      },
+      "needs_outbound": {
+        "type": "score",
+        "instructions": "How much does the business in `company.description` depend on a sales team reaching new customers directly?",
+        "criteria": [
+          "Customers find and buy on their own, such as self-serve apps or retail",
+          "Mostly inbound or partner-led, with a small sales team",
+          "A sales team closes deals, but most leads come in by themselves",
+          "Growth depends on salespeople contacting buyers who did not ask first"
+        ]
+      },
+      "size_fit": {
+        "type": "choice",
+        "instructions": "Using `company.employees`, where does this company fall relative to `target_size`?",
+        "criteria": {
+          "too_small": null,
+          "in_range": null,
+          "too_large": null,
+          "unknown": "Size not given"
+        }
+      },
+      "excluded": {
+        "type": "noul",
+        "instructions": "Does the company in `company` match any of the exclusions in `exclusions`?"
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "customer",
+      "competitor",
+      "excluded",
+      "employees"
+    ],
+    "cutoffs": {
+      "excluded": 0.5,
+      "size_fit_confidence": 0.8,
+      "min_employees": 10,
+      "max_employees": 500,
+      "weights": {
+        "sells_b2b": 0.4,
+        "needs_outbound": 0.6
+      }
+    },
+    "rules": [
+      "excluded at or above the cutoff: fit 0.",
+      "When a headcount number exists, code compares it to the range and ignores size_fit.",
+      "With no number, size_fit outside the range at or above its confidence cutoff: fit 0.",
+      "Otherwise fit = weighted average of sells_b2b and needs_outbound, 0 to 100."
+    ],
+    "unsure": []
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "scored": "Write account_fit to the facts for that domain. Playbook 07 reads it in step 0.",
+      "excluded": "Nothing.",
+      "skip": "Nothing."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Vertical SaaS selling to clinics",
+      "expect": "strong fit",
+      "state": {
+        "target_size": "10 to 500 employees",
+        "exclusions": "Government agencies, non-profits, and lead generation agencies (competitors)",
+        "company": {
+          "name": "Fernwood Labs",
+          "employees": 85,
+          "description": "Scheduling and billing software for independent physiotherapy clinics. Our sales team works with clinic owners across North America."
+        }
+      }
+    },
+    {
+      "label": "Consumer app",
+      "expect": "weak fit",
+      "state": {
+        "target_size": "10 to 500 employees",
+        "exclusions": "Government agencies, non-profits, and lead generation agencies (competitors)",
+        "company": {
+          "name": "Pocketplant",
+          "employees": 30,
+          "description": "A mobile app that reminds you when to water your houseplants. Free with an optional premium subscription."
+        }
+      }
+    },
+    {
+      "label": "A competitor",
+      "expect": "excluded",
+      "state": {
+        "target_size": "10 to 500 employees",
+        "exclusions": "Government agencies, non-profits, and lead generation agencies (competitors)",
+        "company": {
+          "name": "Halyard Outbound",
+          "employees": 25,
+          "description": "Done-for-you cold email and appointment setting for B2B software companies."
+        }
+      }
+    },
+    {
+      "label": "Enterprise, too large",
+      "expect": "size too_large",
+      "state": {
+        "target_size": "10 to 500 employees",
+        "exclusions": "Government agencies, non-profits, and lead generation agencies (competitors)",
+        "company": {
+          "name": "Granite Logistics",
+          "employees": 12000,
+          "description": "Freight and warehousing for manufacturers worldwide, sold through a global enterprise sales organisation."
+        }
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Enrichment says 4,000 people",
+      "expect": "scored",
+      "state_from": "Vertical SaaS selling to clinics",
+      "record": {
+        "domain": "big.test"
+      },
+      "facts": {
+        "domain:big.test": {
+          "employees": 4000
+        }
+      }
+    },
+    {
+      "label": "On the competitor list",
+      "expect": "excluded",
+      "state_from": "Vertical SaaS selling to clinics",
+      "record": {
+        "domain": "rival.test"
+      },
+      "facts": {
+        "domain:rival.test": {
+          "competitor": true
+        }
+      }
+    }
+  ],
+  "lessons": [
+    "The competitor is the case composite scoring exists for: a perfect fit on every dimension, caught only by the separate exclusion question.",
+    "Each Score level describes a concrete situation, not a degree. \"Moderately B2B\" gives Jev nothing to match against.",
+    "Weighted averages suit preferences that can make up for each other. \"Any serious violation\" rules need their own check first."
+  ],
+  "limits": [
+    "The description does all the work. Pull it from the company's website or an enrichment provider; a bare company name is not enough.",
+    "The size range is a pair of numbers in `2_check.cutoffs`. Keep it in step with the `target_size` text Jev reads."
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "playbook": "11-cold-icp-conversations",
+  "title": "Cold ICP conversations",
+  "about": "The most valuable list in a LinkedIn archive is conversations that showed buying interest and then went quiet, especially where you owe the reply.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Quiet for quiet_days or less: skip. Code does the date arithmetic.",
+      "Existing customer: skip."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "buying_interest": {
+        "type": "noul",
+        "instructions": "At any point in `thread`, did the other person show interest in buying, evaluating or learning about what `me` offers?",
+        "criteria": {
+          "true": "Asked about pricing, services, a call, or described a problem we solve",
+          "false": "Networking, small talk, hiring, or a pitch to us"
+        }
+      },
+      "who_owes_reply": {
+        "type": "choice",
+        "instructions": "Looking at the last message in `thread`, who should reply next?",
+        "criteria": {
+          "me": "The other person asked something or is waiting on us",
+          "them": "We asked something and are waiting on them",
+          "nobody": "The conversation reached a natural end"
+        }
+      },
+      "topic": {
+        "type": "choice",
+        "instructions": "What is `thread` mainly about?",
+        "criteria": {
+          "sales_conversation": "A possible deal for what `me` offers",
+          "networking": "Getting to know each other, intros, events",
+          "hiring_or_job": "Recruiting or job seeking",
+          "pitch_to_me": "The other person selling to us",
+          "other": null
+        }
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "customer",
+      "fit"
+    ],
+    "cutoffs": {
+      "quiet_days": 30,
+      "min_fit": 60,
+      "buying_interest": 0.7
+    },
+    "rules": [
+      "topic is not sales_conversation: ignore.",
+      "buying_interest below the cutoff: ignore.",
+      "Fit score below min_fit: ignore. A missing fit score does not filter.",
+      "Otherwise revive, with \"I owe the reply\" first."
+    ],
+    "unsure": []
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "revive": "Add to the revive list.",
+      "ignore": "Nothing.",
+      "skip": "Nothing."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Went cold after a pricing question",
+      "expect": "buying_interest high, me owes reply",
+      "state": {
+        "me": "An outbound lead generation agency",
+        "thread": [
+          {
+            "from": "them",
+            "text": "Hey, saw your post about cold email. Do you work with fintech companies? What does pricing look like?"
+          },
+          {
+            "from": "me",
+            "text": "We do! Mostly Series A-C. Pricing depends on volume, happy to walk you through it."
+          },
+          {
+            "from": "them",
+            "text": "Cool, can you send a rough range? Need to take it to our CEO."
+          }
+        ]
+      },
+      "record": {
+        "days_quiet": 45,
+        "fit": 80
+      }
+    },
+    {
+      "label": "Networking that ended",
+      "expect": "buying_interest low, nobody",
+      "state": {
+        "me": "An outbound lead generation agency",
+        "thread": [
+          {
+            "from": "them",
+            "text": "Great chatting at the summit!"
+          },
+          {
+            "from": "me",
+            "text": "Likewise, let's stay in touch."
+          }
+        ]
+      },
+      "record": {
+        "days_quiet": 45,
+        "fit": 80
+      }
+    },
+    {
+      "label": "Vendor pitching me, I didn't answer",
+      "expect": "pitch_to_me",
+      "state": {
+        "me": "An outbound lead generation agency",
+        "thread": [
+          {
+            "from": "them",
+            "text": "Hi! We build custom CRMs for agencies. Open to a 15 min demo this week?"
+          }
+        ]
+      },
+      "record": {
+        "days_quiet": 45,
+        "fit": 80
+      }
+    },
+    {
+      "label": "Waiting on them",
+      "expect": "them owes reply",
+      "state": {
+        "me": "An outbound lead generation agency",
+        "thread": [
+          {
+            "from": "them",
+            "text": "We might need help with pipeline next quarter."
+          },
+          {
+            "from": "me",
+            "text": "Makes sense. What's the target number of meetings per month?"
+          }
+        ]
+      },
+      "record": {
+        "days_quiet": 45,
+        "fit": 80
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Quiet for only 12 days",
+      "expect": "skip",
+      "state_from": "Went cold after a pricing question",
+      "record": {
+        "days_quiet": 12,
+        "fit": 80
+      }
+    },
+    {
+      "label": "Buying interest, but a poor fit",
+      "expect": "ignore",
+      "state_from": "Went cold after a pricing question",
+      "record": {
+        "days_quiet": 45,
+        "fit": 30
+      }
+    }
+  ],
+  "lessons": [
+    "who_owes_reply says \"me\" for the vendor pitch too, and correctly: technically you owe them a reply. topic is the question that removes it from the list."
+  ],
+  "limits": [
+    "Send only the last 6 to 10 messages of each thread.",
+    "These are private conversations. Keep the export on your machine.",
+    "No revive message is drafted. Writing one needs the thread text, which step 3 is not allowed to see yet."
+  ]
+}

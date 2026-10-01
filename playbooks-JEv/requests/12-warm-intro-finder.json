@@ -1,0 +1,137 @@
+{
+  "playbook": "12-warm-intro-finder",
+  "title": "Warm-intro finder",
+  "about": "For any account you want to reach, the best first message comes through someone you already know. Code finds your connections at each target account. Jev judges how close each is to the buyer.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "Code joins your connections to target accounts by company before anything is judged."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "path_to_buyer": {
+        "type": "choice",
+        "instructions": "At the company in `target_account`, how is the person in `connection` related to the buyer described in `target_account.buyer`?",
+        "criteria": {
+          "is_the_buyer": "Their role is the buyer role, or one that owns this decision",
+          "leads_the_buyer": "Senior to the buyer, such as a founder, CEO or the executive the buyer reports to",
+          "same_team": "Works in the buyer's function, below or beside them",
+          "other_team": "Works elsewhere in the company and would have to find the buyer",
+          "unclear": "The title does not say enough"
+        }
+      },
+      "intro_strength": {
+        "type": "score",
+        "instructions": "How well placed is the person in `connection` to introduce us to the buyer in `target_account.buyer`?",
+        "criteria": [
+          "Works in an unrelated part of the company and likely does not know the buyer",
+          "Works nearby and may know the buyer by name",
+          "Works with the buyer regularly and could make a warm introduction",
+          "Is the buyer, or directly manages them, so no introduction is needed"
+        ]
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [],
+    "cutoffs": {
+      "never_messaged_cap": 1
+    },
+    "rules": [
+      "Rank intro paths by intro_strength.",
+      "A connection you never messaged is capped at never_messaged_cap, whatever the title says."
+    ],
+    "unsure": []
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "intro_path": "Best path per account."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Connection is the CRO",
+      "expect": "is_the_buyer",
+      "state": {
+        "target_account": {
+          "company": "Kestrel Cloud",
+          "buyer": "Head of Sales or CRO"
+        },
+        "connection": {
+          "title": "Chief Revenue Officer",
+          "company": "Kestrel Cloud"
+        }
+      }
+    },
+    {
+      "label": "Connection is an AE on the buyer's team",
+      "expect": "same_team, strong intro",
+      "state": {
+        "target_account": {
+          "company": "Kestrel Cloud",
+          "buyer": "Head of Sales or CRO"
+        },
+        "connection": {
+          "title": "Enterprise Account Executive",
+          "company": "Kestrel Cloud"
+        }
+      }
+    },
+    {
+      "label": "Connection is the founder",
+      "expect": "leads_the_buyer",
+      "state": {
+        "target_account": {
+          "company": "Kestrel Cloud",
+          "buyer": "Head of Sales or CRO"
+        },
+        "connection": {
+          "title": "Co-Founder & CTO",
+          "company": "Kestrel Cloud"
+        }
+      }
+    },
+    {
+      "label": "Connection is a data engineer",
+      "expect": "other_team, weak",
+      "state": {
+        "target_account": {
+          "company": "Kestrel Cloud",
+          "buyer": "Head of Sales or CRO"
+        },
+        "connection": {
+          "title": "Senior Data Engineer",
+          "company": "Kestrel Cloud"
+        }
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "The CRO, but you never messaged them",
+      "expect": "intro_path",
+      "state_from": "Connection is the CRO",
+      "record": {
+        "message_count": 0
+      }
+    }
+  ],
+  "lessons": [
+    "Measured on one real export with code only, no model: 130 of the 299 companies one person follows had at least one of their connections working there, 680 people in all. The warm paths exist; nobody had listed them.",
+    "The founder case came back with low confidence on intro_strength, which is fair. A co-founder knows the head of sales; whether they would make the intro is a human question."
+  ],
+  "limits": [
+    "Matching on company name misses \"Acme\" against \"Acme Inc.\" unless you normalise it or match on domain.",
+    "The strength of the relationship is not in the title. That is why `message_count` overrules Jev."
+  ]
+}

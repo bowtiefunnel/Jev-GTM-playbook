@@ -1,0 +1,92 @@
+{
+  "playbook": "NN-playbook-name",
+  "title": "Playbook name",
+  "about": "The GTM job, why ordinary code cannot do it alone, and what goes wrong without it.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "What this playbook's own code drops or decides for free."
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "question_id": {
+        "type": "choice",
+        "instructions": "One narrow judgment about `field_in_state`.",
+        "criteria": {
+          "option_a": "When this option applies",
+          "option_b": "When this option applies",
+          "none": "Nothing above fits"
+        }
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "customer"
+    ],
+    "cutoffs": {
+      "question_id_confidence": 0.7
+    },
+    "rules": [
+      "Existing customer: hand to the account owner.",
+      "Otherwise follow question_id."
+    ],
+    "unsure": [
+      "question_id confidence below the cutoff."
+    ]
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "option_a": "What happens.",
+      "option_b": "What happens.",
+      "human_review": "A person decides."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "A clear case",
+      "expect": "option_a",
+      "state": {
+        "field_in_state": "Fictional example text"
+      }
+    },
+    {
+      "label": "A hard case",
+      "expect": "none",
+      "state": {
+        "field_in_state": "Fictional example text"
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Same input, but a customer",
+      "expect": "route_to_owner",
+      "state_from": "A clear case",
+      "record": {
+        "domain": "client.test"
+      },
+      "facts": {
+        "domain:client.test": {
+          "customer": true
+        }
+      }
+    }
+  ],
+  "lessons": [
+    "What did not work at first, and the fix. A miss and its fix teaches more than a perfect result."
+  ],
+  "limits": [
+    "What the data cannot tell Jev."
+  ]
+}

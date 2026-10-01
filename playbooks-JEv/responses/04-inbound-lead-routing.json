@@ -1,0 +1,398 @@
+{
+  "Qualified and urgent": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "account_executive",
+            "confidence": 1,
+            "probabilities": {
+              "nurture": 0,
+              "account_executive": 1,
+              "junk": 0,
+              "partner_or_vendor": 0,
+              "sdr_qualify": 0
+            }
+          },
+          "urgency": {
+            "type": "score",
+            "score": 2.97,
+            "confidence": 0.97,
+            "legend": {
+              "0": "No need stated, or just browsing",
+              "1": "Exploring options with no timeline",
+              "2": "Planning to act this quarter",
+              "3": "Needs something now, with a deadline or a pain happening today"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.03,
+              "3": 0.97
+            }
+          },
+          "is_vendor_pitch": {
+            "type": "noul",
+            "noul": 0.03
+          }
+        },
+        "usage": {
+          "input_tokens": 611,
+          "output_tokens": 99
+        },
+        "ms": 194,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "ae_and_urgent",
+      "action": "ae_now",
+      "values": {
+        "role": "VP Sales",
+        "employees": 120,
+        "urgency": "Needs something now, with a deadline or a pain happening today"
+      },
+      "outcome": "approved"
+    },
+    "3_write": {
+      "draft": null,
+      "note": "No draft saved. Drafts need a writer model and have not been run live."
+    },
+    "4_act": {
+      "status": "needs_person",
+      "action": "ae_now"
+    }
+  },
+  "Agency pitching us": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "partner_or_vendor",
+            "confidence": 0.63,
+            "probabilities": {
+              "sdr_qualify": 0.01,
+              "account_executive": 0,
+              "junk": 0.01,
+              "nurture": 0.27,
+              "partner_or_vendor": 0.71
+            }
+          },
+          "urgency": {
+            "type": "score",
+            "score": 0.2,
+            "confidence": 0.8,
+            "legend": {
+              "0": "No need stated, or just browsing",
+              "1": "Exploring options with no timeline",
+              "2": "Planning to act this quarter",
+              "3": "Needs something now, with a deadline or a pain happening today"
+            },
+            "probabilities": {
+              "0": 0.81,
+              "1": 0.19,
+              "2": 0,
+              "3": 0
+            }
+          },
+          "is_vendor_pitch": {
+            "type": "noul",
+            "noul": 0.93
+          }
+        },
+        "usage": {
+          "input_tokens": 608,
+          "output_tokens": 98
+        },
+        "ms": 253,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "is_vendor_pitch",
+      "action": "partner_inbox",
+      "outcome": "approved"
+    },
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "done",
+      "action": "partner_inbox"
+    }
+  },
+  "Vague early research": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "nurture",
+            "confidence": 0.5,
+            "probabilities": {
+              "nurture": 0.6,
+              "sdr_qualify": 0.4,
+              "junk": 0,
+              "account_executive": 0,
+              "partner_or_vendor": 0
+            }
+          },
+          "urgency": {
+            "type": "score",
+            "score": 0.92,
+            "confidence": 0.88,
+            "legend": {
+              "0": "No need stated, or just browsing",
+              "1": "Exploring options with no timeline",
+              "2": "Planning to act this quarter",
+              "3": "Needs something now, with a deadline or a pain happening today"
+            },
+            "probabilities": {
+              "0": 0.1,
+              "1": 0.88,
+              "2": 0.02,
+              "3": 0
+            }
+          },
+          "is_vendor_pitch": {
+            "type": "noul",
+            "noul": 0.03
+          }
+        },
+        "usage": {
+          "input_tokens": 601,
+          "output_tokens": 98
+        },
+        "ms": 133,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "low_confidence",
+      "action": "sdr_review",
+      "outcome": "unsure: a person decides"
+    },
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "needs_person",
+      "action": "sdr_review"
+    }
+  },
+  "Junk": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {},
+      "fired": "test_string",
+      "action": "discard"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "junk",
+            "confidence": 0.97,
+            "probabilities": {
+              "account_executive": 0,
+              "partner_or_vendor": 0,
+              "sdr_qualify": 0,
+              "junk": 0.98,
+              "nurture": 0.02
+            }
+          },
+          "urgency": {
+            "type": "score",
+            "score": 0,
+            "confidence": 1,
+            "legend": {
+              "0": "No need stated, or just browsing",
+              "1": "Exploring options with no timeline",
+              "2": "Planning to act this quarter",
+              "3": "Needs something now, with a deadline or a pain happening today"
+            },
+            "probabilities": {
+              "0": 1,
+              "1": 0,
+              "2": 0,
+              "3": 0
+            }
+          },
+          "is_vendor_pitch": {
+            "type": "noul",
+            "noul": 0.15
+          }
+        },
+        "usage": {
+          "input_tokens": 593,
+          "output_tokens": 96
+        },
+        "ms": 161,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "filtered",
+      "action": "discard"
+    }
+  },
+  "Enrichment says 6 people": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "account_executive",
+            "confidence": 1,
+            "probabilities": {
+              "nurture": 0,
+              "account_executive": 1,
+              "junk": 0,
+              "partner_or_vendor": 0,
+              "sdr_qualify": 0
+            }
+          },
+          "urgency": {
+            "type": "score",
+            "score": 2.97,
+            "confidence": 0.97,
+            "legend": {
+              "0": "No need stated, or just browsing",
+              "1": "Exploring options with no timeline",
+              "2": "Planning to act this quarter",
+              "3": "Needs something now, with a deadline or a pain happening today"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.03,
+              "3": 0.97
+            }
+          },
+          "is_vendor_pitch": {
+            "type": "noul",
+            "noul": 0.03
+          }
+        },
+        "usage": {
+          "input_tokens": 611,
+          "output_tokens": 99
+        },
+        "ms": 194,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {
+        "employees": 6
+      },
+      "fired": "headcount_below_minimum",
+      "action": "sdr_review",
+      "outcome": "unsure: a person decides"
+    },
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "needs_person",
+      "action": "sdr_review"
+    }
+  },
+  "Existing customer fills in the form": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {
+        "customer": true
+      },
+      "fired": "existing_customer",
+      "action": "route_to_csm"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "route": {
+            "type": "choice",
+            "choice": "account_executive",
+            "confidence": 1,
+            "probabilities": {
+              "nurture": 0,
+              "account_executive": 1,
+              "junk": 0,
+              "partner_or_vendor": 0,
+              "sdr_qualify": 0
+            }
+          },
+          "urgency": {
+            "type": "score",
+            "score": 2.97,
+            "confidence": 0.97,
+            "legend": {
+              "0": "No need stated, or just browsing",
+              "1": "Exploring options with no timeline",
+              "2": "Planning to act this quarter",
+              "3": "Needs something now, with a deadline or a pain happening today"
+            },
+            "probabilities": {
+              "0": 0,
+              "1": 0,
+              "2": 0.03,
+              "3": 0.97
+            }
+          },
+          "is_vendor_pitch": {
+            "type": "noul",
+            "noul": 0.03
+          }
+        },
+        "usage": {
+          "input_tokens": 611,
+          "output_tokens": 99
+        },
+        "ms": 194,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": {
+      "skipped": "the check did not release a draft"
+    },
+    "4_act": {
+      "status": "filtered",
+      "action": "route_to_csm"
+    }
+  }
+}

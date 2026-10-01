@@ -1,0 +1,267 @@
+{
+  "playbook": "01-linkedin-network-icp",
+  "title": "LinkedIn network ICP scoring",
+  "about": "Most people have thousands of LinkedIn connections and no idea which of them could buy what they sell. This playbook scores every connection in LinkedIn's official Connections.csv export against your ideal customer profile. On later exports, code notices who changed jobs and hands each change to playbook 02.",
+  "shape": "decision only",
+  "0_filter_and_cache": {
+    "who": "code",
+    "rules": [
+      "Skip contacts on the suppression list.",
+      "Send text that looks like an instruction to the model to a person.",
+      "No role and no company listed: skip.",
+      "Title contains a word from skip_if_title_matches: skip.",
+      "Existing customers and competitors are excluded whatever the fit.",
+      "The person is not part of what Jev sees, so two connections with the same title at the same company share one answer."
+    ],
+    "skip_if_title_matches": [
+      "student",
+      "intern",
+      "retired",
+      "seeking",
+      "open to work",
+      "unemployed"
+    ],
+    "cache": "Answer store. Fingerprint = questions + model + state; a stored answer is reused with no Jev call."
+  },
+  "1_judge": {
+    "who": "jev",
+    "questions": {
+      "persona": {
+        "type": "choice",
+        "instructions": "Which group best describes the role in `connection.current_position`?",
+        "criteria": {
+          "founder_or_ceo": "Founder, co-founder, owner or chief executive of a company",
+          "sales_leader": "Runs a sales team: head of sales, VP sales, CRO, sales director",
+          "marketing_or_growth_leader": "Runs marketing, growth or demand generation",
+          "revenue_operations": "Revenue operations, sales operations or GTM systems",
+          "individual_seller": "Account executive, SDR, BDR or other individual sales role",
+          "other": "None of the above"
+        }
+      },
+      "seniority": {
+        "type": "score",
+        "instructions": "How senior is the role in `connection.current_position`?",
+        "criteria": [
+          "A student, intern, or someone not currently working in a professional role",
+          "An individual contributor who does the work and does not manage people or a budget",
+          "A manager or team lead who runs a team and influences what that team buys",
+          "A director, head of department or vice president who owns the budget for their function",
+          "A founder, owner, partner or C-level executive who makes final buying decisions"
+        ]
+      },
+      "role_fit": {
+        "type": "score",
+        "instructions": "How closely does the role in `connection.current_position` match the buyers described in `ideal_customer.target_roles`, given what is sold in `ideal_customer.what_we_sell`?",
+        "criteria": [
+          "The role has nothing to do with the target roles or with the problem the product solves",
+          "The role sits in a neighbouring function and would only hear about the problem second-hand",
+          "The role works inside the target function and deals with the problem day to day",
+          "The role is one of the target roles and would own the decision to solve the problem"
+        ]
+      },
+      "company_fit": {
+        "type": "choice",
+        "instructions": "Judging from `connection.current_company` and, if given, `connection.company_description`, does the company match `ideal_customer.target_companies`?",
+        "criteria": {
+          "fits": "The company is recognisably the kind of company described as a target",
+          "does_not_fit": "The company is recognisably outside the target, or matches `ideal_customer.not_a_fit`",
+          "cannot_tell": "The information given does not reveal what the company does or how big it is"
+        }
+      },
+      "likely_buyer": {
+        "type": "noul",
+        "instructions": "Would the person in this role plausibly take part in deciding whether to buy what is described in `ideal_customer.what_we_sell`?",
+        "criteria": {
+          "true": "They own, approve or strongly influence this kind of purchase",
+          "false": "They would not be involved in this kind of purchase, or they match `ideal_customer.not_a_fit`"
+        }
+      }
+    }
+  },
+  "2_check": {
+    "who": "code",
+    "facts": [
+      "customer",
+      "competitor",
+      "employees"
+    ],
+    "cutoffs": {
+      "weights": {
+        "role_fit": 0.4,
+        "likely_buyer": 0.25,
+        "seniority": 0.2,
+        "company_fit": 0.15
+      },
+      "fit": 60,
+      "min_employees": 10,
+      "max_employees": 500
+    },
+    "rules": [
+      "Fit is a 0 to 100 weighted average of role_fit, likely_buyer, seniority and company_fit.",
+      "When enrichment has a headcount, code compares it to the size range and that replaces Jev's company_fit.",
+      "Weights and the fit cutoff are applied to stored answers, so changing them re-ranks everyone with no Jev call."
+    ],
+    "unsure": []
+  },
+  "3_write": null,
+  "4_act": {
+    "who": "code",
+    "actions": {
+      "scored": "Ranked list and scored spreadsheet.",
+      "excluded": "Left out of the list.",
+      "skip": "Nothing."
+    },
+    "ledger": "Every record is logged with its input, answers, facts, the rule that decided, and the outcome."
+  },
+  "cases": [
+    {
+      "label": "Head of sales at a software company",
+      "expect": "high fit",
+      "state": {
+        "ideal_customer": {
+          "what_we_sell": "An outbound lead generation service for B2B companies that want more sales meetings.",
+          "target_roles": "Founders, CEOs, heads of sales, VPs of sales, revenue operations leaders, heads of growth and marketing leaders who own pipeline.",
+          "target_companies": "B2B software and services companies with roughly 10 to 500 employees that sell to other businesses.",
+          "not_a_fit": "Students, job seekers, recruiters, consumer brands, government, and people at very large enterprises with in-house teams."
+        },
+        "connection": {
+          "current_position": "Head of Sales",
+          "current_company": "Thistle CRM"
+        }
+      }
+    },
+    {
+      "label": "Engineer",
+      "expect": "low fit",
+      "state": {
+        "ideal_customer": {
+          "what_we_sell": "An outbound lead generation service for B2B companies that want more sales meetings.",
+          "target_roles": "Founders, CEOs, heads of sales, VPs of sales, revenue operations leaders, heads of growth and marketing leaders who own pipeline.",
+          "target_companies": "B2B software and services companies with roughly 10 to 500 employees that sell to other businesses.",
+          "not_a_fit": "Students, job seekers, recruiters, consumer brands, government, and people at very large enterprises with in-house teams."
+        },
+        "connection": {
+          "current_position": "Senior Backend Engineer",
+          "current_company": "Northpane"
+        }
+      }
+    },
+    {
+      "label": "Senior, but not a buyer",
+      "expect": "senior, low role fit",
+      "state": {
+        "ideal_customer": {
+          "what_we_sell": "An outbound lead generation service for B2B companies that want more sales meetings.",
+          "target_roles": "Founders, CEOs, heads of sales, VPs of sales, revenue operations leaders, heads of growth and marketing leaders who own pipeline.",
+          "target_companies": "B2B software and services companies with roughly 10 to 500 employees that sell to other businesses.",
+          "not_a_fit": "Students, job seekers, recruiters, consumer brands, government, and people at very large enterprises with in-house teams."
+        },
+        "connection": {
+          "current_position": "Managing Partner",
+          "current_company": "Halden Ventures"
+        }
+      }
+    },
+    {
+      "label": "Founder at a company whose name says nothing",
+      "expect": "company_fit cannot_tell",
+      "state": {
+        "ideal_customer": {
+          "what_we_sell": "An outbound lead generation service for B2B companies that want more sales meetings.",
+          "target_roles": "Founders, CEOs, heads of sales, VPs of sales, revenue operations leaders, heads of growth and marketing leaders who own pipeline.",
+          "target_companies": "B2B software and services companies with roughly 10 to 500 employees that sell to other businesses.",
+          "not_a_fit": "Students, job seekers, recruiters, consumer brands, government, and people at very large enterprises with in-house teams."
+        },
+        "connection": {
+          "current_position": "Founder & CEO",
+          "current_company": "Quillfeather"
+        }
+      }
+    },
+    {
+      "label": "The same founder, with an enriched description",
+      "expect": "company_fit fits",
+      "state": {
+        "ideal_customer": {
+          "what_we_sell": "An outbound lead generation service for B2B companies that want more sales meetings.",
+          "target_roles": "Founders, CEOs, heads of sales, VPs of sales, revenue operations leaders, heads of growth and marketing leaders who own pipeline.",
+          "target_companies": "B2B software and services companies with roughly 10 to 500 employees that sell to other businesses.",
+          "not_a_fit": "Students, job seekers, recruiters, consumer brands, government, and people at very large enterprises with in-house teams."
+        },
+        "connection": {
+          "current_position": "Founder & CEO",
+          "current_company": "Quillfeather",
+          "company_description": "B2B invoicing software for mid-sized logistics firms. About 60 employees, sold by a small inside sales team."
+        }
+      }
+    }
+  ],
+  "symbolic_cases": [
+    {
+      "label": "Job seeker",
+      "expect": "skip",
+      "state": {
+        "ideal_customer": {
+          "what_we_sell": "An outbound lead generation service for B2B companies that want more sales meetings.",
+          "target_roles": "Founders, CEOs, heads of sales, VPs of sales, revenue operations leaders, heads of growth and marketing leaders who own pipeline.",
+          "target_companies": "B2B software and services companies with roughly 10 to 500 employees that sell to other businesses.",
+          "not_a_fit": "Students, job seekers, recruiters, consumer brands, government, and people at very large enterprises with in-house teams."
+        },
+        "connection": {
+          "current_position": "Open to work | Sales leader",
+          "current_company": "Thistle CRM"
+        }
+      }
+    },
+    {
+      "label": "Already a customer",
+      "expect": "excluded",
+      "state_from": "Head of sales at a software company",
+      "record": {
+        "domain": "thistle.test"
+      },
+      "facts": {
+        "domain:thistle.test": {
+          "customer": true
+        }
+      }
+    },
+    {
+      "label": "Works at a competitor",
+      "expect": "excluded",
+      "state_from": "Head of sales at a software company",
+      "record": {
+        "domain": "rival.test"
+      },
+      "facts": {
+        "domain:rival.test": {
+          "competitor": true
+        }
+      }
+    },
+    {
+      "label": "Enrichment says 12,000 people",
+      "expect": "scored",
+      "state_from": "The same founder, with an enriched description",
+      "record": {
+        "domain": "quillfeather.test"
+      },
+      "facts": {
+        "domain:quillfeather.test": {
+          "employees": 12000
+        }
+      }
+    }
+  ],
+  "lessons": [
+    "Job titles carry the signal and company names mostly do not. That is why company_fit has a low default weight.",
+    "Senior people outside the buying function (VCs, managing partners, CIOs) score high on seniority and low on fit, as they should.",
+    "One request per person, not ten. On a 300-row test, batching 10 people per request moved likely-buyer probabilities by 0.27 on average, against 0.03 one at a time, and only 66% of fit scores stayed within 10 points.",
+    "Measured on a real network: 16,711 connections, 16,282 calls, $0.73, 11.3 minutes (set by the 1,200 requests a minute limit). Re-running the same file: 0 calls."
+  ],
+  "limits": [
+    "It only knows the title and company name. On a real network of 16,711 connections Jev answered \"cannot tell\" for company fit 71% of the time, which is why company_fit has a low weight and enrichment overrules it.",
+    "Change detection is only as fresh as your last export. There is no scraping, on purpose.",
+    "Only job title, company name, company description and your ICP text reach Jev. Names, emails and profile links stay local."
+  ]
+}

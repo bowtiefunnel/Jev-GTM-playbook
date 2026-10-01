@@ -1,0 +1,342 @@
+{
+  "Went cold after a pricing question": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "buying_interest": {
+            "type": "noul",
+            "noul": 0.98
+          },
+          "who_owes_reply": {
+            "type": "choice",
+            "choice": "me",
+            "confidence": 1,
+            "probabilities": {
+              "me": 1,
+              "nobody": 0,
+              "them": 0
+            }
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "sales_conversation",
+            "confidence": 1,
+            "probabilities": {
+              "hiring_or_job": 0,
+              "pitch_to_me": 0,
+              "networking": 0,
+              "sales_conversation": 1,
+              "other": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 668,
+          "output_tokens": 123
+        },
+        "ms": 405,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "buying_interest",
+      "action": "revive",
+      "values": {
+        "i_owe_the_reply": true
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "revive"
+    }
+  },
+  "Networking that ended": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "buying_interest": {
+            "type": "noul",
+            "noul": 0.03
+          },
+          "who_owes_reply": {
+            "type": "choice",
+            "choice": "nobody",
+            "confidence": 0.73,
+            "probabilities": {
+              "them": 0.18,
+              "me": 0,
+              "nobody": 0.82
+            }
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "networking",
+            "confidence": 1,
+            "probabilities": {
+              "hiring_or_job": 0,
+              "other": 0,
+              "sales_conversation": 0,
+              "pitch_to_me": 0,
+              "networking": 1
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 607,
+          "output_tokens": 123
+        },
+        "ms": 270,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "topic_networking",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  },
+  "Vendor pitching me, I didn't answer": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "buying_interest": {
+            "type": "noul",
+            "noul": 0.08
+          },
+          "who_owes_reply": {
+            "type": "choice",
+            "choice": "me",
+            "confidence": 0.99,
+            "probabilities": {
+              "them": 0.01,
+              "nobody": 0,
+              "me": 0.99
+            }
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "pitch_to_me",
+            "confidence": 0.99,
+            "probabilities": {
+              "pitch_to_me": 0.99,
+              "sales_conversation": 0.01,
+              "networking": 0,
+              "hiring_or_job": 0,
+              "other": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 595,
+          "output_tokens": 122
+        },
+        "ms": 112,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "topic_pitch_to_me",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  },
+  "Waiting on them": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "buying_interest": {
+            "type": "noul",
+            "noul": 0.88
+          },
+          "who_owes_reply": {
+            "type": "choice",
+            "choice": "them",
+            "confidence": 1,
+            "probabilities": {
+              "nobody": 0,
+              "me": 0,
+              "them": 1
+            }
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "sales_conversation",
+            "confidence": 1,
+            "probabilities": {
+              "pitch_to_me": 0,
+              "other": 0,
+              "networking": 0,
+              "hiring_or_job": 0,
+              "sales_conversation": 1
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 613,
+          "output_tokens": 123
+        },
+        "ms": 116,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "buying_interest",
+      "action": "revive",
+      "values": {
+        "i_owe_the_reply": false
+      },
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "revive"
+    }
+  },
+  "Quiet for only 12 days": {
+    "0_filter_and_cache": {
+      "decided": true,
+      "facts": {},
+      "fired": "not_quiet_yet",
+      "action": "skip"
+    },
+    "1_judge": {
+      "called": false,
+      "saved_response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "buying_interest": {
+            "type": "noul",
+            "noul": 0.98
+          },
+          "who_owes_reply": {
+            "type": "choice",
+            "choice": "me",
+            "confidence": 1,
+            "probabilities": {
+              "me": 1,
+              "nobody": 0,
+              "them": 0
+            }
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "sales_conversation",
+            "confidence": 1,
+            "probabilities": {
+              "hiring_or_job": 0,
+              "pitch_to_me": 0,
+              "networking": 0,
+              "sales_conversation": 1,
+              "other": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 668,
+          "output_tokens": 123
+        },
+        "ms": 405,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": null,
+    "3_write": null,
+    "4_act": {
+      "status": "filtered",
+      "action": "skip"
+    }
+  },
+  "Buying interest, but a poor fit": {
+    "0_filter_and_cache": {
+      "decided": false
+    },
+    "1_judge": {
+      "called": true,
+      "response": {
+        "model": "jev-1.13.0",
+        "answers": {
+          "buying_interest": {
+            "type": "noul",
+            "noul": 0.98
+          },
+          "who_owes_reply": {
+            "type": "choice",
+            "choice": "me",
+            "confidence": 1,
+            "probabilities": {
+              "me": 1,
+              "nobody": 0,
+              "them": 0
+            }
+          },
+          "topic": {
+            "type": "choice",
+            "choice": "sales_conversation",
+            "confidence": 1,
+            "probabilities": {
+              "hiring_or_job": 0,
+              "pitch_to_me": 0,
+              "networking": 0,
+              "sales_conversation": 1,
+              "other": 0
+            }
+          }
+        },
+        "usage": {
+          "input_tokens": 668,
+          "output_tokens": 123
+        },
+        "ms": 405,
+        "date": "2026-09-22"
+      }
+    },
+    "2_check": {
+      "facts": {},
+      "fired": "low_fit",
+      "action": "ignore",
+      "outcome": "approved"
+    },
+    "3_write": null,
+    "4_act": {
+      "status": "done",
+      "action": "ignore"
+    }
+  }
+}
