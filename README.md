@@ -125,6 +125,20 @@ None of the three needs a key.
 
 Most people have thousands of first-degree connections and no idea which of them could buy what they sell. This playbook scores every connection against your ICP from the one file LinkedIn lets you download. On later imports, code notices who changed jobs and [playbook 02](playbooks-JEv/02-job-change-interpretation.md) interprets each change.
 
+It runs on the same five steps as every other playbook:
+
+| Step | What happens for a connection | Who does it |
+|---|---|---|
+| 0. Filter and cache | Skip rows with no role and no company, titles on your skip list, and suppressed contacts. Leave out existing customers and competitors. Two connections with the same title at the same company share one answer. | Code |
+| 1. Judge | Five questions in one request: persona group, seniority, role fit, company fit and likely buyer. | **Jev** |
+| 2. Check | Combine the answers into a 0–100 fit score using your weights. An enrichment headcount, when there is one, replaces Jev's company fit. | Code |
+| 3. Write | Not used. The score is the output. | |
+| 4. Act | Write the ranked list and the scored spreadsheet. Nothing is sent to anyone. | Code |
+
+The full page, with the questions, weights and real saved answers, is [playbook 01](playbooks-JEv/01-linkedin-network-icp.md).
+
+### Run it on your own network
+
 1. **Export your connections from LinkedIn.** Me → Settings & Privacy → Data privacy → Get a copy of your data → choose the larger data archive → Request archive. Full walkthrough: [docs/export-your-connections.md](docs/export-your-connections.md).
 2. **Get a TypeSafe key and describe your ICP.** Create a key at [console.typesafe.ai](https://console.typesafe.ai/settings/keys), copy `.env.example` to `.env` and paste it in. Copy `icp.example.json` to `icp.json` and rewrite it in your own words: what you sell, who buys it, who does not, and the groups you sort people into.
 3. **Score it.**
