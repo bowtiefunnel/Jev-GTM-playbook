@@ -4,8 +4,6 @@
 
 *Go-to-market playbooks built on [TypeSafe's Jev](https://docs.typesafe.ai/introduction): code owns the facts and the final decision, Jev supplies the judgment, an LLM writes only from what code approved, and each playbook runs locally on data you already own.*
 
-**New to Jev?** Start with [Before Jev and after Jev: a walkthrough](docs/before-after-jev-guide.md). It explains what Jev is in plain words and shows one workflow run three ways: rules only, an AI alone, and Jev between two layers of rules.
-
 | Customer lifecycle stage | AI workflow | What it decides |
 |---|---|---|
 | Awareness | [05 · Connection-request intent](playbooks-JEv/05-connection-request-intent.md) | Which LinkedIn invitations are buyers, peers or pitches |
@@ -31,6 +29,22 @@
 The stages run in lifecycle order. All 15 sit on the acquisition side: Awareness (noticing a signal), Education (the outreach and what it says) and Selection (qualifying, scoring and routing). Mutual Commit, Onboarding, Retention and Expansion have no AI workflow yet.
 
 Every AI workflow comes with its request file and real saved Jev answers, so you can replay it without a key: `npm run replay -- 04`. See [the playbooks](playbooks-JEv/README.md).
+
+## Before Jev and after Jev: one workflow, three ways
+
+New to Jev? It is a model that does not write text. It answers questions you set in advance (pick one, rate it, yes or no) and says how sure it is, so ordinary rules can check its answers before anything happens.
+
+To see what that buys, the same 50 fictional contact-form leads were sorted three ways with [playbook 04](playbooks-JEv/04-inbound-lead-routing.md) and checked against an answer key written beforehand.
+
+| | How it sorts | Right, of 50 | Costly mistakes | Handed to a person | Cost per 1,000 leads | Time per lead |
+|---|---|---|---|---|---|---|
+| **Before: rules only** | A checklist of keywords | 44 | 1 | 4 | $0 | instant |
+| **Before: AI decides alone** | A general AI (Claude Sonnet 5.5) picks the action; nothing checks it | 46 | 0 | 3 | $2.24 | 2 seconds |
+| **After: rules, then Jev, then rules** | Rules decide the obvious ones, Jev judges the rest, rules check Jev's answers | 41 | 0 | 10 | $0.02 | 0.2 seconds |
+
+The Jev version was about 100 times cheaper and 12 times faster than the AI alone and made no costly mistakes, but it was too cautious: it handed 10 leads to a person when only 4 of those needed one, so it got fewer right than either alternative. The leads are fictional, and one set of 50 only tells you about that set.
+
+**[Read the walkthrough](docs/before-after-jev-guide.md)** for what Jev is in plain words, a diagram of each way, and the leads where each one won and lost.
 
 ## The architecture: a neurosymbolic sandwich
 
@@ -189,13 +203,7 @@ The default cutoffs are starting points, not recommendations. Look at 50 to 100 
 - Playbook 04 run twice on the same leads: 3 Jev calls, then 0 calls and 3 reused.
 - Playbook 01's five cases were asked live (`jev-1.13.0`, about 1,070 input tokens each) and saved as its traces. The enriched description moved the same founder from fit 83 to 98; a 12,000-person headcount in facts brought it back to 83.
 
-**Before Jev and after Jev, playbook 04, 2026-10-01** (run with `node src/compare-before-after.js`):
-
-- 50 fictional labelled leads went through keyword rules only, one LLM prompt only (`anthropic/claude-sonnet-5.5`), and the playbook as built, three times each.
-- Correct actions of 50: rules 44, LLM 46, the playbook 41. Costly mistakes: rules 1, LLM 0, the playbook 0.
-- The playbook cost $0.023 per 1,000 leads against $2.24 for the LLM, at 0.17 seconds a lead against 2.05.
-- Seven of the playbook's ten misses were the 0.7 route cutoff sending a clear lead to a person. One set of 50 supports a statement about that set only.
-- [The guide](docs/before-after-jev-guide.md) explains Jev, the three arms and how to run it; [the results](docs/before-after-jev-results.md) list every miss.
+**Before Jev and after Jev, playbook 04, 2026-10-01:** see [the section above](#before-jev-and-after-jev-one-workflow-three-ways) and [every miss, record by record](docs/before-after-jev-results.md).
 
 **Not measured yet:** drafts. No writer model has been run, so the draft guard has not seen a real draft.
 
