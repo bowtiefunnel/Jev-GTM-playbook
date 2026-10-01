@@ -1,0 +1,25 @@
+{
+  "domain:harborline.test": {
+    "employees": 310
+  },
+  "domain:quillmark.test": {
+    "employees": 205
+  },
+  "domain:pebblecrest.test": {
+    "employees": 7
+  },
+  "domain:rivalreach.test": {
+    "competitor": true,
+    "employees": 280
+  },
+  "domain:mapleforge.test": {
+    "customer": true,
+    "employees": 190
+  },
+  "domain:tidewater.test": {
+    "customer": true
+  },
+  "email:dana@lanternworks.test": {
+    "suppressed": true
+  }
+}

@@ -187,6 +187,14 @@ The default cutoffs are starting points, not recommendations. Look at 50 to 100 
 - Playbook 04 run twice on the same leads: 3 Jev calls, then 0 calls and 3 reused.
 - Playbook 01's five cases were asked live (`jev-1.13.0`, about 1,070 input tokens each) and saved as its traces. The enriched description moved the same founder from fit 83 to 98; a 12,000-person headcount in facts brought it back to 83.
 
+**Before Jev and after Jev, playbook 04, 2026-10-01** (run with `node src/compare-before-after.js`):
+
+- 50 fictional labelled leads went through keyword rules only, one LLM prompt only (`anthropic/claude-sonnet-5.5`), and the playbook as built, three times each.
+- Correct actions of 50: rules 44, LLM 46, the playbook 41. Costly mistakes: rules 1, LLM 0, the playbook 0.
+- The playbook cost $0.023 per 1,000 leads against $2.24 for the LLM, at 0.17 seconds a lead against 2.05.
+- Seven of the playbook's ten misses were the 0.7 route cutoff sending a clear lead to a person. One set of 50 supports a statement about that set only.
+- [The guide](docs/before-after-jev-guide.md) explains Jev, the three arms and how to run it; [the results](docs/before-after-jev-results.md) list every miss.
+
 **Not measured yet:** drafts. No writer model has been run, so the draft guard has not seen a real draft.
 
 ## Honest limits
