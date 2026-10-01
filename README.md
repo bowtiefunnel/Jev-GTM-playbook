@@ -39,7 +39,7 @@ To see what that buys, the same 50 fictional contact-form leads were sorted thre
 | | How it sorts | Right, of 50 | Costly mistakes | Handed to a person | Cost per 1,000 leads | Time per lead |
 |---|---|---|---|---|---|---|
 | **Before: rules only** | A checklist of keywords | 44 | 1 | 4 | $0 | instant |
-| **Before: AI decides alone** | A general AI (Claude Sonnet 5.5) picks the action; nothing checks it | 46 | 0 | 3 | $2.24 | 2 seconds |
+| **Before: AI decides alone** | Claude picks the action; nothing checks it | 46 | 0 | 3 | $2.24 | 2 seconds |
 | **After: rules, then Jev, then rules** | Rules decide the obvious ones, Jev judges the rest, rules check Jev's answers | 41 | 0 | 10 | $0.02 | 0.2 seconds |
 
 The Jev version was about 100 times cheaper and 12 times faster than the AI alone and made no costly mistakes, but it was too cautious: it handed 10 leads to a person when only 4 of those needed one, so it got fewer right than either alternative. The leads are fictional, and one set of 50 only tells you about that set.
@@ -151,7 +151,7 @@ A scheduled run picks up any new CSV in `data/`. If there is no new export, it f
 
 ## Running any other playbook on your own records
 
-1. Copy `.env.example` to `.env` and add `TYPESAFE_API_KEY`. For drafts, also add `OPENROUTER_API_KEY` and `WRITER_MODEL`.
+1. Copy `.env.example` to `.env` and add `TYPESAFE_API_KEY`. For drafts, also add `OPENROUTER_API_KEY`; Claude writes them.
 2. Load hard data, if you have any: `node src/cli.js facts facts.json`. The file maps `domain:acme.test` or `email:ada@acme.test` to fields such as `customer`, `open_opportunity`, `competitor`, `target_account`, `employees` and `suppressed`.
 3. Put records in a JSON array, each `{ "key", "state", "email"?, "domain"? }`, with `state` shaped like the playbook's cases. [examples/inbound.records.json](examples/inbound.records.json) and [examples/facts.example.json](examples/facts.example.json) show both formats with fictional data.
 4. `npm run playbook -- 04 records.json`

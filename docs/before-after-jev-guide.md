@@ -67,7 +67,7 @@ flowchart LR
     L["Form fill"] --> R["Keyword checklist<br/>13 rules, first match wins"] --> A["Action"]
 ```
 
-**Before, way 2: AI decides alone.** One message to a general AI (Claude Sonnet 5.5) with the lead, the policy and the list of allowed actions. Its reply is the decision.
+**Before, way 2: AI decides alone.** One message to Claude with the lead, the policy and the list of allowed actions. Its reply is the decision.
 
 ```mermaid
 flowchart LR
@@ -148,7 +148,7 @@ That a person should decide, because the lead is honestly unclear. The sandwich'
 Correct. When no special rule fires, the check returns Jev's raw route. The test scores those three as `ae_now`, `partner_inbox` and `discard`. That rule was fixed before the first run.
 
 **Can I change the arm B model?**
-Yes. Set `WRITER_MODEL` in `.env` to any model OpenRouter lists. The script reads the price from OpenRouter when it runs.
+Yes. It is Claude by default. Set `WRITER_MODEL` in `.env` to any model OpenRouter lists to try another. The script reads the price from OpenRouter when it runs.
 
 **Can I change a cutoff and re-run?**
 You can, in `2_check.cutoffs` in the playbook's request file. Treat the result as tuning, not as a test: a cutoff chosen after seeing these 50 leads will fit these 50 leads. Check it on a new labelled set.
@@ -272,7 +272,7 @@ One function, `armA`. The first rule that matches decides.
 One prompt, one call, one answer.
 
 1. Code builds a prompt with the routing policy, the lead, the facts for that lead, and the eight allowed actions with a line describing each. One of the eight is `person`, for when the model is not sure.
-2. The prompt goes to the model named in `WRITER_MODEL`.
+2. The prompt goes to Claude (or the model named in `WRITER_MODEL`, if you set one).
 3. The model replies with the action on line 1 and one sentence of reasoning on line 2.
 4. Code reads the first allowed action in the reply. A reply with none is scored as wrong.
 
@@ -311,8 +311,7 @@ You need Node 22.13 or newer. There is nothing to install.
 1. **Check the repo is healthy.** Run `npm test` and `npm run replay -- 04`. Neither needs a key.
 2. **Add keys to `.env`.** Copy `.env.example` to `.env` if you have not, then set:
    - `TYPESAFE_API_KEY`, from [console.typesafe.ai](https://console.typesafe.ai/settings/keys)
-   - `OPENROUTER_API_KEY`
-   - `WRITER_MODEL`, the model for arm B, for example `anthropic/claude-sonnet-5.5`
+   - `OPENROUTER_API_KEY`. Arm B is Claude (`anthropic/claude-sonnet-5.5`) unless you set `WRITER_MODEL` to something else.
 3. **Review the labels.** Open `examples/before-after/inbound.labelled.json`. Each record has a `label` (the correct action, or `person`) and `costly` (the actions that would be a costly mistake). Correct any you disagree with. Do this before step 4. Labels changed after you have seen results make the test worthless.
 4. **Run it.** `node src/compare-before-after.js`. It takes about five minutes and cost about 34 cents on the first run, nearly all of it arm B.
 5. **Read the output.** A table prints in the terminal, followed by each costly mistake. Every record's action for every arm and run is written to `data/before-after-results.json`, which is not committed.

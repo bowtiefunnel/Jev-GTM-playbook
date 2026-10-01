@@ -15,8 +15,8 @@ const JEV_PER_MILLION = 0.042; // input tokens only
 const read = (name) => JSON.parse(readFileSync(path.join(ROOT, 'examples/before-after', name), 'utf8'));
 
 const env = loadEnv();
-if (!env.jevKey || !env.writerKey || !env.writerModel) {
-  console.error('Needs TYPESAFE_API_KEY, OPENROUTER_API_KEY and WRITER_MODEL in .env.');
+if (!env.jevKey || !env.writerKey) {
+  console.error('Needs TYPESAFE_API_KEY and OPENROUTER_API_KEY in .env.');
   process.exit(1);
 }
 const records = read('inbound.labelled.json');

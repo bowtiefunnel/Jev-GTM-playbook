@@ -13,7 +13,7 @@ By the plan's own table, this is the "less accurate than B on ordinary records" 
 | Arm | What it is |
 |---|---|
 | Before A, code only | `armA` in `src/before-after.js`: keyword and regex rules, first match wins |
-| Before B, LLM only | One prompt to `anthropic/claude-sonnet-5.5` through OpenRouter at default settings, with the policy text, the lead, the facts and the allowed actions |
+| Before B, LLM only | One prompt to Claude (`anthropic/claude-sonnet-5.5`) through OpenRouter at default settings, with the policy text, the lead, the facts and the allowed actions |
 | After, the sandwich | Playbook 04 unchanged, through `runRecord`, with `jev-latest` |
 
 Each arm ran the 50 records three times. The sandwich got a new empty store for each run, so every run called Jev again; with the answer store in place, a repeat run would reuse the saved answers and could not change.

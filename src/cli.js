@@ -89,9 +89,9 @@ if (command === 'replay' && a) {
   if (!env.jevKey) { console.log('Set TYPESAFE_API_KEY in .env, or use "replay" to try the saved cases.'); process.exit(1); }
   if (!existsSync(b)) { console.log(`No such file: ${b}`); process.exit(1); }
   const playbook = findPlaybook(a);
-  const writer = env.writerKey && env.writerModel
+  const writer = env.writerKey
     ? openRouterWriter({ apiKey: env.writerKey, model: env.writerModel, baseUrl: env.writerBaseUrl }) : null;
-  if (playbook.write && !writer) console.log('No OPENROUTER_API_KEY and WRITER_MODEL: records that need a draft go to a person.');
+  if (playbook.write && !writer) console.log('No OPENROUTER_API_KEY: records that need a draft go to a person.');
   const stats = { judged: 0, reused: 0, input_tokens: 0 };
   const jev = (req) => askJev({ apiKey: env.jevKey, model: env.jevModel, ...req });
   print(await runAll(playbook, JSON.parse(readFileSync(b, 'utf8')), { store: openStore(DB_PATH), jev, model: env.jevModel, writer, stats }));

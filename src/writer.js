@@ -1,4 +1,4 @@
-// Step 3's LLM. Any OpenAI-compatible chat endpoint; OpenRouter by default.
+// Step 3's LLM. Any OpenAI-compatible chat endpoint; OpenRouter and Claude by default.
 export function openRouterWriter({ apiKey, model, baseUrl, fetchImpl = fetch }) {
   return async (prompt) => {
     const res = await fetchImpl(`${baseUrl}/chat/completions`, {
