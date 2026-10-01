@@ -4,6 +4,8 @@
 
 *Go-to-market playbooks built on [TypeSafe's Jev](https://docs.typesafe.ai/introduction): code owns the facts and the final decision, Jev supplies the judgment, an LLM writes only from what code approved, and each playbook runs locally on data you already own.*
 
+**New to Jev?** Start with [Before Jev and after Jev: a walkthrough](docs/before-after-jev-guide.md). It explains what Jev is in plain words and shows one workflow run three ways: rules only, an AI alone, and Jev between two layers of rules.
+
 | Customer lifecycle stage | AI workflow | What it decides |
 |---|---|---|
 | Awareness | [05 · Connection-request intent](playbooks-JEv/05-connection-request-intent.md) | Which LinkedIn invitations are buyers, peers or pitches |
