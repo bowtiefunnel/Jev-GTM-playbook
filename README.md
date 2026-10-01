@@ -123,8 +123,6 @@ Prefer a UI? `npm start` opens the dashboard on http://localhost:4173, where you
 
 Your first import is the baseline, so it produces fit scores but no signals. **Signals appear from the second import onwards**, when there is something to compare against.
 
-![The dashboard, showing made-up sample data](docs/dashboard.png)
-
 ### Running it daily
 
 The dashboard has a daily schedule switch. It only fires while `npm start` is running. If you would rather not leave it running, use your system's scheduler:
@@ -210,7 +208,7 @@ The default cutoffs are starting points, not recommendations. Look at 50 to 100 
 
 ```
 playbooks-JEv/         one page, one request file and one file of saved traces per playbook
-docs/                  the architecture diagram, the banner, the dashboard screenshot, the export guide
+docs/                  the architecture diagram, the banner, the export guide
 examples/              fictional records, facts and connection exports, in the formats the CLI reads
 src/spine.js           the five steps: filter, judge, check, write, act
 src/store.js           the three stores: answers, facts, ledger
