@@ -1,7 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 684" width="1200" height="684" role="img" aria-labelledby="t d" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 548" width="1200" height="548" role="img" aria-labelledby="t d" font-family="ui-sans-serif, system-ui, -apple-system, Segoe UI, Helvetica, Arial, sans-serif">
 <title id="t">jev-gtm-playbook: 14 GTM playbooks across the customer lifecycle</title>
-<desc id="d">Fourteen playbooks, plus list import and enrichment, placed on the seven customer lifecycle stages in order: awareness, education, selection, mutual commit, onboarding, retention and expansion. Awareness has three, education six and selection six. Mutual commit, onboarding, retention and expansion have none yet. Every playbook runs the same five steps: code filters, Jev judges, code checks, an LLM writes, code acts. Run live on 54 cases for a tenth of a cent, with 53 of 54 matching the saved answers; re-running makes no calls.</desc>
-<rect width="1200" height="684" rx="16" fill="#f7f6f2"/>
+<desc id="d">Fourteen playbooks, plus list import and enrichment, placed on the seven customer lifecycle stages in order: awareness, education, selection, mutual commit, onboarding, retention and expansion. Awareness has three, education six and selection six. Mutual commit, onboarding, retention and expansion have none yet. Every playbook runs the same five steps: code filters, Jev judges, code checks, an LLM writes, code acts.</desc>
+<rect width="1200" height="548" rx="16" fill="#f7f6f2"/>
 <text x="40" y="62" font-size="32" font-weight="800" fill="#1c1b18">jev-gtm-playbook</text>
 <text x="40" y="96" font-size="18" fill="#6d6a62">14 GTM playbooks across the customer lifecycle. Code owns the facts and the final decision; Jev supplies the judgment.</text>
 <text x="1160" y="62" font-size="15" font-weight="700" fill="#6d6a62" text-anchor="end" letter-spacing="0.6">CUSTOMER LIFECYCLE</text>
@@ -75,18 +75,4 @@
 <rect x="1063.9" y="128" width="96" height="388" rx="14" fill="none" stroke="#c9c4b6" stroke-width="1.5" stroke-dasharray="6 5"/>
 <text x="1111.9" y="174" font-size="11" font-weight="800" fill="#6d6a62" letter-spacing="0.6" text-anchor="middle">EXPANSION</text>
 <text x="1111.9" y="334" font-size="13" fill="#9a968c" text-anchor="middle">none yet</text>
-<rect x="40" y="540" width="1120" height="104" rx="14" fill="#1c1b18"/>
-<text x="180" y="590" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">54</text>
-<text x="180" y="618" font-size="14.5" fill="#bdb8ad" text-anchor="middle">cases run on live Jev</text>
-<text x="460" y="590" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">53 of 54</text>
-<text x="460" y="618" font-size="14.5" fill="#bdb8ad" text-anchor="middle">same result as the saved answers</text>
-<line x1="320" y1="562" x2="320" y2="624" stroke="#44423c" stroke-width="1"/>
-<text x="740" y="590" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">$0.0012</text>
-<text x="740" y="618" font-size="14.5" fill="#bdb8ad" text-anchor="middle">total Jev cost</text>
-<line x1="600" y1="562" x2="600" y2="624" stroke="#44423c" stroke-width="1"/>
-<text x="1020" y="590" font-size="32" font-weight="800" fill="#ffffff" text-anchor="middle">0 calls</text>
-<text x="1020" y="618" font-size="14.5" fill="#bdb8ad" text-anchor="middle">to re-run: answers are stored</text>
-<line x1="880" y1="562" x2="880" y2="624" stroke="#44423c" stroke-width="1"/>
-<text x="40" y="668" font-size="13" fill="#9a968c">Measured on jev-latest, 2026-10-01, on the 13 playbooks that had saved answers. Drafts have not been measured.</text>
-<text x="1160" y="668" font-size="13" fill="#9a968c" text-anchor="end">Choice · Score · Noul · MIT</text>
 </svg>
