@@ -1,28 +1,32 @@
 # jev-gtm-playbook
 
-![jev-gtm-playbook: 14 GTM playbooks on one spine](docs/playbook.svg)
+![jev-gtm-playbook: 14 GTM playbooks across the customer lifecycle](docs/playbook.svg)
 
 *Go-to-market playbooks built on [TypeSafe's Jev](https://docs.typesafe.ai/introduction): code owns the facts and the final decision, Jev supplies the judgment, an LLM writes only from what code approved, and each playbook runs locally on data you already own.*
 
 | Customer lifecycle stage | AI workflow | What it decides |
 |---|---|---|
-| Selection | [01 · LinkedIn network ICP scoring](playbooks-JEv/01-linkedin-network-icp.md) | Who in your connections fits your ICP, with customers and competitors excluded by code |
-| Education | [02 · Job-change interpretation](playbooks-JEv/02-job-change-interpretation.md) | Promotion, sideways move or reworded title, whether the new role buys, and a checked draft of the outreach |
-| Selection | [03 · Cold-email reply classification](playbooks-JEv/03-reply-classification.md) | Interested, not now, referral, objection, out of office or unsubscribe, with opt-outs written to the suppression list |
-| Selection | [04 · Inbound lead routing](playbooks-JEv/04-inbound-lead-routing.md) | AE, SDR, nurture, vendor pitch or junk, with headcount and customer status overruling the model |
 | Awareness | [05 · Connection-request intent](playbooks-JEv/05-connection-request-intent.md) | Which LinkedIn invitations are buyers, peers or pitches |
-| Selection | [06 · Account ICP scoring](playbooks-JEv/06-account-icp-scoring.md) | Company fit from a description, with exclusions and headcount as hard rules |
 | Awareness | [07 · Hiring signals](playbooks-JEv/07-hiring-signals.md) | Which job posts mean a company is building an outbound team |
+| Awareness | [14 · Social signal triage](playbooks-JEv/14-social-signal-triage.md) | Engage, monitor or ignore a public post about your problem space |
+| Education | [02 · Job-change interpretation](playbooks-JEv/02-job-change-interpretation.md) | Promotion, sideways move or reworded title, whether the new role buys, and a checked draft of the outreach |
 | Education | [08 · Personalization fact-check](playbooks-JEv/08-personalization-fact-check.md) | Whether an AI-written line is true, and whether it is too personal |
 | Education | [09 · First-message scoring](playbooks-JEv/09-first-message-scoring.md) | Whether a draft is about them, pitchy, templated, or missing an ask |
 | Education | [10 · Learn from your own inbox](playbooks-JEv/10-learn-from-inbox.md) | Which opener traits actually get your prospects to reply |
-| Selection | [11 · Cold ICP conversations](playbooks-JEv/11-cold-icp-conversations.md) | Conversations with buying interest that went quiet, and who owes the reply |
 | Education | [12 · Warm-intro finder](playbooks-JEv/12-warm-intro-finder.md) | Who in your network can introduce you to the buyer at a target account |
-| Selection | [13 · Any lead list + enrichment](playbooks-JEv/13-any-list-and-enrichment.md) | Score any CSV, keep it fresh, and turn enrichment headcounts into facts that overrule the model |
-| Awareness | [14 · Social signal triage](playbooks-JEv/14-social-signal-triage.md) | Engage, monitor or ignore a public post about your problem space |
 | Education | [15 · Pick the follow-up](playbooks-JEv/15-pick-the-follow-up.md) | Which of your own follow-up templates fits the thread, or stop |
+| Selection | [01 · LinkedIn network ICP scoring](playbooks-JEv/01-linkedin-network-icp.md) | Who in your connections fits your ICP, with customers and competitors excluded by code |
+| Selection | [03 · Cold-email reply classification](playbooks-JEv/03-reply-classification.md) | Interested, not now, referral, objection, out of office or unsubscribe, with opt-outs written to the suppression list |
+| Selection | [04 · Inbound lead routing](playbooks-JEv/04-inbound-lead-routing.md) | AE, SDR, nurture, vendor pitch or junk, with headcount and customer status overruling the model |
+| Selection | [06 · Account ICP scoring](playbooks-JEv/06-account-icp-scoring.md) | Company fit from a description, with exclusions and headcount as hard rules |
+| Selection | [11 · Cold ICP conversations](playbooks-JEv/11-cold-icp-conversations.md) | Conversations with buying interest that went quiet, and who owes the reply |
+| Selection | [13 · Any lead list + enrichment](playbooks-JEv/13-any-list-and-enrichment.md) | Score any CSV, keep it fresh, and turn enrichment headcounts into facts that overrule the model |
+| Mutual Commit | *none yet* | |
+| Onboarding | *none yet* | |
+| Retention | *none yet* | |
+| Expansion | *none yet* | |
 
-All 15 sit on the acquisition side of the lifecycle: Awareness (noticing a signal), Education (the outreach and what it says) and Selection (qualifying, scoring and routing). None covers Mutual Commit, Onboarding, Retention or Expansion yet.
+The stages run in lifecycle order. All 15 sit on the acquisition side: Awareness (noticing a signal), Education (the outreach and what it says) and Selection (qualifying, scoring and routing). Mutual Commit, Onboarding, Retention and Expansion have no AI workflow yet.
 
 Every AI workflow comes with its request file and real saved Jev answers, so you can replay it without a key: `npm run replay -- 04`. See [the playbooks](playbooks-JEv/README.md).
 
